@@ -4,13 +4,13 @@
 
   tasks:
     - name: Set Hostname
-      include_task: rhel_set_hostname.yaml
+      include_tasks: rhel_set_hostname.yaml
       when: set_hostname|bool
 
     - name: Perform System Update
-      include_task: rhel_yum_update.yaml
+      include_tasks: rhel_yum_update.yaml
       when: update_system|bool
 
     - name: Setup base routing
-      include_task: rhel_base_routing.yaml
+      include_tasks: rhel_base_routing.yaml
       when: configure_routing|bool
