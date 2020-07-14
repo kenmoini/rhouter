@@ -3,6 +3,9 @@
   hosts: all
 
   tasks:
+    - name: Pull in variables
+      include_vars: main.yaml
+      
     - name: Set Hostname
       include_tasks: rhel_set_hostname.yaml
       when: set_hostname|bool
