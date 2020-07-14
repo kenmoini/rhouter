@@ -1,0 +1,15 @@
+---
+- name: Set hostname via generic
+  hostname:
+    name: "{{ system_hostname }}"
+    use: generic
+
+- name: Set hostname via systemd
+  hostname:
+    name: "{{ system_hostname }}"
+    use: systemd
+
+- name: Set hostname via redhat
+  hostname:
+    name: "{{ system_hostname }}"
+    use: redhat
