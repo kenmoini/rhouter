@@ -21,3 +21,8 @@
     - name: Configure system interfaces
       include_tasks: tasks/rhel_configure_interfaces.yaml
       when: configure_interfaces|bool
+
+    - name: Setup Firewalld basics
+      include_tasks: tasks/rhel_setup_firewalld.yaml
+      when: configure_firewall_firewalld|bool
+
