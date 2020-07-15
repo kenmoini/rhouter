@@ -30,3 +30,7 @@
       include_tasks: tasks/rhel_configure_firewall_fail2ban.yaml
       when: configure_firewall_fail2ban|bool
 
+    - name: Set up DHCP - dhcpd
+      include_tasks: tasks/rhel_configure_dhcp_dhcpd.yaml
+      when: configure_dhcp_dhcpd|bool
+

@@ -1,0 +1,11 @@
+---
+- name: Install dhcpd
+  yum:
+    name: dhcpd
+    state: latest
+
+- name: Start and enable dhcpd
+  service:
+    name: dhcpd
+    state: started
+    enabled: yes
