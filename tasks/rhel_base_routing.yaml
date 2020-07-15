@@ -8,6 +8,11 @@
     reload: yes
   when: routing_enable_ipv4|bool
 
+- name: Check that ipv6 is enabled
+  stat:
+    path: /proc/sys/net/ipv6/conf/all/forwarding
+  register: ipv6_check
+
 - name: Set IPv6 Forwarding
   sysctl:
     name: net.ipv6.conf.all.forwarding
@@ -15,4 +20,4 @@
     sysctl_set: yes
     state: present
     reload: yes
-  when: routing_enable_ipv6|bool
+  when: routing_enable_ipv6|bool and ipv6_check.stat.exists
