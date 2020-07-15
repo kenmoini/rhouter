@@ -8,7 +8,7 @@
       - policycoreutils-python
     state: latest
 
-- name: Create WAN Connection
+- name: Create WAN Connection - Static
   nmcli:
     conn_name: "{{ wan_interface }}-wan"
     ifname: "{{ wan_interface }}"
@@ -18,6 +18,15 @@
     state: present
     autoconnect: yes
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_network_type == "static"
+
+- name: Create WAN Connection - DHCP
+  nmcli:
+    conn_name: "{{ wan_interface }}-wan"
+    ifname: "{{ wan_interface }}"
+    type: ethernet
+    state: present
+    autoconnect: yes
+  when: enable_wan_interface|bool and configure_wan_interface|bool and wan_network_type == "dhcp"
 
 - name: Set WAN Connection Method (Ansible nmcli module bug workaround)
   shell: nmcli con mod "{{ wan_interface }}-wan" ipv4.method manual
