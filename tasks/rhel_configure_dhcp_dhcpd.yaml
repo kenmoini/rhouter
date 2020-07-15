@@ -1,7 +1,7 @@
 ---
 - name: Install dhcpd
   yum:
-    name: dhcpd
+    name: dhcp
     state: latest
 
 - name: Start and enable dhcpd
