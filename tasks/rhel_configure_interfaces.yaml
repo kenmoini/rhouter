@@ -39,8 +39,7 @@
 - name: Configure WAN DNS Servers to manual
   nmcli:
     conn_name: "{{ wan_interface }}-wan"
-    dns4: 1.1.1.1
-    state: present
+    dns4: "{{ wan_dns_servers }}"
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_dns == "manual"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
