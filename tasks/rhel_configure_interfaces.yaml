@@ -80,6 +80,9 @@
     dns4: "{{ lan_dns_servers }}"
     state: present
     autoconnect: yes
+  register: create_lan_connection
+  until: create_lan_connection is not failed
+  retries: 5
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static" and lan_dns == "manual"
 
 - name: Set LAN Connection Method (Ansible nmcli module bug workaround)
@@ -106,6 +109,9 @@
     dns4: "{{ opt1_dns_servers }}"
     state: present
     autoconnect: yes
+  register: create_opt1_connection
+  until: create_opt1_connection is not failed
+  retries: 5
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "static"
 
 - name: Set OPT1 Connection Method (Ansible nmcli module bug workaround)
@@ -132,6 +138,9 @@
     dns4: "{{ opt2_dns_servers }}"
     state: present
     autoconnect: yes
+  register: create_opt2_connection
+  until: create_opt2_connection is not failed
+  retries: 5
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "static"
 
 - name: Set OPT2 Connection Method (Ansible nmcli module bug workaround)
