@@ -39,7 +39,7 @@
 - name: Configure WAN DNS Servers to manual
   nmcli:
     conn_name: "{{ wan_interface }}-wan"
-    dns4: "{{ wan_dns_servers }}"
+    dns4: 1.1.1.1
     state: present
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_dns == "manual"
 
