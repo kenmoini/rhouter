@@ -38,10 +38,10 @@ configure_lan_interface: true
 configure_opt1_interface: true
 configure_opt2_interface: true
 
-wan_interface: eno1
-lan_interface: eno2
-opt1_interface: eno3
-opt2_interface: eno4
+wan_interface: em1
+lan_interface: em2
+opt1_interface: em3
+opt2_interface: em4
 
 wan_network_type: dhcp #dhcp, disabled, or static
 wan_ip_address: 1.2.3.4
