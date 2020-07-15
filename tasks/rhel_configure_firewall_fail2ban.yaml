@@ -3,3 +3,9 @@
   yum:
     name: fail2ban
     state: latest
+
+- name: Start and enable fail2ban
+  service:
+    name: fail2ban
+    state: started
+    enabled: yes
