@@ -32,10 +32,15 @@ enable_lan_interface: true
 enable_opt1_interface: true
 enable_opt2_interface: true
 
-wan_interface: eth0
-lan_interface: eth1
-opt1_interface: eth2
-opt2_interface: eth3
+configure_wan_interface: true
+configure_lan_interface: true
+configure_opt1_interface: true
+configure_opt2_interface: true
+
+wan_interface: eno1
+lan_interface: eno2
+opt1_interface: eno3
+opt2_interface: eno4
 
 wan_network_type: dhcp #dhcp, disabled, or static
 wan_ip_address: 1.2.3.4
@@ -43,8 +48,9 @@ wan_network_block: 1.2.3.0
 wan_cidr: 24
 wan_gateway: 1.2.3.1
 wan_dns: manual #auto or manual
-wan_dns1: 10.69.42.4
-wan_dns2: 1.1.1.1
+wan_dns_servers:
+ - 1.1.1.1
+ - 8.8.8.8
 
 lan_network_type: static #dhcp, disabled, or static
 lan_ip_address: 10.69.42.1
@@ -52,8 +58,8 @@ lan_network_block: 10.69.42.0
 lan_cidr: 24
 lan_gateway: 10.69.42.1
 lan_dns: manual #auto or manual
-lan_dns1: 10.69.42.1
-lan_dns2: ""
+lan_dns_servers:
+ - 10.69.42.1
 
 opt1_network_type: static #dhcp, disabled, or static
 opt1_ip_address: 10.69.44.1
@@ -61,8 +67,8 @@ opt1_network_block: 10.69.44.0
 opt1_cidr: 24
 opt1_gateway: 10.69.42.1
 opt1_dns: manual #auto or manual
-opt1_dns1: 10.69.42.1
-opt1_dns2: ""
+opt1_dns_servers:
+ - 10.69.42.1
 
 opt2_network_type: static #dhcp, disabled, or static
 opt2_network_block: 10.69.46.0
@@ -70,8 +76,8 @@ opt2_ip_address: 10.69.46.1
 opt2_cidr: 24
 opt2_gateway: 10.69.42.1
 opt2_dns: manual #auto or manual
-opt2_dns1: 10.69.42.1
-opt2_dns2: ""
+opt2_dns_servers:
+ - 10.69.42.1
 
 ########################################################################################
 ### DHCP - dhcpd
@@ -91,5 +97,5 @@ opt2_dns2: ""
 enable_ip_masquerade: true
 ip_masquerade:
   - name: lan
-    wan_interface: eth0
+    wan_interface: eno1
     lan_cidr: ""

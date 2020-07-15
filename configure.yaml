@@ -17,3 +17,7 @@
     - name: Setup base routing
       include_tasks: tasks/rhel_base_routing.yaml
       when: configure_routing|bool
+
+    - name: Configure system interfaces
+      include_tasks: tasks/rhel_configure_interfaces.yaml
+      when: configure_interfaces|bool

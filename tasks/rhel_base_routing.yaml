@@ -13,7 +13,7 @@
     path: /proc/sys/net/ipv6/conf/all/forwarding
   register: ipv6_check
 
-- name: Set IPv6 Forwarding
+- name: Set IPv6 Forwarding for all
   sysctl:
     name: net.ipv6.conf.all.forwarding
     value: "1"
@@ -21,3 +21,17 @@
     state: present
     reload: yes
   when: routing_enable_ipv6|bool and ipv6_check.stat.exists
+
+- name: Check that ipv6 is enabled
+  stat:
+    path: /proc/sys/net/ipv6/conf/default/forwarding
+  register: ipv6_default_check
+
+- name: Set IPv6 Forwarding for default
+  sysctl:
+    name: net.ipv6.conf.default.forwarding
+    value: "1"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  when: routing_enable_ipv6|bool and ipv6_default_check.stat.exists
