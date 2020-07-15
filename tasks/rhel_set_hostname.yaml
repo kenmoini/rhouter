@@ -7,8 +7,3 @@
   hostname:
     name: "{{ system_hostname }}"
     use: systemd
-
-- name: Set hostname via redhat
-  hostname:
-    name: "{{ system_hostname }}"
-    use: redhat
