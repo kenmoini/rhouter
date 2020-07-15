@@ -9,3 +9,75 @@
     name: firewalld
     state: started
     enabled: yes
+
+- name: Allow DNS on LAN
+  firewalld:
+    interface: "{{ lan_interface }}"
+    service: dns
+    permanent: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool and configure_dns_bind|bool
+
+- name: Allow DNS on OPT1
+  firewalld:
+    interface: "{{ opt1_interface }}"
+    service: dns
+    permanent: yes
+    state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_dns_bind|bool
+
+- name: Allow DNS on OPT2
+  firewalld:
+    interface: "{{ opt2_interface }}"
+    service: dns
+    permanent: yes
+    state: enabled
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_dns_bind|bool
+
+- name: Allow DHCP on LAN
+  firewalld:
+    interface: "{{ lan_interface }}"
+    service: dhcp
+    permanent: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool and configure_dhcp_dhcpd|bool
+
+- name: Allow DHCP on OPT1
+  firewalld:
+    interface: "{{ opt1_interface }}"
+    service: dhcp
+    permanent: yes
+    state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_dhcp_dhcpd|bool
+
+- name: Allow DHCP on OPT2
+  firewalld:
+    interface: "{{ opt2_interface }}"
+    service: dhcp
+    permanent: yes
+    state: enabled
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_dhcp_dhcpd|bool
+
+- name: Allow NTP on LAN
+  firewalld:
+    interface: "{{ lan_interface }}"
+    service: ntp
+    permanent: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool and configure_ntp_chrony|bool
+
+- name: Allow NTP on OPT1
+  firewalld:
+    interface: "{{ opt1_interface }}"
+    service: ntp
+    permanent: yes
+    state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_ntp_chrony|bool
+
+- name: Allow NTP on OPT2
+  firewalld:
+    interface: "{{ opt2_interface }}"
+    service: ntp
+    permanent: yes
+    state: enabled
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_ntp_chrony|bool
