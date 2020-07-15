@@ -8,6 +8,8 @@
       - policycoreutils-python
     state: latest
 
+#### WAN
+
 - name: Create WAN Connection - Static, auto DNS
   nmcli:
     conn_name: "{{ wan_interface }}-wan"
@@ -66,6 +68,8 @@
   shell: "nmcli con mod {{ wan_interface }}-wan ipv4.ignore-auto-dns no"
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_dns == "auto"
 
+#### LAN
+
 - name: Create LAN Connection, manual DNS
   nmcli:
     conn_name: "{{ lan_interface }}-lan"
@@ -90,85 +94,54 @@
   shell: "nmcli con mod {{ lan_interface }}-lan ipv4.ignore-auto-dns yes"
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_dns == "manual"
 
-#- name: Create OPT1 Connection
-#  nmcli:
-#    conn_name: "{{ opt1_interface }}-opt1"
-#    ifname: "{{ opt1_interface }}"
-#    type: ethernet
-#    ip4: "{{ opt1_ip_address }}/{{ opt1_cidr }}"
-#    gw4: "{{ opt1_gateway }}"
-#    state: present
-#    autoconnect: yes
-#  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "static"
-#
-#- name: Set OPT1 Connection Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.method manual"
-#  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "static"
-#
-#- name: Set OPT1 Connection Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.method auto"
-#  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "dhcp"
-#
-#- name: Configure OPT1 DNS Servers to manual
-#  nmcli:
-#    conn_name: "{{ opt1_interface }}-opt1"
-#    dns4: "{{ opt1_dns_servers }}"
-#    state: present
-#  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_dns == "manual"
-#
-#- name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.ignore-auto-dns yes"
-#  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_dns == "manual"
-#
-#- name: Configure OPT1 DNS Servers to auto
-#  nmcli:
-#    conn_name: "{{ opt1_interface }}-opt1"
-#    dns4: '*'
-#    state: absent
-#  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_dns == "auto"
-#
-#- name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.ignore-auto-dns no"
-#  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_dns == "auto"
-#
-#- name: Create OPT2 Connection
-#  nmcli:
-#    conn_name: "{{ opt2_interface }}-opt2"
-#    ifname: "{{ opt2_interface }}"
-#    type: ethernet
-#    ip4: "{{ opt2_ip_address }}/{{ opt2_cidr }}"
-#    gw4: "{{ opt2_gateway }}"
-#    state: present
-#    autoconnect: yes
-#  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "static"
-#
-#- name: Set OPT2 Connection Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.method manual"
-#  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "static"
-#
-#- name: Set OPT2 Connection Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.method auto"
-#  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "dhcp"
-#
-#- name: Configure OPT2 DNS Servers to manual
-#  nmcli:
-#    conn_name: "{{ opt2_interface }}-opt2"
-#    dns4: "{{ opt2_dns_servers }}"
-#    state: present
-#  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_dns == "manual"
-#
-#- name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.ignore-auto-dns yes"
-#  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_dns == "manual"
-#
-#- name: Configure OPT2 DNS Servers to auto
-#  nmcli:
-#    conn_name: "{{ opt2_interface }}-opt2"
-#    dns4: '*'
-#    state: absent
-#  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_dns == "auto"
-#
-#- name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-#  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.ignore-auto-dns no"
-#  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_dns == "auto"
-#
+#### OPT1
+
+- name: Create OPT1 Connection, manual DNS
+  nmcli:
+    conn_name: "{{ opt1_interface }}-opt1"
+    ifname: "{{ opt1_interface }}"
+    type: ethernet
+    ip4: "{{ opt1_ip_address }}/{{ opt1_cidr }}"
+    gw4: "{{ opt1_gateway }}"
+    dns4: "{{ opt1_dns_servers }}"
+    state: present
+    autoconnect: yes
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "static"
+
+- name: Set OPT1 Connection Method (Ansible nmcli module bug workaround)
+  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.method manual"
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "static"
+
+- name: Set OPT1 Connection Method (Ansible nmcli module bug workaround)
+  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.method auto"
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "dhcp"
+
+- name: Set DNS Manual Method (Ansible nmcli module bug workaround)
+  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.ignore-auto-dns yes"
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_dns == "manual"
+
+#### OPT2
+
+- name: Create OPT2 Connection
+  nmcli:
+    conn_name: "{{ opt2_interface }}-opt2"
+    ifname: "{{ opt2_interface }}"
+    type: ethernet
+    ip4: "{{ opt2_ip_address }}/{{ opt2_cidr }}"
+    gw4: "{{ opt2_gateway }}"
+    dns4: "{{ opt2_dns_servers }}"
+    state: present
+    autoconnect: yes
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "static"
+
+- name: Set OPT2 Connection Method (Ansible nmcli module bug workaround)
+  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.method manual"
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "static"
+
+- name: Set OPT2 Connection Method (Ansible nmcli module bug workaround)
+  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.method auto"
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "dhcp"
+
+- name: Set DNS Manual Method (Ansible nmcli module bug workaround)
+  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.ignore-auto-dns yes"
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_dns == "manual"
