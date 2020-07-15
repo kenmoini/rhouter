@@ -46,7 +46,7 @@ opt2_interface: em4
 wan_network_type: dhcp #dhcp, disabled, or static
 wan_ip_address: 1.2.3.4
 wan_network_block: 1.2.3.0
-wan_cidr: 24
+wan_cidr: 30
 wan_gateway: 1.2.3.1
 wan_dns: manual #auto or manual
 wan_dns_servers:
@@ -56,7 +56,7 @@ wan_dns_servers:
 lan_network_type: static #dhcp, disabled, or static
 lan_ip_address: 10.69.42.1
 lan_network_block: 10.69.42.0
-lan_cidr: 16
+lan_cidr: 24
 lan_gateway: 10.69.42.1
 lan_dns: manual #auto or manual
 lan_dns_servers:
@@ -65,7 +65,7 @@ lan_dns_servers:
 opt1_network_type: static #dhcp, disabled, or static
 opt1_ip_address: 10.69.44.1
 opt1_network_block: 10.69.44.0
-opt1_cidr: 16
+opt1_cidr: 24
 opt1_gateway: 10.69.42.1
 opt1_dns: manual #auto or manual
 opt1_dns_servers:
@@ -74,7 +74,7 @@ opt1_dns_servers:
 opt2_network_type: static #dhcp, disabled, or static
 opt2_network_block: 10.69.46.0
 opt2_ip_address: 10.69.46.1
-opt2_cidr: 16
+opt2_cidr: 24
 opt2_gateway: 10.69.42.1
 opt2_dns: manual #auto or manual
 opt2_dns_servers:
