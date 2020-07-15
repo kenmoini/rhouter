@@ -10,7 +10,7 @@
 
 - name: Set IPv6 Forwarding
   sysctl:
-    name: net.ipv6.ip_forward
+    name: net.ipv6.conf.all.forwarding
     value: "1"
     sysctl_set: yes
     state: present
