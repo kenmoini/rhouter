@@ -42,7 +42,7 @@
   nmcli:
     conn_name: "{{ wan_interface }}-wan"
     dns4: '*'
-    state: present
+    state: absent
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_dns == "auto"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
@@ -83,7 +83,7 @@
   nmcli:
     conn_name: "{{ lan_interface }}-lan"
     dns4: '*'
-    state: present
+    state: absent
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_dns == "auto"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
@@ -124,7 +124,7 @@
   nmcli:
     conn_name: "{{ opt1_interface }}-opt1"
     dns4: '*'
-    state: present
+    state: absent
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_dns == "auto"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
@@ -165,7 +165,7 @@
   nmcli:
     conn_name: "{{ opt2_interface }}-opt2"
     dns4: '*'
-    state: present
+    state: absent
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_dns == "auto"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
