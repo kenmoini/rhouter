@@ -12,6 +12,7 @@ configure_dns_bind: true
 configure_mdns_avahi: true
 configure_ntp_chrony: true
 configure_firewall_firewalld: true
+configure_firewall_fail2ban: true
 configure_upnp_upnpd: true
 
 ########################################################################################
@@ -55,7 +56,7 @@ wan_dns_servers:
 lan_network_type: static #dhcp, disabled, or static
 lan_ip_address: 10.69.42.1
 lan_network_block: 10.69.42.0
-lan_cidr: 24
+lan_cidr: 16
 lan_gateway: 10.69.42.1
 lan_dns: manual #auto or manual
 lan_dns_servers:
@@ -64,7 +65,7 @@ lan_dns_servers:
 opt1_network_type: static #dhcp, disabled, or static
 opt1_ip_address: 10.69.44.1
 opt1_network_block: 10.69.44.0
-opt1_cidr: 24
+opt1_cidr: 16
 opt1_gateway: 10.69.42.1
 opt1_dns: manual #auto or manual
 opt1_dns_servers:
@@ -73,7 +74,7 @@ opt1_dns_servers:
 opt2_network_type: static #dhcp, disabled, or static
 opt2_network_block: 10.69.46.0
 opt2_ip_address: 10.69.46.1
-opt2_cidr: 24
+opt2_cidr: 16
 opt2_gateway: 10.69.42.1
 opt2_dns: manual #auto or manual
 opt2_dns_servers:
@@ -97,5 +98,5 @@ opt2_dns_servers:
 enable_ip_masquerade: true
 ip_masquerade:
   - name: lan
-    wan_interface: eno1
-    lan_cidr: ""
+    wan_interface: "{{ wan_interface }}"
+    lan_cidr: "{{ lan_network_block }}/{{ lan_cidr }}"

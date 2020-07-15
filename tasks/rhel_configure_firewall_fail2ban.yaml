@@ -1,0 +1,5 @@
+---
+- name: Install fail2ban
+  yum:
+    name: fail2ban
+    state: latest

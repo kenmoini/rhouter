@@ -20,6 +20,9 @@
     sysctl_set: yes
     state: present
     reload: yes
+  register: ipv6_forward_all
+  until: ipv6_forward_all is not failed
+  retries: 5
   when: routing_enable_ipv6|bool and ipv6_check.stat.exists
 
 - name: Check that ipv6 is enabled
@@ -34,4 +37,7 @@
     sysctl_set: yes
     state: present
     reload: yes
+  register: ipv6_forward_default
+  until: ipv6_forward_default is not failed
+  retries: 5
   when: routing_enable_ipv6|bool and ipv6_default_check.stat.exists
