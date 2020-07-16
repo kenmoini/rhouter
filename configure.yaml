@@ -63,6 +63,13 @@
         - configureFirewall
         - configureFail2ban
 
+    - name: Set up DNS - BIND
+      include_tasks: tasks/rhel_configure_dns_bind.yaml
+      when: configure_dns_bind|bool
+      tags:
+        - configureDNS
+        - configureBIND
+
     - name: Set up DHCP - dhcpd
       include_tasks: tasks/rhel_configure_dhcp_dhcpd.yaml
       when: configure_dhcp_dhcpd|bool
