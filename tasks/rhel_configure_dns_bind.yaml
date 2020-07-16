@@ -11,6 +11,7 @@
   template:
     src: bind-named.conf.j2
     dest: /etc/named.conf
+    backup: yes
   notify: restart BIND
 
 - name: Start and enable BIND
