@@ -64,3 +64,10 @@
       tags:
         - configureDHCP
         - configureDHCPd
+
+    - name: Set up NTP - chronyd
+      include_tasks: tasks/rhel_configure_ntp_chrony.yaml
+      when: configure_ntp_chrony|bool
+      tags:
+        - configureNTP
+        - configureChronyd

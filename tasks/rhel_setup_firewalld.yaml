@@ -46,6 +46,7 @@
     zone: extWAN
     interface: "{{ wan_interface }}"
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_wan_interface|bool and configure_wan_interface|bool
 
@@ -54,6 +55,7 @@
     zone: intLAN
     interface: "{{ lan_interface }}"
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_lan_interface|bool and configure_lan_interface|bool
 
@@ -62,6 +64,7 @@
     zone: intOPT1
     interface: "{{ opt1_interface }}"
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt1_interface|bool and configure_opt1_interface|bool
 
@@ -70,6 +73,7 @@
     zone: intOPT2
     interface: "{{ opt2_interface }}"
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool
 

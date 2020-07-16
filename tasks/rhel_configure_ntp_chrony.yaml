@@ -1,0 +1,13 @@
+---
+- name: Install Chronyd
+  yum:
+    name: chrony
+    state: latest
+  tags:
+    - installPackages
+    - installChrony
+
+- name: Start chronyd
+  service:
+    name: chronyd
+    state: started
