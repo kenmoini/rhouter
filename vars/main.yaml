@@ -60,7 +60,7 @@ lan_cidr: 24
 lan_gateway: 10.69.42.1
 lan_dns: manual #auto or manual
 lan_dns_servers:
-  - 10.69.42.1
+  - 10.69.42.4
 
 opt1_network_type: static #dhcp, disabled, or static
 opt1_ip_address: 10.69.44.1
@@ -119,6 +119,18 @@ dhcp_static_reservations:
   - name: orbi-satellite
     ip: "10.69.42.6"
     mac: "3c:37:86:cb:c0:9f"
+  - name: philips-hue-hub
+    ip: "10.69.42.10"
+    mac: "ec:b5:fa:0e:5d:13"
+  - name: office-echo
+    ip: "10.69.42.11"
+    mac: "fc:a1:83:21:fb:02"
+  - name: bedroom-echo
+    ip: "10.69.42.12"
+    mac: "a4:08:01:64:87:ae"
+  - name: kitchen-echo
+    ip: "10.69.42.13"
+    mac: "f0:f0:a4:cd:9c:6b"
 
 ########################################################################################
 ### DNS - BIND
@@ -131,12 +143,6 @@ dhcp_static_reservations:
 
 ########################################################################################
 ### Firewalld - Firewalld
-
-enable_ip_masquerade: true
-ip_masquerade:
-  - name: lan
-    wan_interface: "{{ wan_interface }}"
-    lan_cidr: "{{ lan_network_block }}/{{ lan_cidr }}"
 
 ########################################################################################
 ### Firewalld - fail2ban
