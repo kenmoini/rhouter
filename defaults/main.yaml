@@ -14,3 +14,6 @@ dhcp_dhcpd_static_lease_time: 84600
 ### Firewall - General
 
 enable_ssh_on_wan: false
+enable_ssh_on_lan: true
+enable_ssh_on_opt1: true
+enable_ssh_on_opt2: true
