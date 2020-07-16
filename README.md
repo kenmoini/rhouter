@@ -13,6 +13,7 @@ Using a few variables, you can easily switch on/off different services such as:
 - NTP (chrony)
 - VPN (OpenVPN)
 - Firewall (firewalld)
+- Firewall (fail2ban, uses EPEL, not supported)
 - UPnP (upnpd)
 
 

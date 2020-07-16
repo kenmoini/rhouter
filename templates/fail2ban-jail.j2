@@ -1,0 +1,10 @@
+[DEFAULT] 
+ignoreip = {% for network in dhcp_networks %} {{ network.network }}{% endfor %}
+bantime  = 21600
+findtime  = 300
+maxretry = 3
+banaction = iptables-multiport
+backend = systemd
+
+[sshd] 
+enabled = true
