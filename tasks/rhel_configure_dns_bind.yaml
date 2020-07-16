@@ -24,7 +24,7 @@
 - name: Touch log files
   file:
     path: "/var/named/log/{{ item }}"
-    state: file
+    state: touch
     group: named
     owner: named
   with_items:
