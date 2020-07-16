@@ -14,6 +14,30 @@
     backup: yes
   notify: restart BIND
 
+- name: Touch log dir
+  file:
+    path: /var/named/log
+    state: directory
+
+- name: Touch log files
+  file:
+    path: "/var/named/log/{{ item }}"
+    state: file
+    group: named
+    owner: named
+  with_items:
+    - default
+    - auth_servers
+    - dnssec
+    - zone_transfers
+    - ddns
+    - client_security
+    - rate_limiting
+    - rpz
+    - dnstap
+    - queries
+    - query-errors
+
 - name: Start and enable BIND
   service:
     name: named
