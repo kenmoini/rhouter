@@ -18,6 +18,8 @@
   file:
     path: /var/named/log
     state: directory
+    group: named
+    owner: named
 
 - name: Touch log files
   file:
