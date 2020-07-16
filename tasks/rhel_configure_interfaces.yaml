@@ -7,6 +7,9 @@
       - libsemanage-python
       - policycoreutils-python
     state: latest
+  tags:
+    - installPackages
+    - installNetworkManager
 
 #### WAN
 
