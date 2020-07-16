@@ -9,7 +9,7 @@ options {
 
   allow-query  { localhost; {% for network in dhcp_networks %}{{ network.network }}; {% endfor %} };
 
-  recursion no;
+  recursion yes;
 
   dnssec-enable no;
   dnssec-validation no;
