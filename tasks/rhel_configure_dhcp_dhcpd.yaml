@@ -3,6 +3,9 @@
   yum:
     name: dhcp
     state: latest
+  tags:
+    - installPackages
+    - installDHCPd
 
 - name: Template out dhpcd config file
   template:

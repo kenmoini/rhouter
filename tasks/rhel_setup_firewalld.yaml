@@ -3,6 +3,9 @@
   yum:
     name: firewalld
     state: latest
+  tags:
+    - installPackages
+    - installFirewalld
 
 - name: Enable and start Firewalld
   service:

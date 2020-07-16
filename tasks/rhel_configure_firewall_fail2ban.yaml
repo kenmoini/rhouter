@@ -20,6 +20,9 @@
   yum:
     name: fail2ban
     state: latest
+  tags:
+    - installPackages
+    - installFail2ban
 
 - name: Template out fail2ban local jail config file
   template:
