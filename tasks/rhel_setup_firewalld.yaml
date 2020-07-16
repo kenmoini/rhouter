@@ -186,7 +186,7 @@
   when: enable_wan_interface|bool and configure_wan_interface|bool
 
 - name: Set WAN zone (ansible issue 41738 workaround)
-  command: "firewall-cmd --zone=extWAN --permanent --add-interface={{ wan_interface }}"
+  command: "firewall-cmd --zone=extWAN --permanent --change-interface={{ wan_interface }}"
   when: enable_wan_interface|bool and configure_wan_interface|bool
 
 - name: Set LAN zone
@@ -199,7 +199,11 @@
   when: enable_lan_interface|bool and configure_lan_interface|bool
 
 - name: Set LAN zone (ansible issue 41738 workaround)
-  command: "firewall-cmd --zone=intLAN --permanent --add-interface={{ lan_interface }}"
+  command: "firewall-cmd --zone=intLAN --permanent --change-interface={{ lan_interface }}"
+  when: enable_lan_interface|bool and configure_lan_interface|bool
+
+- name: Set LAN zone to target ACCEPT
+  command: "firewall-cmd --zone=intLAN --permanent --target=ACCEPT"
   when: enable_lan_interface|bool and configure_lan_interface|bool
 
 - name: Set OPT1 zone
@@ -212,7 +216,7 @@
   when: enable_opt1_interface|bool and configure_opt1_interface|bool
 
 - name: Set OPT1 zone (ansible issue 41738 workaround)
-  command: "firewall-cmd --zone=intOPT1 --permanent --add-interface={{ opt1_interface }}"
+  command: "firewall-cmd --zone=intOPT1 --permanent --change-interface={{ opt1_interface }}"
   when: enable_opt1_interface|bool and configure_opt1_interface|bool
 
 - name: Set OPT2 zone
@@ -225,8 +229,23 @@
   when: enable_opt2_interface|bool and configure_opt2_interface|bool
 
 - name: Set OPT2 zone (ansible issue 41738 workaround)
-  command: "firewall-cmd --zone=intOPT2 --permanent --add-interface={{ opt2_interface }}"
+  command: "firewall-cmd --zone=intOPT2 --permanent --change-interface={{ opt2_interface }}"
   when: enable_opt2_interface|bool and configure_opt2_interface|bool
+
+- name: Set default zone to intLAN
+  command: "firewall-cmd --set-default-zone intLAN"
+
+- name: Set target for intLAN
+  command: "firewall-cmd --zone=intLAN --set-target=ACCEPT"
+
+- name: Set target for intOPT1
+  command: "firewall-cmd --zone=intOPT1 --set-target=ACCEPT"
+
+- name: Set target for intOPT2
+  command: "firewall-cmd --zone=intOPT2 --set-target=ACCEPT"
+
+- name: Set runtime to permanent
+  command: "firewall-cmd --runtime-to-permanent"
 
 - name: Reload firewalld for good measure
   service:
