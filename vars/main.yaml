@@ -20,6 +20,7 @@ configure_upnp_upnpd: true
 
 system_hostname: rhouter
 system_domain: kemo.labs
+system_timezone: America/New_York
 
 ########################################################################################
 ### Routing

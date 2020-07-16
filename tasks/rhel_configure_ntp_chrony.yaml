@@ -13,7 +13,14 @@
     dest: /etc/chrony.conf
   notify: restart chronyd
 
-- name: Start chronyd
+- name: Start and enable chronyd
   service:
     name: chronyd
     state: started
+    enabled: yes
+
+- name: Set timezone
+  shell: "timedatectl set-timezone {{ system_timezone }}"
+
+- name: Set time to config via NTP
+  shell: "timedatectl set-ntp 1"
