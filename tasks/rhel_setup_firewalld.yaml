@@ -176,11 +176,6 @@
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_ntp_chrony|bool
 
-- name: Reload firewalld for good measure
-  service:
-    name: firewalld
-    state: restarted
-
 - name: Set WAN zone
   firewalld:
     zone: extWAN
@@ -188,6 +183,10 @@
     permanent: yes
     immediate: yes
     state: enabled
+  when: enable_wan_interface|bool and configure_wan_interface|bool
+
+- name: Set WAN zone (ansible issue 41738 workaround)
+  command: "firewall-cmd --zone=extWAN --permanent --add-interface={{ wan_interface }}"
   when: enable_wan_interface|bool and configure_wan_interface|bool
 
 - name: Set LAN zone
@@ -199,6 +198,10 @@
     state: enabled
   when: enable_lan_interface|bool and configure_lan_interface|bool
 
+- name: Set LAN zone (ansible issue 41738 workaround)
+  command: "firewall-cmd --zone=intLAN --permanent --add-interface={{ lan_interface }}"
+  when: enable_lan_interface|bool and configure_lan_interface|bool
+
 - name: Set OPT1 zone
   firewalld:
     zone: intOPT1
@@ -206,6 +209,10 @@
     permanent: yes
     immediate: yes
     state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool
+
+- name: Set OPT1 zone (ansible issue 41738 workaround)
+  command: "firewall-cmd --zone=intOPT1 --permanent --add-interface={{ opt1_interface }}"
   when: enable_opt1_interface|bool and configure_opt1_interface|bool
 
 - name: Set OPT2 zone
@@ -216,3 +223,12 @@
     immediate: yes
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool
+
+- name: Set OPT2 zone (ansible issue 41738 workaround)
+  command: "firewall-cmd --zone=intOPT2 --permanent --add-interface={{ opt2_interface }}"
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool
+
+- name: Reload firewalld for good measure
+  service:
+    name: firewalld
+    state: restarted
