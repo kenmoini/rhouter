@@ -72,7 +72,7 @@
 
 - name: Enable masquerading on WAN
   firewalld:
-    masquerade: yes
+    masquerade: "true"
     state: enabled
     permanent: yes
     immediate: yes
@@ -86,7 +86,7 @@
     immediate: yes
     state: disabled
     service: ssh
-  when: not enable_ssh_on_wan|bool
+  when: enable_wan_interface|bool and configure_wan_interface|bool and not enable_ssh_on_wan|bool
 
 - name: Enable SSH on WAN
   firewalld:
@@ -95,7 +95,34 @@
     immediate: yes
     state: enabled
     service: ssh
-  when: enable_ssh_on_wan|bool
+  when: enable_wan_interface|bool and configure_wan_interface|bool and enable_ssh_on_wan|bool
+
+- name: Enable SSH on LAN
+  firewalld:
+    zone: intLAN
+    permanent: yes
+    immediate: yes
+    state: enabled
+    service: ssh
+  when: enable_lan_interface|bool and configure_lan_interface|bool and enable_ssh_on_lan|bool
+
+- name: Enable SSH on OPT1
+  firewalld:
+    zone: intOPT1
+    permanent: yes
+    immediate: yes
+    state: enabled
+    service: ssh
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and enable_ssh_on_opt1|bool
+
+- name: Enable SSH on OPT2
+  firewalld:
+    zone: intOPT2
+    permanent: yes
+    immediate: yes
+    state: enabled
+    service: ssh
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and enable_ssh_on_opt2|bool
 
 - name: Allow DNS on LAN
   firewalld:
