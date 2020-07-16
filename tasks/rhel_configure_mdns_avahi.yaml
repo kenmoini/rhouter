@@ -1,0 +1,14 @@
+---
+- name: Install the Avahi package
+  yum:
+    name: avahi
+    state: latest
+  tags:
+    - installPackages
+    - installAvahi
+
+- name: Start and enable Avahi
+  service:
+    name: avahi
+    state: started
+    enabled: yes

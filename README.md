@@ -8,15 +8,15 @@ Rhouter is a collection of assets that turn a Red Hat Enterprise Linux server in
 
 Using a few variables, you can easily switch on/off different services such as:
 
-- Network Routing (IPv4 and IPv6) (IPv6 is a WIP)
-- DHCP - dhcpd
-- DNS Forwarding & Resolving - BIND
-- [Always-a-WIP] Firewall - firewalld
-- [WIP] Firewall - fail2ban (uses EPEL, not supported)
-- [WIP] NTP - chrony
-- [WIP] mDNS - Avahi
-- [WIP] VPN - OpenVPN
-- [WIP] UPnP - upnpd
+- **Network Routing** (IPv4 and IPv6) (IPv6 is a WIP)
+- **DHCP** - dhcpd
+- **DNS Forwarding & Resolving** - BIND
+- **mDNS** - Avahi
+- **NTP** - chrony
+- [Always-a-WIP] **Firewall** - firewalld
+- [WIP] **Firewall** - fail2ban (uses EPEL, not supported)
+- [WIP] **VPN** - OpenVPN
+- [WIP] **UPnP** - upnpd
 
 `WIP? That means Work In Progress`
 

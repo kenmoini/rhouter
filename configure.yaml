@@ -18,6 +18,11 @@
         name: named
         state: restarted
 
+    - name: restart chronyd
+      service:
+        name: chronyd
+        state: restarted
+
   tasks:
     - name: Pull in default variables
       include_vars: defaults/main.yaml
@@ -69,6 +74,13 @@
       tags:
         - configureDNS
         - configureBIND
+
+    - name: Set up mDNS - Avahi
+      include_tasks: tasks/rhel_configure_mdns_avahi.yaml
+      when: configure_mdns_avahi|bool
+      tags:
+        - configuremDNS
+        - configureAvahi
 
     - name: Set up DHCP - dhcpd
       include_tasks: tasks/rhel_configure_dhcp_dhcpd.yaml

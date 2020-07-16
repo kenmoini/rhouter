@@ -122,6 +122,33 @@
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_dns_bind|bool
 
+- name: Allow mDNS on LAN
+  firewalld:
+    zone: intLAN
+    service: mdns
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool and configure_mdns_avahi|bool
+
+- name: Allow mDNS on OPT1
+  firewalld:
+    zone: intOPT1
+    service: mdns
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_mdns_avahi|bool
+
+- name: Allow mDNS on OPT2
+  firewalld:
+    zone: intOPT2
+    service: mdns
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_mdns_avahi|bool
+
 - name: Allow DHCP on LAN
   firewalld:
     zone: intLAN

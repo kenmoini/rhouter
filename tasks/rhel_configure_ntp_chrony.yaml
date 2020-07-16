@@ -7,6 +7,12 @@
     - installPackages
     - installChrony
 
+- name: Configure chronyd
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony.conf
+  notify: restart chronyd
+
 - name: Start chronyd
   service:
     name: chronyd
