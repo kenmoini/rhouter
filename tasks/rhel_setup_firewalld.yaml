@@ -10,9 +10,93 @@
     state: started
     enabled: yes
 
+- name: Create WAN Zone
+  firewalld:
+    zone: extWAN
+    state: present
+    permanent: yes
+  when: enable_wan_interface|bool and configure_wan_interface|bool
+
+- name: Create LAN Zone
+  firewalld:
+    zone: intLAN
+    state: present
+    permanent: yes
+  when: enable_lan_interface|bool and configure_lan_interface|bool
+
+- name: Create OPT1 Zone
+  firewalld:
+    zone: intOPT1
+    state: present
+    permanent: yes
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool
+
+- name: Create OPT2 Zone
+  firewalld:
+    zone: intOPT2
+    state: present
+    permanent: yes
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool
+
+- name: Set WAN zone
+  firewalld:
+    zone: extWAN
+    interface: "{{ wan_interface }}"
+    permanent: yes
+    state: enabled
+  when: enable_wan_interface|bool and configure_wan_interface|bool
+
+- name: Set LAN zone
+  firewalld:
+    zone: intLAN
+    interface: "{{ lan_interface }}"
+    permanent: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool
+
+- name: Set OPT1 zone
+  firewalld:
+    zone: intOPT1
+    interface: "{{ opt1_interface }}"
+    permanent: yes
+    state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool
+
+- name: Set OPT2 zone
+  firewalld:
+    zone: intOPT2
+    interface: "{{ opt2_interface }}"
+    permanent: yes
+    state: enabled
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool
+
+- name: Enable masquerading on WAN
+  firewalld:
+    masquerade: yes
+    state: enabled
+    permanent: yes
+    zone: extWAN
+  when: enable_wan_interface|bool and configure_wan_interface|bool and configure_routing|bool
+
+- name: Disable SSH on WAN
+  firewalld:
+    zone: extWAN
+    permanent: yes
+    state: disabled
+    service: ssh
+  when: not enable_ssh_on_wan|bool
+
+- name: Enable SSH on WAN
+  firewalld:
+    zone: extWAN
+    permanent: yes
+    state: enabled
+    service: ssh
+  when: enable_ssh_on_wan|bool
+
 - name: Allow DNS on LAN
   firewalld:
-    interface: "{{ lan_interface }}"
+    zone: intLAN
     service: dns
     permanent: yes
     state: enabled
@@ -20,7 +104,7 @@
 
 - name: Allow DNS on OPT1
   firewalld:
-    interface: "{{ opt1_interface }}"
+    zone: intOPT1
     service: dns
     permanent: yes
     state: enabled
@@ -28,7 +112,7 @@
 
 - name: Allow DNS on OPT2
   firewalld:
-    interface: "{{ opt2_interface }}"
+    zone: intOPT2
     service: dns
     permanent: yes
     state: enabled
@@ -36,7 +120,7 @@
 
 - name: Allow DHCP on LAN
   firewalld:
-    interface: "{{ lan_interface }}"
+    zone: intLAN
     service: dhcp
     permanent: yes
     state: enabled
@@ -44,7 +128,7 @@
 
 - name: Allow DHCP on OPT1
   firewalld:
-    interface: "{{ opt1_interface }}"
+    zone: intOPT1
     service: dhcp
     permanent: yes
     state: enabled
@@ -52,7 +136,7 @@
 
 - name: Allow DHCP on OPT2
   firewalld:
-    interface: "{{ opt2_interface }}"
+    zone: intOPT2
     service: dhcp
     permanent: yes
     state: enabled
@@ -60,7 +144,7 @@
 
 - name: Allow NTP on LAN
   firewalld:
-    interface: "{{ lan_interface }}"
+    zone: intLAN
     service: ntp
     permanent: yes
     state: enabled
@@ -68,7 +152,7 @@
 
 - name: Allow NTP on OPT1
   firewalld:
-    interface: "{{ opt1_interface }}"
+    zone: intOPT1
     service: ntp
     permanent: yes
     state: enabled
@@ -76,7 +160,7 @@
 
 - name: Allow NTP on OPT2
   firewalld:
-    interface: "{{ opt2_interface }}"
+    zone: intOPT2
     service: ntp
     permanent: yes
     state: enabled
