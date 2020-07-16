@@ -21,7 +21,7 @@ options {
 
   pid-file "/run/named/named.pid";
   session-keyfile "/run/named/session.key";
-}
+};
 
 logging {
   channel default_log {
@@ -114,7 +114,7 @@ logging {
     severity dynamic;
   };
 
-}
+};
 
 include "/etc/named.rfc1912.zones";
 include "/etc/named.root.key";
