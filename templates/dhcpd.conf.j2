@@ -8,7 +8,7 @@ authoritative;
 {% for network in dhcp_networks %}
 subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ipaddr('netmask') }} {
 {% if network.serviced|bool %}
-  range {{ '.'.join(network.network | ipaddr('network') | split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join(network.network | ipaddr('network') | split('.')[0:-1]) }}.{{ network.range_end }};
+  range {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_end }};
   option domain-name-servers {{ ', '.join(network.dns_servers) }};
   option domain-name {{ network.domain_name }};
   option routers {{ network.gateway }};
