@@ -1,0 +1,2 @@
+listen-on port 53 { 127.0.0.1; {{ lan_ip_address }}; {{ opt1_ip_address }}; {{ opt2_ip_address }}; };
+allow-query  { localhost; {% for network in dhcp_networks %}{{ network.network }}; {% endfor %} };

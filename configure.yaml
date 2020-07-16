@@ -13,6 +13,11 @@
         name: fail2ban
         state: restarted
 
+    - name: restart BIND
+      service:
+        name: named
+        state: restarted
+
   tasks:
     - name: Pull in default variables
       include_vars: defaults/main.yaml

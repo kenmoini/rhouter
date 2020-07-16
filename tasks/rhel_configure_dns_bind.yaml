@@ -1,0 +1,20 @@
+---
+- name: Install BIND packages
+  yum:
+    name: ["bind", "bind-utils"]
+    state: latest
+  tags:
+    - installPackages
+    - installBIND
+
+- name: Template BIND config
+  template:
+    src: bind-named.conf.j2
+    dest: /etc/named.conf
+  notify: restart BIND
+
+- name: Start and enable BIND
+  service:
+    name: named
+    state: started
+    enabled: yes

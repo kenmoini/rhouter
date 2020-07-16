@@ -8,6 +8,28 @@
     reload: yes
   when: routing_enable_ipv4|bool
 
+- name: Disable Reverse Path Filtering
+  sysctl:
+    name: net.ipv4.conf.all.rp_filter
+    value: "0"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  when: routing_enable_ipv4|bool
+
+- name: Disable Reverse Path Filtering
+  sysctl:
+    name: net.ipv4.conf.default.rp_filter
+    value: "0"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  when: routing_enable_ipv4|bool
+
+- name: Disable Reverse Path Filtering on all interfaces
+  shell: |
+    for TUNABLE in $(sysctl -a | awk '/\.rp_filter/{print $1}' | grep '^net.*$'); do sysctl -w "$TUNABLE=0"; done 2>/dev/null
+
 - name: Check that ipv6 is enabled
   stat:
     path: /proc/sys/net/ipv6/conf/all/forwarding
