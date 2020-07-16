@@ -203,7 +203,7 @@
   when: enable_lan_interface|bool and configure_lan_interface|bool
 
 - name: Set LAN zone to target ACCEPT
-  command: "firewall-cmd --zone=intLAN --permanent --target=ACCEPT"
+  command: "firewall-cmd --zone=intLAN --permanent --set-target=ACCEPT"
   when: enable_lan_interface|bool and configure_lan_interface|bool
 
 - name: Set OPT1 zone
@@ -235,14 +235,11 @@
 - name: Set default zone to intLAN
   command: "firewall-cmd --set-default-zone intLAN"
 
-- name: Set target for intLAN
-  command: "firewall-cmd --zone=intLAN --set-target=ACCEPT"
-
 - name: Set target for intOPT1
-  command: "firewall-cmd --zone=intOPT1 --set-target=ACCEPT"
+  command: "firewall-cmd --zone=intOPT1 --set-target=ACCEPT --permanent"
 
 - name: Set target for intOPT2
-  command: "firewall-cmd --zone=intOPT2 --set-target=ACCEPT"
+  command: "firewall-cmd --zone=intOPT2 --set-target=ACCEPT --permanent"
 
 - name: Set runtime to permanent
   command: "firewall-cmd --runtime-to-permanent"
