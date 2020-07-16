@@ -1,0 +1,27 @@
+default-lease-time {{ dhcp_dhcpd_default_lease_time }};
+max-lease-time {{ dhcp_dhcpd_max_lease_time }}
+
+{% if dhcp_dhcpd_authoritative|bool %}
+authoritative;
+{% endif %}
+
+{% for network in dhcp_networks %}
+subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ipaddr('netmask') }} {
+{% if network.serviced|bool %}
+  range {{ '.'.join(network.network | ipaddr('network') | split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join(network.network | ipaddr('network') | split('.')[0:-1]) }}.{{ network.range_end }};
+  option domain-name-servers {{ ', '.join(network.dns_servers) }};
+  option domain-name {{ network.domain_name }};
+  option routers {{ network.gateway }};
+{% endif %}
+}
+{% endfor %}
+
+{% if dhcp_static_reservations is defined %}
+{% for reservation in dhcp_static_reservations %}
+host {{ reservation.name }} {
+	hardware ethernet    {{ reservation.mac }};
+	fixed-address        {{ reservation.ip }};
+	max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
+}
+{% endfor %}
+{% endif %}

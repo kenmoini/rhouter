@@ -1,0 +1,11 @@
+---
+########################################################################################
+### DHCP - dhcpd
+
+dhcp_dhcpd_default_lease_time: 600
+dhcp_dhcpd_max_lease_time: 7200
+dhcp_dhcpd_authoritative: true
+
+# Possible log facilities include auth, authpriv, cron, daemon, ftp, kern, lpr, mail, mark, news, ntp, security, syslog, user, uucp, and local0 through local7
+dhcp_dhcpd_log_facility: daemon
+dhcp_dhcpd_static_lease_time: 84600

@@ -4,6 +4,13 @@
     name: dhcp
     state: latest
 
+- name: Template out dhpcd config file
+  template:
+    src: dhcpd.conf.j2
+    dest: /etc/dhcp/dhcpd.conf
+    backup: yes
+  notify: restart dhcpd
+
 - name: Start and enable dhcpd
   service:
     name: dhcpd

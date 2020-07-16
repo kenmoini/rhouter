@@ -50,8 +50,8 @@ wan_cidr: 30
 wan_gateway: 1.2.3.1
 wan_dns: manual #auto or manual
 wan_dns_servers:
- - 1.1.1.1
- - 8.8.8.8
+  - 1.1.1.1
+  - 8.8.8.8
 
 lan_network_type: static #dhcp, disabled, or static
 lan_ip_address: 10.69.42.1
@@ -60,7 +60,7 @@ lan_cidr: 24
 lan_gateway: 10.69.42.1
 lan_dns: manual #auto or manual
 lan_dns_servers:
- - 10.69.42.1
+  - 10.69.42.1
 
 opt1_network_type: static #dhcp, disabled, or static
 opt1_ip_address: 10.69.44.1
@@ -69,7 +69,7 @@ opt1_cidr: 24
 opt1_gateway: 10.69.42.1
 opt1_dns: manual #auto or manual
 opt1_dns_servers:
- - 10.69.42.1
+  - 10.69.42.1
 
 opt2_network_type: static #dhcp, disabled, or static
 opt2_network_block: 10.69.46.0
@@ -78,10 +78,47 @@ opt2_cidr: 24
 opt2_gateway: 10.69.42.1
 opt2_dns: manual #auto or manual
 opt2_dns_servers:
- - 10.69.42.1
+  - 10.69.42.1
 
 ########################################################################################
 ### DHCP - dhcpd
+
+dhcp_networks:
+  - name: "{{ lan_interface }}-main"
+    serviced: yes
+    network: "{{ lan_network_block }}/{{ lan_cidr }}"
+    gateway: "{{ lan_gateway }}"
+    range_start: 100
+    range_end: 200
+    dns_servers: "{{ lan_dns_servers }}"
+    domain_name: "lan.kemo.labs"
+
+  - name: "{{ opt1_interface }}-rhvmw"
+    serviced: no
+    network: "{{ opt1_network_block }}/{{ opt1_cidr }}"
+
+  - name: "{{ opt2_interface }}-mgmt"
+    serviced: yes
+    network: "{{ opt2_network_block }}/{{ opt2_cidr }}"
+    gateway: "{{ opt2_gateway }}"
+    range_start: 100
+    range_end: 200
+    dns_servers: "{{ opt2_dns_servers }}"
+    domain_name: "mgmt.kemo.labs"
+
+dhcp_static_reservations:
+  - name: hp-switch
+    ip: "10.69.42.2"
+    mac: "d0:7e:28:04:c2:70"
+  - name: pi-hole
+    ip: "10.69.42.4"
+    mac: "b8:27:eb:5d:74:e9"
+  - name: orbi-base
+    ip: "10.69.42.5"
+    mac: "3c:37:86:cc:47:a3"
+  - name: orbi-satellite
+    ip: "10.69.42.6"
+    mac: "3c:37:86:cb:c0:9f"
 
 ########################################################################################
 ### DNS - BIND

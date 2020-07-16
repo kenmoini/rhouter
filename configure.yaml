@@ -2,9 +2,16 @@
 - name: Turn a RHEL machine into a RHouter
   hosts: all
 
+  handlers:
+    - name: Pull in Handlers
+      include_handlers: handlers/main.yaml
+
   tasks:
+    - name: Pull in default variables
+      include_vars: defaults/main.yaml
+
     - name: Pull in variables
-      include_vars: main.yaml
+      include_vars: vars/main.yaml
 
     - name: Set Hostname
       include_tasks: tasks/rhel_set_hostname.yaml
@@ -33,4 +40,3 @@
     - name: Set up DHCP - dhcpd
       include_tasks: tasks/rhel_configure_dhcp_dhcpd.yaml
       when: configure_dhcp_dhcpd|bool
-
