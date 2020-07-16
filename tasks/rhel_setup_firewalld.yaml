@@ -75,6 +75,7 @@
     masquerade: yes
     state: enabled
     permanent: yes
+    immediate: yes
     zone: extWAN
   when: enable_wan_interface|bool and configure_wan_interface|bool and configure_routing|bool
 
@@ -82,6 +83,7 @@
   firewalld:
     zone: extWAN
     permanent: yes
+    immediate: yes
     state: disabled
     service: ssh
   when: not enable_ssh_on_wan|bool
@@ -90,6 +92,7 @@
   firewalld:
     zone: extWAN
     permanent: yes
+    immediate: yes
     state: enabled
     service: ssh
   when: enable_ssh_on_wan|bool
@@ -99,6 +102,7 @@
     zone: intLAN
     service: dns
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_lan_interface|bool and configure_lan_interface|bool and configure_dns_bind|bool
 
@@ -107,6 +111,7 @@
     zone: intOPT1
     service: dns
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_dns_bind|bool
 
@@ -115,6 +120,7 @@
     zone: intOPT2
     service: dns
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_dns_bind|bool
 
@@ -123,6 +129,7 @@
     zone: intLAN
     service: dhcp
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_lan_interface|bool and configure_lan_interface|bool and configure_dhcp_dhcpd|bool
 
@@ -131,6 +138,7 @@
     zone: intOPT1
     service: dhcp
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_dhcp_dhcpd|bool
 
@@ -139,6 +147,7 @@
     zone: intOPT2
     service: dhcp
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_dhcp_dhcpd|bool
 
@@ -147,6 +156,7 @@
     zone: intLAN
     service: ntp
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_lan_interface|bool and configure_lan_interface|bool and configure_ntp_chrony|bool
 
@@ -155,6 +165,7 @@
     zone: intOPT1
     service: ntp
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_ntp_chrony|bool
 
@@ -163,5 +174,11 @@
     zone: intOPT2
     service: ntp
     permanent: yes
+    immediate: yes
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_ntp_chrony|bool
+
+- name: Reload firewalld for good measure
+  service:
+    name: firewalld
+    state: restarted
