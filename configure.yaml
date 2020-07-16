@@ -23,27 +23,44 @@
     - name: Set Hostname
       include_tasks: tasks/rhel_set_hostname.yaml
       when: set_hostname|bool
+      tags:
+        - setHostname
 
     - name: Perform System Update
       include_tasks: tasks/rhel_yum_update.yaml
       when: update_system|bool
+      tags:
+        - systemUpdate
 
     - name: Setup base routing
       include_tasks: tasks/rhel_base_routing.yaml
       when: configure_routing|bool
+      tags:
+        - configureRouting
 
     - name: Configure system interfaces
       include_tasks: tasks/rhel_configure_interfaces.yaml
       when: configure_interfaces|bool
+      tags:
+        - configureInterfaces
 
     - name: Setup Firewalld basics
       include_tasks: tasks/rhel_setup_firewalld.yaml
       when: configure_firewall_firewalld|bool
+      tags:
+        - configureFirewall
+        - configureFirewalld
 
     - name: Configure fail2ban
       include_tasks: tasks/rhel_configure_firewall_fail2ban.yaml
       when: configure_firewall_fail2ban|bool
+      tags:
+        - configureFirewall
+        - configureFail2ban
 
     - name: Set up DHCP - dhcpd
       include_tasks: tasks/rhel_configure_dhcp_dhcpd.yaml
       when: configure_dhcp_dhcpd|bool
+      tags:
+        - configureDHCP
+        - configureDHCPd
