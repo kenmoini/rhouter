@@ -41,42 +41,6 @@
     permanent: yes
   when: enable_opt2_interface|bool and configure_opt2_interface|bool
 
-- name: Set WAN zone
-  firewalld:
-    zone: extWAN
-    interface: "{{ wan_interface }}"
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when: enable_wan_interface|bool and configure_wan_interface|bool
-
-- name: Set LAN zone
-  firewalld:
-    zone: intLAN
-    interface: "{{ lan_interface }}"
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when: enable_lan_interface|bool and configure_lan_interface|bool
-
-- name: Set OPT1 zone
-  firewalld:
-    zone: intOPT1
-    interface: "{{ opt1_interface }}"
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when: enable_opt1_interface|bool and configure_opt1_interface|bool
-
-- name: Set OPT2 zone
-  firewalld:
-    zone: intOPT2
-    interface: "{{ opt2_interface }}"
-    permanent: yes
-    immediate: yes
-    state: enabled
-  when: enable_opt2_interface|bool and configure_opt2_interface|bool
-
 - name: Enable masquerading on WAN
   firewalld:
     masquerade: "true"
@@ -216,3 +180,39 @@
   service:
     name: firewalld
     state: restarted
+
+- name: Set WAN zone
+  firewalld:
+    zone: extWAN
+    interface: "{{ wan_interface }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_wan_interface|bool and configure_wan_interface|bool
+
+- name: Set LAN zone
+  firewalld:
+    zone: intLAN
+    interface: "{{ lan_interface }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool
+
+- name: Set OPT1 zone
+  firewalld:
+    zone: intOPT1
+    interface: "{{ opt1_interface }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool
+
+- name: Set OPT2 zone
+  firewalld:
+    zone: intOPT2
+    interface: "{{ opt2_interface }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool
