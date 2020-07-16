@@ -4,7 +4,7 @@
 
   handlers:
     - name: Pull in Handlers
-      include_handlers: handlers/main.yaml
+      include_tasks: handlers/main.yaml
 
   tasks:
     - name: Pull in default variables
