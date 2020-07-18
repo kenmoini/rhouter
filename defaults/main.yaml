@@ -37,3 +37,37 @@ cockpit_packages:
   - cockpit-composer
   - cockpit-packagekit
   - cockpit-shell
+  - cockpit-pcp
+  - pcp-system-tools
+
+########################################################################################
+### System - Configure and Secure SSHd
+
+sshd_port: 22
+sshd_facist_logging: no
+sshd_logging_use_dns: no
+
+# sshd_log_level: QUIET, FATAL, ERROR, INFO, VERBOSE, DEBUG, DEBUG1, DEBUG2 or DEBUG3
+sshd_log_level: INFO
+# sshd_syslog_facility: DAEMON, USER, AUTH, AUTHPRIV, LOCAL0, LOCAL1, LOCAL2, LOCAL3, LOCAL4, LOCAL5, LOCAL6 or LOCAL7
+sshd_syslog_facility: AUTHPRIV
+
+sshd_login_grace_time: 15s
+sshd_max_auth_tries: 3
+sshd_max_sessions: 10
+
+sshd_permit_root_login: no
+sshd_pubkey_authentication: yes
+sshd_permit_empty_passwords: no
+sshd_password_auth: yes
+
+sshd_allow_agent_forwarding: yes
+sshd_allow_tcp_forwarding: yes
+sshd_x11_forwarding: yes
+sshd_challenge_response_authentication: no
+
+sshd_kerberos_authentication: no
+sshd_kerberos_or_local_passwd: yes
+sshd_kerberos_ticket_cleanup: yes
+sshd_kerberos_get_afs_token: no
+sshd_kerberos_use_kuser_ok: yes

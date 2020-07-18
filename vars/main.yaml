@@ -16,6 +16,7 @@ configure_firewall_fail2ban: true
 configure_upnp_upnpd: true
 configure_cockpit: true
 configure_containers: true
+configure_sshd: true
 
 ########################################################################################
 ### General Settings
@@ -155,3 +156,15 @@ enable_firewalld: true
 epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
 epel_repo_gpg_key_url: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
 epel_repofile_path: "/etc/yum.repos.d/epel.repo"
+
+########################################################################################
+### System - Cockpit
+
+cockpit_enable_pmcd: true
+
+########################################################################################
+### System - Containers
+
+containers_log_in_to_rh_registry: yes
+containers_log_in_username: changeMe
+containers_log_in_password_or_token: changeMeToo

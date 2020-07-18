@@ -17,6 +17,27 @@
     - installPackages
     - installCockpit
 
+- name: Enable and start pmcd
+  service:
+    name: pmcd
+    state: started
+    enabled: yes
+  when: cockpit_enable_pmcd|bool
+
+- name: Enable and start pmlogger
+  service:
+    name: pmlogger
+    state: started
+    enabled: yes
+  when: cockpit_enable_pmcd|bool
+
+- name: Enable and start pmproxy
+  service:
+    name: pmproxy
+    state: started
+    enabled: yes
+  when: cockpit_enable_pmcd|bool
+
 - name: Enable and start socket
   systemd:
     name: cockpit.socket

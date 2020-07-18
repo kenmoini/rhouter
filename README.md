@@ -13,6 +13,9 @@ Using a few variables, you can easily switch on/off different services such as:
 - **DNS Forwarding & Resolving** - BIND
 - **mDNS** - Avahi
 - **NTP** - chrony
+- **System** - Cockpit Dashboard
+- **System** - Containers with Buildah, Podman, and Skopeo
+- **System** - SSHd Configuration and Security
 - [Always-a-WIP] **Firewall** - firewalld
 - [WIP] **Firewall** - fail2ban (uses EPEL, not supported)
 - [WIP] **VPN** - OpenVPN
@@ -20,8 +23,6 @@ Using a few variables, you can easily switch on/off different services such as:
 - [WIP] **Monitoring** - ntop/ntopng
 - [WIP] **Monitoring** - Snort
 - [WIP] **Proxy** - Squid
-- [WIP] **System** - Containers with Buildah, Podman, and Skopeo
-- [WIP] **System** - Cockpit Dashboard
 
 `WIP? That means Work In Progress`
 
@@ -50,9 +51,11 @@ cd rhouter
 
 ./rhel7_init.sh
 
+cp extra_vars.yaml.example extra_vars.yaml
+
 ## Modify variable files as desired, then...
 
-ansible-playbook -i inventory configure.yaml
+ansible-playbook -i inventory -e @extra_vars.yaml configure.yaml
 ```
 
 ## Tips

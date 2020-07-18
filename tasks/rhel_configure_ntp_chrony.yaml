@@ -11,6 +11,7 @@
   template:
     src: chrony.conf.j2
     dest: /etc/chrony.conf
+    backup: yes
   notify: restart chronyd
 
 - name: Start and enable chronyd

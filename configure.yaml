@@ -23,6 +23,11 @@
         name: chronyd
         state: restarted
 
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted
+
   tasks:
     - name: Pull in default variables
       include_vars: defaults/main.yaml
@@ -107,3 +112,9 @@
       tags:
         - configureNTP
         - configureChronyd
+
+    - name: Configure SSHd
+      include_tasks: tasks/rhel_configure_sshd.yaml
+      when: configure_sshd|bool
+      tags:
+        - configureSSHd

@@ -1,0 +1,7 @@
+---
+- name: Template over configuration file
+  template:
+    src: sshd_config.h2
+    dest: /etc/ssh/sshd_config
+    backup: yes
+  notify: restart sshd
