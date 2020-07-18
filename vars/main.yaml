@@ -145,12 +145,6 @@ dhcp_static_reservations:
 ### NTP - Chrony
 
 ########################################################################################
-### System - Cockpit Dashboard
-
-cockpit_packages:
-  - cockpit-dashboard
-
-########################################################################################
 ### Firewalld - Firewalld
 
 enable_firewalld: true

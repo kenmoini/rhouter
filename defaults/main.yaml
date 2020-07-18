@@ -19,10 +19,21 @@ enable_ssh_on_opt1: true
 enable_ssh_on_opt2: true
 
 ########################################################################################
-### Containers
+### System - Containers
 rhel7_container_packages:
   - podman
   - slirp4netns
   - runc
   - buildah
   - skopeo
+
+########################################################################################
+### System - Cockpit Dashboard
+
+cockpit_packages:
+  - cockpit-dashboard
+  - cockpit
+  - subscription-manager-cockpit
+  - cockpit-composer
+  - cockpit-packagekit
+  - cockpit-shell

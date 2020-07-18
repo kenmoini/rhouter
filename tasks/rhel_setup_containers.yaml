@@ -22,3 +22,6 @@
     path: /etc/sysctl.d/userns.conf
     line: user.max_user_namespaces=28633
     create: yes
+
+- name: Apply kernel modifications
+  shell: sysctl -p /etc/sysctl.d/userns.conf
