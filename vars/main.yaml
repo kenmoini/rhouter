@@ -14,6 +14,8 @@ configure_ntp_chrony: true
 configure_firewall_firewalld: true
 configure_firewall_fail2ban: true
 configure_upnp_upnpd: true
+configure_cockpit: true
+configure_containers: true
 
 ########################################################################################
 ### General Settings
@@ -143,7 +145,15 @@ dhcp_static_reservations:
 ### NTP - Chrony
 
 ########################################################################################
+### System - Cockpit Dashboard
+
+cockpit_packages:
+  - cockpit-dashboard
+
+########################################################################################
 ### Firewalld - Firewalld
+
+enable_firewalld: true
 
 ########################################################################################
 ### Firewalld - fail2ban

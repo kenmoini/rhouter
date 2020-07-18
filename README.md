@@ -17,6 +17,11 @@ Using a few variables, you can easily switch on/off different services such as:
 - [WIP] **Firewall** - fail2ban (uses EPEL, not supported)
 - [WIP] **VPN** - OpenVPN
 - [WIP] **UPnP** - upnpd
+- [WIP] **Monitoring** - ntop/ntopng
+- [WIP] **Monitoring** - Snort
+- [WIP] **Proxy** - Squid
+- [WIP] **System** - Containers with Buildah, Podman, and Skopeo
+- [WIP] **System** - Cockpit Dashboard
 
 `WIP? That means Work In Progress`
 

@@ -1,0 +1,18 @@
+---
+- name: RHEL 7 - Enable needed repos
+  rhsm_repository:
+    name: rhel-7-server-extras-rpms
+    state: enabled
+  when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int == 7
+
+- name: Install needed container packages
+  yum:
+    name: "{{ rhel7_container_packages }}"
+    state: latest
+  when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int == 7
+
+- name: Increase user namespaces in hernel
+  lineinfile:
+    path: /etc/sysctl.d/userns.conf
+    line: user.max_user_namespaces=28633
+    create: yes

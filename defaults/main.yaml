@@ -17,3 +17,12 @@ enable_ssh_on_wan: false
 enable_ssh_on_lan: true
 enable_ssh_on_opt1: true
 enable_ssh_on_opt2: true
+
+########################################################################################
+### Containers
+rhel7_container_packages:
+  - podman
+  - slirp4netns
+  - runc
+  - buildah
+  - skopeo

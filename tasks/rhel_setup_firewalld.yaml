@@ -203,6 +203,33 @@
     state: enabled
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_ntp_chrony|bool
 
+- name: Allow Cockpit on LAN
+  firewalld:
+    zone: intLAN
+    port: 9090/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool and configure_cockpit|bool
+
+- name: Allow Cockpit on OPT1
+  firewalld:
+    zone: intOPT1
+    port: 9090/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and configure_cockpit|bool
+
+- name: Allow Cockpit on OPT2
+  firewalld:
+    zone: intOPT2
+    port: 9090/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and configure_cockpit|bool
+
 - name: Set WAN zone
   firewalld:
     zone: extWAN

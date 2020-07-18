@@ -42,12 +42,6 @@
       tags:
         - systemUpdate
 
-    - name: Setup base routing
-      include_tasks: tasks/rhel_base_routing.yaml
-      when: configure_routing|bool
-      tags:
-        - configureRouting
-
     - name: Configure system interfaces
       include_tasks: tasks/rhel_configure_interfaces.yaml
       when: configure_interfaces|bool
@@ -60,6 +54,24 @@
       tags:
         - configureFirewall
         - configureFirewalld
+
+    - name: Setup base routing
+      include_tasks: tasks/rhel_base_routing.yaml
+      when: configure_routing|bool
+      tags:
+        - configureRouting
+
+    - name: Setup Cockpit Dashboard
+      include_tasks: tasks/rhel_setup_cockpit.yaml
+      when: configure_cockpit|bool
+      tags:
+        - configureCockpit
+
+    - name: Setup Containers
+      include_tasks: tasks/rhel_setup_containers.yaml
+      when: configure_containers|bool
+      tags:
+        - configureContainers
 
     - name: Configure fail2ban
       include_tasks: tasks/rhel_configure_firewall_fail2ban.yaml
