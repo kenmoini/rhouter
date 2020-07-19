@@ -33,8 +33,9 @@
 ## Root CA & General PKI
 
 - name: ROOT CA Create PKI Directories
-  shell: "mkdir -p {{ pki_certificate_authority_root_path }}/{certreqs,certs,crl,newcerts,private,intermediates} && chmod 700 {{ pki_certificate_authority_root_path }}/private"
-  warn: false
+  shell:
+    cmd: "mkdir -p {{ pki_certificate_authority_root_path }}/{certreqs,certs,crl,newcerts,private,intermediates} && chmod 700 {{ pki_certificate_authority_root_path }}/private"
+    warn: false
 
 - name: ROOT CA Create initial crlnum index
   shell:
@@ -101,8 +102,9 @@
 ## OpenVPN Server Intermediate CA
 
 - name: OpenVPN CA Create PKI Directories
-  shell: "mkdir -p {{ openvpn_certificate_root_path }}/{certreqs,certs,crl,newcerts,private} && chmod 700 {{ openvpn_certificate_root_path }}/private"
-  warn: false
+  shell:
+    cmd: "mkdir -p {{ openvpn_certificate_root_path }}/{certreqs,certs,crl,newcerts,private} && chmod 700 {{ openvpn_certificate_root_path }}/private"
+    warn: false
 
 - name: OpenVPN CA Create initial crlnum index
   shell:
