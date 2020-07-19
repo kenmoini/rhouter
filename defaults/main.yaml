@@ -39,6 +39,7 @@ cockpit_packages:
   - cockpit-shell
   - cockpit-pcp
   - pcp-system-tools
+  - git
 
 ########################################################################################
 ### System - Configure and Secure SSHd

@@ -32,3 +32,21 @@
   no_log: true
   tags:
     - podmanAuthToRHRegistry
+
+- name: Pull in the cockpit-podman module
+  git:
+    repo: "https://github.com/cockpit-project/cockpit-podman.git"
+    dest: /usr/share/cockpit/cockpit-podman
+    update: yes
+  when: cockpit_get_podman_module|bool
+
+- name: Creates a cron file under /etc/cron.d for cockpit-podman sync
+  cron:
+    name: cockpitPodmanSync
+    day: "*/2"
+    minute: "0"
+    hour: "0"
+    user: root
+    job: "cd /usr/share/cockpit/cockpit-podman && git pull"
+    cron_file: ansible_cockpitPodmanSync
+  when: cockpit_get_podman_module|bool and cockpit_cron_git_pull_podman_module|bool
