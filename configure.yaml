@@ -30,8 +30,8 @@
         state: restarted
 
     - name: restart openvpn
-      service:
-        name: openvpn
+      systemd:
+        name: openvpn@server.service
         state: restarted
 
     - name: restart nginx

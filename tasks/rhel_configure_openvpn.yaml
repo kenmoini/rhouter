@@ -225,9 +225,10 @@
     backup: yes
 
 - name: Start OpenVPN Server
-  service:
-    name: openvpn
+  systemd:
+    name: openvpn@server.service
     state: started
+    enabled: yes
 
 - name: Install nginx
   yum:
