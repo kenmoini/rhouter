@@ -154,19 +154,19 @@
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
 
-- name: OpenVPN CA Create CA CRL
-  shell:
-    cmd: "cd {{ openvpn_certificate_root_path }} && openssl ca -gencrl -out crl/intermed-ca.crl"
-    creates: "{{ openvpn_certificate_root_path }}/crl/intermed-ca.crl"
-  environment:
-    OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
-
 - name: OpenVPN CA Copy Signed Certificate to Intermediate Directory
   copy:
     backup: yes
     remote_src: yes
     src: "{{ pki_certificate_authority_root_path }}/certs/intermed-ca.cert.pem"
     dest: "{{ openvpn_certificate_root_path }}/intermed-ca.cert.pem"
+
+- name: OpenVPN CA Create CA CRL
+  shell:
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl ca -gencrl -out crl/intermed-ca.crl"
+    creates: "{{ openvpn_certificate_root_path }}/crl/intermed-ca.crl"
+  environment:
+    OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
 # Don't think we actually need to do this since we have the Root CA installed...
 #- name: OpenVPN CA Install Root CA as trusted CA
 #  copy:
