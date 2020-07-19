@@ -229,6 +229,7 @@ openvpn_root_ca_common_name: Kemo Labs OpenVPN Intermediate Certificate Authorit
 openvpn_server_cert_expiration: "+3years+1day"
 openvpn_dh_param_size: 2048
 
+openvpn_listen_on: "{{ vars['ansible_'~wan_interface].ipv4.address }}"
 openvpn_port: 1194
 openvpn_proto: udp
 openvpn_dev: tun
@@ -247,6 +248,7 @@ openvpn_server_dns_servers: "{{ lan_dns_servers }}"
 openvpn_server_client_to_client: yes
 openvpn_server_duplicate_cn: no
 openvpn_server_keepalive: 10
+openvpn_server_enable_compression: yes
 openvpn_server_max_keepalive: 120
 openvpn_server_max_clients: 20
 openvpn_server_user: openvpn

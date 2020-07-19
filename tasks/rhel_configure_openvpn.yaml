@@ -240,10 +240,52 @@
     - installNginx
 
 - name: Create nginx site directory
-  shell: "mkdir -p /var/www/root-ca/{certs,crl}"
+  shell: "mkdir -p /var/www/{{ pki_certificate_authority_root_ca_slug }}/{certs,crl}"
+    warn: false
   when: deploy_ca_http_server|bool
-#- name: Set symlinks for nginx site
-#  shell: "ln -s {{ openvpn_certificate_root_path }}/"
-#  when: deploy_ca_http_server|bool
+
+- name: Create a symbolic link for the Root CA Certificate
+  file:
+    src: "{{ pki_certificate_authority_root_path }}/root-ca.cert.pem"
+    dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/certs/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.cert.pem"
+    owner: www-data
+    group: www-data
+    state: link
+  when: deploy_ca_http_server|bool
+    
+- name: Create a symbolic link for the Intermediate CA Certificate
+  file:
+    src: "{{ pki_certificate_authority_root_path }}/intermed-ca.cert.pem"
+    dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/certs/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.cert.pem"
+    owner: www-data
+    group: www-data
+    state: link
+  when: deploy_ca_http_server|bool
+
+- name: Create a symbolic link for the Root CA CRL
+  file:
+    src: "{{ pki_certificate_authority_root_path }}/crl/root-ca.crl"
+    dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/crl/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.crl"
+    owner: www-data
+    group: www-data
+    state: link
+  when: deploy_ca_http_server|bool
+
+- name: Create a symbolic link for the Intermediate CA CRL
+  file:
+    src: "{{ pki_certificate_authority_root_path }}/crl/intermed-ca.crl"
+    dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/crl/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.crl"
+    owner: www-data
+    group: www-data
+    state: link
+  when: deploy_ca_http_server|bool
+
+- name: Template over basic CA HTML Page
+  template:
+    src: pki-ca-public-webpage.html.j2
+    dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/index.html"
+    backup: yes
+  when: deploy_ca_http_server|bool
+
 
 #- name: Template over nginx config
