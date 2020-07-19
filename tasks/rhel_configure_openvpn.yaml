@@ -91,7 +91,7 @@
   copy:
     backup: yes
     dest: "/etc/pki/ca-trust/source/anchors/{{ system_domain }}.crt"
-    src: "{{ pki_certificate_authority_root_path }}/certs/root-ca.cert.pem"
+    src: "{{ pki_certificate_authority_root_path }}/root-ca.cert.pem"
     remote_src: yes
   notify: update-ca-trust
 
