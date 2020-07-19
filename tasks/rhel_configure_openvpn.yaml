@@ -274,7 +274,7 @@
 
 - name: Create a symbolic link for the Intermediate CA CRL
   file:
-    src: "{{ pki_certificate_authority_root_path }}/crl/intermed-ca.crl"
+    src: "{{ openvpn_certificate_root_path }}/crl/intermed-ca.crl"
     dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/crl/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.crl"
     owner: nginx
     group: nginx
