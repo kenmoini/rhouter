@@ -75,8 +75,8 @@
 
 - name: ROOT CA Create CA Certificate
   shell:
-    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl ca -selfsign -batch -in certreqs/root-ca.req.pem -out certs/root-ca.cert.pem -extensions root-ca_ext -startdate `date +%y%m%d000000Z -u -d -1day` -enddate `date +%y%m%d000000Z -u -d {{ pki_certificate_authority_root_ca_expiration }}`"
-    creates: "{{ pki_certificate_authority_root_path }}/certs/root-ca.cert.pem"
+    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl ca -selfsign -batch -in certreqs/root-ca.req.pem -out root-ca.cert.pem -extensions root-ca_ext -startdate `date +%y%m%d000000Z -u -d -1day` -enddate `date +%y%m%d000000Z -u -d {{ pki_certificate_authority_root_ca_expiration }}`"
+    creates: "{{ pki_certificate_authority_root_path }}/root-ca.cert.pem"
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
 
@@ -121,9 +121,9 @@
     dest: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
     backup: yes
 
-- name: OpenVPN CA Generate Certificate Authority Private Key and CSR
+- name: OpenVPN CA Generate Certificate Authority Private Key
   shell:
-    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -nodes -out intermed-ca.req.pem"
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -nodes -out private/intermed-ca.key.pem"
     creates: "{{ openvpn_certificate_root_path }}/private/intermed-ca.key.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
@@ -131,10 +131,17 @@
 - name: OpenVPN CA Protect CA Root Key
   shell: "chmod 400 {{ openvpn_certificate_root_path }}/private/intermed-ca.key.pem"
 
+- name: OpenVPN CA Generate Certificate Authority CSR
+  shell:
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -out certreqs/intermed-ca.req.pem -key private/intermed-ca.key.pem"
+    creates: "{{ openvpn_certificate_root_path }}/private/intermed-ca.key.pem"
+  environment:
+    OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
+
 - name: OpenVPN CA Sign Intermediate CA Certificate with Root CA lol
   shell:
     cmd: "cd {{ pki_certificate_authority_root_path }} && openssl ca -batch -in {{ openvpn_certificate_root_path }}/certreqs/intermed-ca.req.pem -out intermed-ca.cert.pem -extensions intermed-ca_ext -startdate `date +%y%m%d000000Z -u -d -1day` -enddate `date +%y%m%d000000Z -u -d {{ openvpn_server_ca_expiration }}`"
-    creates: "{{ openvpn_certificate_root_path }}/certs/intermed-ca.cert.pem"
+    creates: "{{ pki_certificate_authority_root_path }}/certs/intermed-ca.cert.pem"
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
 
