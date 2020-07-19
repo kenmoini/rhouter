@@ -249,8 +249,8 @@
   file:
     src: "{{ pki_certificate_authority_root_path }}/root-ca.cert.pem"
     dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/certs/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.cert.pem"
-    owner: www-data
-    group: www-data
+    owner: nginx
+    group: nginx
     state: link
   when: deploy_ca_http_server|bool
 
@@ -258,8 +258,8 @@
   file:
     src: "{{ pki_certificate_authority_root_path }}/intermed-ca.cert.pem"
     dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/certs/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.cert.pem"
-    owner: www-data
-    group: www-data
+    owner: nginx
+    group: nginx
     state: link
   when: deploy_ca_http_server|bool
 
@@ -267,8 +267,8 @@
   file:
     src: "{{ pki_certificate_authority_root_path }}/crl/root-ca.crl"
     dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/crl/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.crl"
-    owner: www-data
-    group: www-data
+    owner: nginx
+    group: nginx
     state: link
   when: deploy_ca_http_server|bool
 
@@ -276,8 +276,8 @@
   file:
     src: "{{ pki_certificate_authority_root_path }}/crl/intermed-ca.crl"
     dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/crl/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.crl"
-    owner: www-data
-    group: www-data
+    owner: nginx
+    group: nginx
     state: link
   when: deploy_ca_http_server|bool
 
