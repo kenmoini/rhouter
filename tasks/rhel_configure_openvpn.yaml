@@ -287,5 +287,45 @@
     backup: yes
   when: deploy_ca_http_server|bool
 
+- name: Create nginx sites-available directory
+  file:
+    state: directory
+    path: /etc/nginx/sites-available
+  when: deploy_ca_http_server|bool
 
-#- name: Template over nginx config
+- name: Create nginx sites-enabled directory
+  file:
+    state: directory
+    path: /etc/nginx/sites-enabled
+  when: deploy_ca_http_server|bool
+
+- name: Template over nginx server config
+  template:
+    src: pki-ca-nginx-base.conf.j2
+    dest: "/etc/nginx/nginx.conf"
+    backup: yes
+  when: deploy_ca_http_server|bool
+  notify: restart nginx
+
+- name: Template over nginx site config
+  template:
+    src: pki-ca-nginx.conf.j2
+    dest: "/etc/nginx/sites-available/{{ pki_certificate_authority_root_ca_slug }}"
+    backup: yes
+  when: deploy_ca_http_server|bool
+  notify: restart nginx
+
+- name: Create symlink to enable site
+  file:
+    state: link
+    src: "/etc/nginx/sites-available/{{ pki_certificate_authority_root_ca_slug }}"
+    dest: "/etc/nginx/sites-enabled/{{ pki_certificate_authority_root_ca_slug }}"
+  when: deploy_ca_http_server|bool
+  notify: restart nginx
+
+- name: Start nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  when: deploy_ca_http_server|bool
