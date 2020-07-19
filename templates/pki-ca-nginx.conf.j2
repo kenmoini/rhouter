@@ -12,5 +12,5 @@ server {
     include                 /etc/nginx/server-defaults/*.conf;
 
     # Public Documents Root
-    root                    /var/www/{{ openvpn_server_ca_slug }};
+    root                    /var/www/{{ pki_certificate_authority_root_ca_slug }};
 }

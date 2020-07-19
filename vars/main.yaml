@@ -254,6 +254,7 @@ openvpn_server_max_clients: 20
 openvpn_server_user: openvpn
 openvpn_server_group: openvpn
 openvpn_server_verbosity: 4
+openvpn_enable_username_auth: yes
 
 # nginx server for ca certs and crl
 deploy_ca_http_server: true
@@ -262,7 +263,7 @@ ca_http_server_port: 80
 ca_https_server_port: 443
 ## For the FQDNs, the first will be used in OpenSSL config, ideally externally accessible
 ca_http_server_fqdns:
-  - "ca.kemo.networks"
+  - "ca.kemo.network"
   - "ca.kemo.lab"
 
 ########################################################################################
