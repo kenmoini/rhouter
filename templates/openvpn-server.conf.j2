@@ -281,7 +281,7 @@ persist-tun
 {% if openvpn_enable_username_auth|bool %}
 # Username and Password authentication.
 verify-client-cert optional
-plugin /usr/lib/openvpn/openvpn-auth-pam.so login
+plugin /usr/lib64/openvpn/plugins/openvpn-plugin-auth-pam.so login
 #auth-user-pass-verify
 {% endif %}
 
