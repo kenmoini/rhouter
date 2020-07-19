@@ -21,6 +21,14 @@
     state: started
     enabled: yes
   when: routing_enable_ipv4|bool
+
+- name: Template out dhpcd6 config file
+  template:
+    src: dhcpd6.conf.j2
+    dest: /etc/dhcp/dhcpd6.conf
+    backup: yes
+  when: routing_enable_ipv6|bool
+#  notify: restart dhcpd6
 #- name: Start and enable dhcpd6
 #  service:
 #    name: dhcpd
