@@ -56,8 +56,17 @@
     permanent: yes
     immediate: yes
     state: enabled
-    service: opevpn
+    service: openvpn
   when: enable_wan_interface|bool and configure_wan_interface|bool and configure_openvpn|bool
+
+- name: Disable OpenVPN on WAN
+  firewalld:
+    zone: extWAN
+    permanent: yes
+    immediate: yes
+    state: disabled
+    service: openvpn
+  when: enable_wan_interface|bool and configure_wan_interface|bool and not configure_openvpn|bool
 
 - name: Disable SSH on WAN
   firewalld:
