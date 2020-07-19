@@ -56,9 +56,9 @@
     dest: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
     backup: yes
 
-- name: ROOT CA Generate Certificate Authority Private Key and CSR
+- name: ROOT CA Generate Certificate Authority Private Key
   shell:
-    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl req -new -batch -nodes -out root-ca.req.pem"
+    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl req -new -batch -nodes -out root-ca.key.pem"
     creates: "{{ pki_certificate_authority_root_path }}/private/root-ca.key.pem"
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
@@ -66,9 +66,16 @@
 - name: ROOT CA Protect CA Root Key
   shell: "chmod 400 {{ pki_certificate_authority_root_path }}/private/root-ca.key.pem"
 
+- name: ROOT CA Generate Certificate Authority CSR
+  shell:
+    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl req -new -batch -out root-ca.req.pem -key private/root-ca.key.pem"
+    creates: "{{ pki_certificate_authority_root_path }}/certreqs/root-ca.req.pem"
+  environment:
+    OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
+
 - name: ROOT CA Create CA Certificate
   shell:
-    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl ca -selfsign -batch -in root-ca.req.pem -out root-ca.cert.pem -extensions root-ca_ext -startdate `date +%y%m%d000000Z -u -d -1day` -enddate `date +%y%m%d000000Z -u -d {{ pki_certificate_authority_root_ca_expiration }}`"
+    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl ca -selfsign -batch -in certreqs/root-ca.req.pem -out root-ca.cert.pem -extensions root-ca_ext -startdate `date +%y%m%d000000Z -u -d -1day` -enddate `date +%y%m%d000000Z -u -d {{ pki_certificate_authority_root_ca_expiration }}`"
     creates: "{{ pki_certificate_authority_root_path }}/root-ca.cert.pem"
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
