@@ -137,17 +137,17 @@ issuerAltName           = issuer:copy
 #
 # Certificate Authorities Alternative Names
 [ subject_alt_name ]
-URI                     = http{{ 's' if openvpn_deploy_ca_http_server_secure|bool else '' }}://{{ openvpn_server_ca_slug }}/
+URI                     = http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ openvpn_server_ca_slug }}/
 email                   = certmaster@{{ openvpn_server_ca_slug }}
 
 #
 # Certificate download addresses for the intermediate CA
 [ auth_info_access ]
-caIssuers;URI           = http{{ 's' if openvpn_deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}/certs/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.cert.pem
+caIssuers;URI           = http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}:{{ ca_http_server_port if deploy_ca_http_server_secure|bool else ca_https_server_port }}/certs/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.cert.pem
 
 #
 # CRL Download address for the intermediate CA
 [ crl_dist ]
-fullname                = URI:http{{ 's' if openvpn_deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}/crl/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.crl
+fullname                = URI:http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}:{{ ca_http_server_port if deploy_ca_http_server_secure|bool else ca_https_server_port }}/crl/{{ openvpn_server_ca_slug }}_Intermediate_Certification_Authority.crl
 
 # EOF
