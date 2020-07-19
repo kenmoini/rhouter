@@ -34,7 +34,7 @@
 
 - name: ROOT CA Create PKI Directories
   shell:
-    cmd: "mkdir -p {{ pki_certificate_authority_root_path }}/{certreqs,certs,crl,newcerts,private,intermediates} && chmod 700 {{ pki_certificate_authority_root_path }}/private"
+    cmd: "mkdir -p {{ pki_certificate_authority_root_path }}/{certreqs,certs,crl,newcerts,private,intermed-ca} && chmod 700 {{ pki_certificate_authority_root_path }}/private"
     warn: false
 
 - name: ROOT CA Create initial crlnum index
