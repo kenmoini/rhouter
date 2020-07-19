@@ -58,7 +58,7 @@
 
 - name: ROOT CA Generate Certificate Authority Private Key and CSR
   shell:
-    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl req -new -batch -out root-ca.req.pem"
+    cmd: "cd {{ pki_certificate_authority_root_path }} && openssl req -new -batch -nodes -out root-ca.req.pem"
     creates: "{{ pki_certificate_authority_root_path }}/private/root-ca.key.pem"
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
@@ -116,7 +116,7 @@
 
 - name: OpenVPN CA Generate Certificate Authority Private Key and CSR
   shell:
-    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -out intermed-ca.req.pem"
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -nodes -out intermed-ca.req.pem"
     creates: "{{ openvpn_certificate_root_path }}/private/intermed-ca.key.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
@@ -164,7 +164,7 @@
 
 - name: OpenVPN Server Generate Server Certificate Key and CSR
   shell:
-    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -out openvpn-server.req.pem"
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -nodes -out openvpn-server.req.pem"
     creates: "{{ openvpn_certificate_root_path }}/private/openvpn-server.key.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
