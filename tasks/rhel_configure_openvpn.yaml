@@ -134,7 +134,7 @@
 - name: OpenVPN CA Generate Certificate Authority CSR
   shell:
     cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -out certreqs/intermed-ca.req.pem -key private/intermed-ca.key.pem"
-    creates: "{{ openvpn_certificate_root_path }}/private/intermed-ca.key.pem"
+    creates: "{{ openvpn_certificate_root_path }}/certreqs/intermed-ca.req.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
 
