@@ -19,7 +19,8 @@ Using a few variables, you can easily switch on/off different services such as:
 - [WIP] **DHCP** - dhcpd6
 - [Always-a-WIP] **Firewall** - firewalld
 - [WIP] **Firewall** - fail2ban (uses EPEL, not supported)
-- [WIP] **VPN** - OpenVPN
+- [WIP] **VPN** - OpenVPN (uses EPEL, not supported by Red Hat)
+- [WIP] **VPN** - Wireguard (uses EPEL and EL Repo, not supported by Red Hat)
 - [WIP] **UPnP** - upnpd
 - [WIP] **Monitoring** - ntop/ntopng
 - [WIP] **Monitoring** - Snort
@@ -93,6 +94,7 @@ Some things take time and can be skipped if you already know the state of the sy
     2. setTimezone
     3. setSystemToNTPSync
 13. configureSSHd
+14. configureVPN && configureOpenVPN
 
 ### Disable Meltdown/Spectre Mitigations
 

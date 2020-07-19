@@ -22,7 +22,7 @@ ListenAddress {{ wan_ip_address }}
 {% if enable_ssh_on_lan|bool %}
 ListenAddress {{ lan_ip_address }}
 {% endif %}
-{% if enable_ssh_on_op1|bool %}
+{% if enable_ssh_on_opt1|bool %}
 ListenAddress {{ opt1_ip_address }}
 {% endif %}
 {% if enable_ssh_on_opt2|bool %}

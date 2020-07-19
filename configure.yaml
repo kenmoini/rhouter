@@ -29,6 +29,19 @@
         name: sshd
         state: restarted
 
+    - name: restart openvpn
+      service:
+        name: openvpn
+        state: restarted
+
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: update-ca-trust
+      shell: /bin/update-ca-trust
+
   tasks:
     - name: Pull in default variables
       include_vars: defaults/main.yaml
@@ -119,3 +132,10 @@
       when: configure_sshd|bool
       tags:
         - configureSSHd
+
+    - name: Set up VPN - OpenVPN
+      include_tasks: tasks/rhel_configure_openvpn.yaml
+      when: configure_openvpn|bool
+      tags:
+        - configureVPN
+        - configureOpenVPN

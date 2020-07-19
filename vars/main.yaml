@@ -17,6 +17,7 @@ configure_upnp_upnpd: true
 configure_cockpit: true
 configure_containers: true
 configure_sshd: true
+configure_openvpn: true
 
 ########################################################################################
 ### General Settings
@@ -206,9 +207,35 @@ enable_firewalld: true
 ########################################################################################
 ### Firewalld - fail2ban
 
-epel_repo_url: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-{{ ansible_distribution_major_version }}.noarch.rpm"
-epel_repo_gpg_key_url: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
-epel_repofile_path: "/etc/yum.repos.d/epel.repo"
+########################################################################################
+### VPN - OpenVPN
+
+pki_certificate_authority_root_path: "/etc/ssl/certs/rhouter"
+pki_certificate_authority_root_ca_expiration: "+10years+1day"
+pki_certificate_authority_root_ca_slug: "ca.{{ system_domain }}"
+
+pki_certificate_authority_root_ca_organization_name: Kemo Labs
+pki_certificate_authority_root_ca_common_name: Kemo Labs Root Certificate Authority
+
+pki_ca_name_constraints: false
+
+openvpn_certificate_root_path: "{{ pki_certificate_authority_root_path }}/intermed-ca/openvpn-server"
+openvpn_server_ca_expiration: "+10years+1day"
+openvpn_server_ca_slug: "openvpn-ca.{{ system_domain }}"
+
+openvpn_server_cert_expiration: "+3years+1day"
+
+openvpn_root_ca_organization_name: Kemo Labs
+openvpn_root_ca_common_name: Kemo Labs OpenVPN Intermediate Certificate Authority
+
+deploy_ca_http_server: true
+deploy_ca_http_server_secure: false
+ca_http_server_port: 80
+ca_https_server_port: 443
+## For the FQDNs, the first will be used in OpenSSL config, ideally externally accessible
+ca_http_server_fqdns:
+  - "ca.kemo.networks"
+  - "ca.kemo.lab"
 
 ########################################################################################
 ### System - Cockpit

@@ -1,0 +1,54 @@
+---
+- name: Check if EPEL repo is already configured
+  stat: path={{ epel_repofile_path }}
+  register: epel_repofile_result
+  tags:
+    - installEPEL
+
+- name: Install EPEL repo
+  yum:
+    name: "{{ epel_repo_url }}"
+    state: present
+  register: result
+  when: not epel_repofile_result.stat.exists
+  tags:
+    - installEPEL
+
+- name: Import EPEL GPG key
+  rpm_key:
+    key: "{{ epel_repo_gpg_key_url }}"
+    state: present
+  when: not epel_repofile_result.stat.exists
+  tags:
+    - installEPEL
+
+- name: Check if EL repo is already configured
+  stat: path={{ el_repofile_path }}
+  register: el_repofile_result
+  tags:
+    - installEL
+
+- name: Install EL repo
+  yum:
+    name: "{{ el_repo_url }}"
+    state: present
+  register: result
+  when: not el_repofile_result.stat.exists
+  tags:
+    - installEL
+
+- name: Import EL GPG key
+  rpm_key:
+    key: "{{ el_repo_gpg_key_url }}"
+    state: present
+  when: not el_repofile_result.stat.exists
+  tags:
+    - installEL
+
+- name: Install Wireguard
+  yum:
+    name: ["kmod-wireguard", "wireguard-tools"]
+    state: latest
+  tags:
+    - installPackages
+    - installWireguard
