@@ -63,34 +63,36 @@ ansible-playbook -i inventory -e @extra_vars.yaml configure.yaml
 
 ### Available Playbook Tags
 
-Some things take time and can be skipped if you already know the state of the system.  This is a list of available tags to use with `--skip-tags tag1,tag2,tagN` (list not in order of execution, alphabetical)
+Some things take time and can be skipped if you already know the state of the system.  This is a list of available tags to use with `--skip-tags tag1,tag2,tagN` (listed in order of execution)
 
-- configureAvahi
-- configureBIND
-- configureChronyd
-- configureCockpit
-- configureContainers
-- configureDHCP
-- configureDHCPd
-- configureDNS
-- configureFirewall
-- configureFirewalld
-- configureFail2ban
-- configureInterfaces
-- configureNTP
-- configureRouting
-- configureSSHd
-- installAvahi
-- installBIND
-- installChrony
-- installCockpit
-- installDHCPd
-- installFail2ban
-- installFirewalld
-- installNetworkManager
-- installPackages
-- setHostname
-- systemUpdate
+1. setHostname
+2. systemUpdate
+3. configureInterfaces
+    1. installPackages && installNetworkManager
+4. configureFirewall && configureFirewalld
+    1. installPackages && installFirewalld
+5. configureRouting
+6. configureCockpit
+    1. configureRepos && configureRHEL7ExtrasRepo && configureRHEL7OptionRepo
+    2. installPackages && installCockpit
+7. configureContainers
+    1. configureRepos && configureRHEL7ExtrasRepo
+    2. installPackages && installContainers
+    3. podmanAuthToRHRegistry
+8. configureFirewall && configureFail2ban
+    1. installEPEL
+    2. installPackages && installFail2ban
+9. configureDNS && configureBIND
+    1. installPackages && installBIND
+10. configuremDNS && configureAvahi
+    1. installPackages && installAvahi
+11. configureDHCP && configureDHCPd
+    1. installPackages && installDHCPd
+12. configureNTP && configureChronyd
+    1. installPackages && installChrony
+    2. setTimezone
+    3. setSystemToNTPSync
+13. configureSSHd
 
 ### Disable Meltdown/Spectre Mitigations
 

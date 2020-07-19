@@ -102,7 +102,7 @@ opt2_ipv6_subnet: "f690"
 opt2_ipv6_cidr: 64
 opt2_ipv6_address: ":1"
 opt2_gateway6: "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_address }}"
-opt1_dns6_servers:
+opt2_dns6_servers:
   - "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_address }}"
 
 ########################################################################################

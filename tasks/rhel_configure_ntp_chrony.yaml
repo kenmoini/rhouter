@@ -22,6 +22,10 @@
 
 - name: Set timezone
   shell: "timedatectl set-timezone {{ system_timezone }}"
+  tags:
+    - setTimezone
 
 - name: Set time to config via NTP
   shell: "timedatectl set-ntp 1"
+  tags:
+    - setSystemToNTPSync

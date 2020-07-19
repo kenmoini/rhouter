@@ -2,6 +2,8 @@
 - name: Check if EPEL repo is already configured
   stat: path={{ epel_repofile_path }}
   register: epel_repofile_result
+  tags:
+    - installEPEL
 
 - name: Install EPEL repo
   yum:
@@ -9,12 +11,16 @@
     state: present
   register: result
   when: not epel_repofile_result.stat.exists
+  tags:
+    - installEPEL
 
 - name: Import EPEL GPG key
   rpm_key:
     key: "{{ epel_repo_gpg_key_url }}"
     state: present
   when: not epel_repofile_result.stat.exists
+  tags:
+    - installEPEL
 
 - name: Install fail2ban
   yum:
