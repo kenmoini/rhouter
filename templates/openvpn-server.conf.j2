@@ -234,7 +234,7 @@ keepalive {{ openvpn_server_keepalive }} {{ openvpn_server_max_keepalive }}
 # a copy of this key.
 # The second parameter should be '0'
 # on the server and '1' on the clients.
-tls-auth ta.key 0 # This file is secret
+tls-auth {{ openvpn_certificate_root_path }}/private/openvpn-server-tls-auth.key.pem 0 # This file is secret
 
 # Select a cryptographic cipher.
 # This config item must be copied to
