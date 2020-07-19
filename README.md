@@ -61,6 +61,28 @@ ansible-playbook -i inventory -e @extra_vars.yaml configure.yaml
 
 ## Tips
 
+### Available Playbook Tags
+
+Some things take time and can be skipped if you already know the state of the system.  This is a list of available tags to use with `--skip-tags tag1,tag2,tagN` (list not in order of execution, alphabetical)
+
+- configureAvahi
+- configureBIND
+- configureChronyd
+- configureCockpit
+- configureContainers
+- configureDHCP
+- configureDHCPd
+- configureDNS
+- configureFirewall
+- configureFirewalld
+- configureFail2ban
+- configureInterfaces
+- configureNTP
+- configureRouting
+- configureSSHd
+- setHostname
+- systemUpdate
+
 ### Disable Meltdown/Spectre Mitigations
 
 There's no point to having it running on a router.  Run:
