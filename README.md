@@ -95,6 +95,8 @@ Some things take time and can be skipped if you already know the state of the sy
     3. setSystemToNTPSync
 13. configureSSHd
 14. configureVPN && configureOpenVPN
+    1. installPackages && installOpenVPN
+    2. installPackages && installNginx
 
 ### Disable Meltdown/Spectre Mitigations
 
