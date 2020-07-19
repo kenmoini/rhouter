@@ -240,7 +240,8 @@
     - installNginx
 
 - name: Create nginx site directory
-  shell: "mkdir -p /var/www/{{ pki_certificate_authority_root_ca_slug }}/{certs,crl}"
+  shell:
+    cmd: "mkdir -p /var/www/{{ pki_certificate_authority_root_ca_slug }}/{certs,crl}"
     warn: false
   when: deploy_ca_http_server|bool
 
@@ -252,7 +253,7 @@
     group: www-data
     state: link
   when: deploy_ca_http_server|bool
-    
+
 - name: Create a symbolic link for the Intermediate CA Certificate
   file:
     src: "{{ pki_certificate_authority_root_path }}/intermed-ca.cert.pem"
