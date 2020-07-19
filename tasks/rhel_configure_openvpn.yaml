@@ -150,7 +150,7 @@
 - name: OpenVPN CA Sign Intermediate CA Certificate with Root CA lol
   shell:
     cmd: "cd {{ pki_certificate_authority_root_path }} && openssl ca -batch -in {{ openvpn_certificate_root_path }}/certreqs/intermed-ca.req.pem -out intermed-ca.cert.pem -extensions intermed-ca_ext -startdate `date +%y%m%d000000Z -u -d -1day` -enddate `date +%y%m%d000000Z -u -d {{ openvpn_server_ca_expiration }}`"
-    creates: "{{ pki_certificate_authority_root_path }}/certs/intermed-ca.cert.pem"
+    creates: "{{ pki_certificate_authority_root_path }}/intermed-ca.cert.pem"
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
 
@@ -158,7 +158,7 @@
   copy:
     backup: yes
     remote_src: yes
-    src: "{{ pki_certificate_authority_root_path }}/certs/intermed-ca.cert.pem"
+    src: "{{ pki_certificate_authority_root_path }}/intermed-ca.cert.pem"
     dest: "{{ openvpn_certificate_root_path }}/intermed-ca.cert.pem"
 
 - name: OpenVPN CA Create CA CRL

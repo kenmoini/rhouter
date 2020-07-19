@@ -109,7 +109,7 @@ issuerAltName           = issuer:copy
 #
 # Certificate Authorities Alternative Names
 [ subject_alt_name ]
-URI                     = http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ pki_certificate_authority_root_ca_slug }}:{{ ca_http_server_port if deploy_ca_http_server_secure|bool else ca_https_server_port }}/
+URI                     = http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ pki_certificate_authority_root_ca_slug }}:{{ ca_https_server_port if deploy_ca_http_server_secure|bool else ca_http_server_port }}/
 email                   = certmaster@{{ pki_certificate_authority_root_ca_slug }}
 
 {% if pki_ca_name_constraints|bool %}
@@ -126,11 +126,11 @@ permitted;email.2       = {{ pki_certificate_authority_root_ca_slug }}
 #
 # Certificate download addresses for the root CA
 [ auth_info_access ]
-caIssuers;URI           = http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}:{{ ca_http_server_port if deploy_ca_http_server_secure|bool else ca_https_server_port }}/certs/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.cert.pem
+caIssuers;URI           = http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}:{{ ca_https_server_port if deploy_ca_http_server_secure|bool else ca_http_server_port }}/certs/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.cert.pem
 
 #
 # CRL Download address for the root CA
 [ crl_dist ]
-fullname                = URI:http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}:{{ ca_http_server_port if deploy_ca_http_server_secure|bool else ca_https_server_port }}/crl/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.crl
+fullname                = URI:http{{ 's' if deploy_ca_http_server_secure|bool else '' }}://{{ ca_http_server_fqdns[0] }}:{{ ca_https_server_port if deploy_ca_http_server_secure|bool else ca_http_server_port }}/crl/{{ pki_certificate_authority_root_ca_slug }}_Root_Certification_Authority.crl
 
 # EOF
