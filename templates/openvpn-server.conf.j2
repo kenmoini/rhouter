@@ -187,7 +187,7 @@ push "redirect-gateway def1 bypass-dhcp"
 # http://openvpn.net/faq.html#dhcpcaveats
 # The addresses below refer to the public
 # DNS servers provided by opendns.com.
-push "dhcp-option DNS {{ ' '.join(openvpn_server_dns_server) }}"
+push "dhcp-option DNS {{ ' '.join(openvpn_server_dns_servers) }}"
 
 {% if openvpn_server_client_to_client|bool %}
 # Uncomment this directive to allow different
