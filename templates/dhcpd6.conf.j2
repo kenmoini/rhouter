@@ -1,0 +1,34 @@
+
+default-lease-time 2592000;
+preferred-lifetime 604800;
+
+option dhcp-renewal-time 3600;
+option dhcp-rebinding-time 7200;
+option dhcp6.info-refresh-time 21600;
+
+allow leasequery;
+
+# Global definitions for name server address(es) and domain search list
+# option dhcp6.name-servers 3ffe:501:ffff:100:200:ff:fe00:3f3e;
+# option dhcp6.domain-search "test.example.com","example.com";
+
+# Set preference to 255 (maximum) in order to avoid waiting for
+# additional servers when there is only one
+option dhcp6.preference 255;
+
+# Server side command to enable rapid-commit (2 packet exchange)
+option dhcp6.rapid-commit;
+
+dhcpv6-lease-file-name "/var/lib/dhcpd/dhcpd6.leases";
+
+
+{% for network in dhcp6_networks %}
+subnet {{ network.network_prefix }}:{{ network.subnet }}::{{ network.cidr }} {
+{% if network.serviced|bool %}
+  option dhcp6.domain-search "{{ network.domain_name }}";
+  option dhcp6.name-servers {{ ', '.join(network.dns_servers) }};
+
+  range {{ network.network_prefix }}:{{ network.subnet }}:{{ network.range_start }} {{ network.network_prefix }}:{{ network.subnet }}:{{ network.range_end }};
+{% endif %}
+}
+{% endfor %}

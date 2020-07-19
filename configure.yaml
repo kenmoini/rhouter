@@ -1,6 +1,7 @@
 ---
 - name: Turn a RHEL machine into a RHouter
   hosts: all
+  become: yes
 
   handlers:
     - name: restart dhcpd

@@ -15,7 +15,7 @@
 
 - name: Create WAN Connection - Static, auto DNS
   nmcli:
-    conn_name: "{{ wan_interface }}-wan"
+    conn_name: "wan-{{ wan_interface }}"
     ifname: "{{ wan_interface }}"
     type: ethernet
     ip4: "{{ wan_ip_address }}/{{ wan_cidr }}"
@@ -26,7 +26,7 @@
 
 - name: Create WAN Connection - Static, manual DNS
   nmcli:
-    conn_name: "{{ wan_interface }}-wan"
+    conn_name: "wan-{{ wan_interface }}"
     ifname: "{{ wan_interface }}"
     type: ethernet
     ip4: "{{ wan_ip_address }}/{{ wan_cidr }}"
@@ -38,7 +38,7 @@
 
 - name: Create WAN Connection - DHCP, auto DNS
   nmcli:
-    conn_name: "{{ wan_interface }}-wan"
+    conn_name: "wan-{{ wan_interface }}"
     ifname: "{{ wan_interface }}"
     type: ethernet
     state: present
@@ -47,7 +47,7 @@
 
 - name: Create WAN Connection - DHCP, manual DNS
   nmcli:
-    conn_name: "{{ wan_interface }}-wan"
+    conn_name: "wan-{{ wan_interface }}"
     ifname: "{{ wan_interface }}"
     type: ethernet
     dns4: "{{ wan_dns_servers }}"
@@ -56,26 +56,26 @@
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_network_type == "dhcp" and wan_dns == "manual"
 
 - name: Set WAN Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ wan_interface }}-wan ipv4.method manual"
+  shell: "nmcli con mod wan-{{ wan_interface }} ipv4.method manual"
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_network_type == "static"
 
 - name: Set WAN Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ wan_interface }}-wan ipv4.method auto"
+  shell: "nmcli con mod wan-{{ wan_interface }} ipv4.method auto"
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_network_type == "dhcp"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ wan_interface }}-wan ipv4.ignore-auto-dns yes"
+  shell: "nmcli con mod wan-{{ wan_interface }} ipv4.ignore-auto-dns yes"
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_dns == "manual"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ wan_interface }}-wan ipv4.ignore-auto-dns no"
+  shell: "nmcli con mod wan-{{ wan_interface }} ipv4.ignore-auto-dns no"
   when: enable_wan_interface|bool and configure_wan_interface|bool and wan_dns == "auto"
 
 #### LAN
 
 - name: Create LAN Connection, manual DNS
   nmcli:
-    conn_name: "{{ lan_interface }}-lan"
+    conn_name: "lan-{{ lan_interface }}"
     ifname: "{{ lan_interface }}"
     type: ethernet
     ip4: "{{ lan_ip_address }}/{{ lan_cidr }}"
@@ -89,22 +89,22 @@
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static" and lan_dns == "manual"
 
 - name: Set LAN Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ lan_interface }}-lan ipv4.method manual"
+  shell: "nmcli con mod lan-{{ lan_interface }} ipv4.method manual"
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static"
 
 - name: Set LAN Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ lan_interface }}-lan ipv4.method auto"
+  shell: "nmcli con mod lan-{{ lan_interface }} ipv4.method auto"
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "dhcp"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ lan_interface }}-lan ipv4.ignore-auto-dns yes"
+  shell: "nmcli con mod lan-{{ lan_interface }} ipv4.ignore-auto-dns yes"
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_dns == "manual"
 
 #### OPT1
 
 - name: Create OPT1 Connection, manual DNS
   nmcli:
-    conn_name: "{{ opt1_interface }}-opt1"
+    conn_name: "opt1-{{ opt1_interface }}"
     ifname: "{{ opt1_interface }}"
     type: ethernet
     ip4: "{{ opt1_ip_address }}/{{ opt1_cidr }}"
@@ -118,22 +118,22 @@
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "static"
 
 - name: Set OPT1 Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.method manual"
+  shell: "nmcli con mod opt1-{{ opt1_interface }} ipv4.method manual"
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "static"
 
 - name: Set OPT1 Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.method auto"
+  shell: "nmcli con mod opt1-{{ opt1_interface }} ipv4.method auto"
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_network_type == "dhcp"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ opt1_interface }}-opt1 ipv4.ignore-auto-dns yes"
+  shell: "nmcli con mod opt1-{{ opt1_interface }} ipv4.ignore-auto-dns yes"
   when: enable_opt1_interface|bool and configure_opt1_interface|bool and opt1_dns == "manual"
 
 #### OPT2
 
 - name: Create OPT2 Connection
   nmcli:
-    conn_name: "{{ opt2_interface }}-opt2"
+    conn_name: "opt2-{{ opt2_interface }}"
     ifname: "{{ opt2_interface }}"
     type: ethernet
     ip4: "{{ opt2_ip_address }}/{{ opt2_cidr }}"
@@ -147,13 +147,13 @@
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "static"
 
 - name: Set OPT2 Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.method manual"
+  shell: "nmcli con mod opt2-{{ opt2_interface }} ipv4.method manual"
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "static"
 
 - name: Set OPT2 Connection Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.method auto"
+  shell: "nmcli con mod opt2-{{ opt2_interface }} ipv4.method auto"
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_network_type == "dhcp"
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
-  shell: "nmcli con mod {{ opt2_interface }}-opt2 ipv4.ignore-auto-dns yes"
+  shell: "nmcli con mod opt2-{{ opt2_interface }} ipv4.ignore-auto-dns yes"
   when: enable_opt2_interface|bool and configure_opt2_interface|bool and opt2_dns == "manual"

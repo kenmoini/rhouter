@@ -65,6 +65,13 @@ lan_gateway: 10.69.42.1
 lan_dns: manual #auto or manual
 lan_dns_servers:
   - 10.69.42.4
+lan_ipv6_prefix: "fdf4:e2e0:df12"
+lan_ipv6_subnet: "b455"
+lan_ipv6_cidr: 64
+lan_ipv6_address: ":1"
+lan_gateway6: "{{ lan_ipv6_prefix }}:{{ lan_ipv6_subnet }}:{{ lan_ipv6_address }}"
+lan_dns6_servers:
+  - "{{ lan_ipv6_prefix }}:{{ lan_ipv6_subnet }}:{{ lan_ipv6_address }}"
 
 opt1_network_type: static #dhcp, disabled, or static
 opt1_ip_address: 10.69.44.1
@@ -74,6 +81,13 @@ opt1_gateway: 10.69.42.1
 opt1_dns: manual #auto or manual
 opt1_dns_servers:
   - 10.69.42.1
+opt1_ipv6_prefix: "fdf4:e2e0:df12"
+opt1_ipv6_subnet: "a100"
+opt1_ipv6_cidr: 64
+opt1_ipv6_address: ":1"
+opt1_gateway6: "{{ opt1_ipv6_prefix }}:{{ opt1_ipv6_subnet }}:{{ opt1_ipv6_address }}"
+opt1_dns6_servers:
+  - "{{ opt1_ipv6_prefix }}:{{ opt1_ipv6_subnet }}:{{ opt1_ipv6_address }}"
 
 opt2_network_type: static #dhcp, disabled, or static
 opt2_network_block: 10.69.46.0
@@ -83,6 +97,13 @@ opt2_gateway: 10.69.42.1
 opt2_dns: manual #auto or manual
 opt2_dns_servers:
   - 10.69.42.1
+opt2_ipv6_prefix: "fdf4:e2e0:df12"
+opt2_ipv6_subnet: "f690"
+opt2_ipv6_cidr: 64
+opt2_ipv6_address: ":1"
+opt2_gateway6: "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_address }}"
+opt1_dns6_servers:
+  - "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_address }}"
 
 ########################################################################################
 ### DHCP - dhcpd
@@ -137,6 +158,38 @@ dhcp_static_reservations:
     mac: "f0:f0:a4:cd:9c:6b"
 
 ########################################################################################
+### DHCP - dhcpd6 - IPv6!!!!!!
+
+dhcp6_networks:
+  - name: "{{ lan_interface }}-main"
+    serviced: yes
+    network_prefix: "{{ lan_ipv6_prefix }}"
+    cidr: "{{ lan_ipv6_cidr }}"
+    subnet: "{{ lan_ipv6_subnet }}"
+    gateway: "{{ lan_gateway6 }}"
+    range_start: "0:0:0:0"
+    range_end: "ffff:ffff:ffff:ffff"
+    dns_servers: "{{ lan_dns6_servers }}"
+    domain_name: "lan.kemo.labs"
+
+  - name: "{{ opt1_interface }}-rhvmw"
+    serviced: no
+    network_prefix: "{{ opt1_ipv6_prefix }}"
+    cidr: "{{ opt1_ipv6_cidr }}"
+    subnet: "{{ opt1_ipv6_subnet }}"
+
+  - name: "{{ opt2_interface }}-mgmt"
+    serviced: yes
+    network_prefix: "{{ opt2_ipv6_prefix }}"
+    cidr: "{{ opt2_ipv6_cidr }}"
+    subnet: "{{ opt2_ipv6_subnet }}"
+    gateway: "{{ opt2_gateway6 }}"
+    range_start: "0:0:0:0"
+    range_end: "ffff:ffff:ffff:ffff"
+    dns_servers: "{{ opt2_dns6_servers }}"
+    domain_name: "mgmt.kemo.labs"
+
+########################################################################################
 ### DNS - BIND
 
 ########################################################################################
@@ -161,6 +214,8 @@ epel_repofile_path: "/etc/yum.repos.d/epel.repo"
 ### System - Cockpit
 
 cockpit_enable_pmcd: true
+cockpit_get_podman_module: true
+cockpit_cron_git_pull_podman_module: true
 
 ########################################################################################
 ### System - Containers

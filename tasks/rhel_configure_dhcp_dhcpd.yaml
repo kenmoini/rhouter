@@ -1,7 +1,7 @@
 ---
 - name: Install dhcpd
   yum:
-    name: ['dhcp', 'python-netaddr']
+    name: ["dhcp", "python-netaddr"]
     state: latest
   tags:
     - installPackages
@@ -13,9 +13,17 @@
     dest: /etc/dhcp/dhcpd.conf
     backup: yes
   notify: restart dhcpd
+  when: routing_enable_ipv4|bool
 
 - name: Start and enable dhcpd
   service:
     name: dhcpd
     state: started
     enabled: yes
+  when: routing_enable_ipv4|bool
+#- name: Start and enable dhcpd6
+#  service:
+#    name: dhcpd
+#    state: started
+#    enabled: yes
+#  when: routing_enable_ipv6|bool

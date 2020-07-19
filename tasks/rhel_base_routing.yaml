@@ -63,3 +63,8 @@
   until: ipv6_forward_default is not failed
   retries: 5
   when: routing_enable_ipv6|bool and ipv6_default_check.stat.exists
+
+- name: Restart networking
+  service:
+    name: networking
+    state: restarted

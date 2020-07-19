@@ -16,6 +16,7 @@ Using a few variables, you can easily switch on/off different services such as:
 - **System** - Cockpit Dashboard
 - **System** - Containers with Buildah, Podman, and Skopeo
 - **System** - SSHd Configuration and Security
+- [WIP] **DHCP** - dhcpd6
 - [Always-a-WIP] **Firewall** - firewalld
 - [WIP] **Firewall** - fail2ban (uses EPEL, not supported)
 - [WIP] **VPN** - OpenVPN
