@@ -102,73 +102,73 @@
 
 ## OpenVPN Server Intermediate CA
 
-- name: OpenVPN CA Create PKI Directories
+- name: OpenVPN Intermediary CA Create PKI Directories
   shell:
     cmd: "mkdir -p {{ openvpn_certificate_root_path }}/{certreqs,certs,crl,newcerts,private} && chmod 700 {{ openvpn_certificate_root_path }}/private"
     warn: false
 
-- name: OpenVPN CA Create initial crlnum index
+- name: OpenVPN Intermediary CA Create initial crlnum index
   shell:
     cmd: "echo 00 > {{ openvpn_certificate_root_path }}/intermed-ca.crlnum"
     creates: "{{ openvpn_certificate_root_path }}/intermed-ca.crlnum"
 
-- name: OpenVPN CA Create initial index
+- name: OpenVPN Intermediary CA Create initial index
   file:
     path: "{{ openvpn_certificate_root_path }}/intermed-ca.index"
     state: touch
 
-- name: OpenVPN CA Create initial serial index
+- name: OpenVPN Intermediary CA Create initial serial index
   shell:
     cmd: "openssl rand -hex 16 > {{ openvpn_certificate_root_path }}/intermed-ca.serial"
     creates: "{{ openvpn_certificate_root_path }}/intermed-ca.serial"
 
-- name: OpenVPN CA Template Root CA Configuration File
+- name: OpenVPN Intermediary CA Template Root CA Configuration File
   template:
     src: openvpn-intermed-ca.cnf.j2
     dest: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
     backup: yes
 
-- name: OpenVPN CA Generate Certificate Authority Private Key
+- name: OpenVPN Intermediary CA Generate Certificate Authority Private Key
   shell:
     cmd: "cd {{ openvpn_certificate_root_path }} && openssl genrsa -out private/intermed-ca.key.pem 4096"
     creates: "{{ openvpn_certificate_root_path }}/private/intermed-ca.key.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
 
-- name: OpenVPN CA Protect CA Root Key
+- name: OpenVPN Intermediary CA Protect CA Root Key
   file:
     mode: "400"
     path: "{{ openvpn_certificate_root_path }}/private/intermed-ca.key.pem"
 
-- name: OpenVPN CA Generate Certificate Authority CSR
+- name: OpenVPN Intermediary CA Generate Certificate Authority CSR
   shell:
     cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -out certreqs/intermed-ca.req.pem -key private/intermed-ca.key.pem"
     creates: "{{ openvpn_certificate_root_path }}/certreqs/intermed-ca.req.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
 
-- name: OpenVPN CA Sign Intermediate CA Certificate with Root CA lol
+- name: OpenVPN Intermediary CA Sign Intermediate CA Certificate with Root CA lol
   shell:
     cmd: "cd {{ pki_certificate_authority_root_path }} && openssl ca -batch -in {{ openvpn_certificate_root_path }}/certreqs/intermed-ca.req.pem -out intermed-ca.cert.pem -extensions intermed-ca_ext -startdate `date +%y%m%d000000Z -u -d -1day` -enddate `date +%y%m%d000000Z -u -d {{ openvpn_server_ca_expiration }}`"
     creates: "{{ pki_certificate_authority_root_path }}/intermed-ca.cert.pem"
   environment:
     OPENSSL_CONF: "{{ pki_certificate_authority_root_path }}/root-ca.cnf"
 
-- name: OpenVPN CA Copy Signed Certificate to Intermediate Directory
+- name: OpenVPN Intermediary CA Copy Signed Certificate to Intermediate Directory
   copy:
     backup: yes
     remote_src: yes
     src: "{{ pki_certificate_authority_root_path }}/intermed-ca.cert.pem"
     dest: "{{ openvpn_certificate_root_path }}/intermed-ca.cert.pem"
 
-- name: OpenVPN CA Create CA CRL
+- name: OpenVPN Intermediary CA Create CA CRL
   shell:
     cmd: "cd {{ openvpn_certificate_root_path }} && openssl ca -gencrl -out crl/intermed-ca.crl"
     creates: "{{ openvpn_certificate_root_path }}/crl/intermed-ca.crl"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
 # Don't think we actually need to do this since we have the Root CA installed...
-#- name: OpenVPN CA Install Root CA as trusted CA
+#- name: OpenVPN Intermediary CA Install Root CA as trusted CA
 #  copy:
 #    backup: yes
 #    dest: "/etc/pki/ca-trust/source/anchors/{{ openvpn_server_ca_slug }}.crt"
@@ -178,24 +178,36 @@
 
 ## OpenVPN Server Certificate Stuff
 
-- name: OpenVPN Server Generate DH Params
+- name: OpenVPN Server - Generate Certificate Private Key
   shell:
-    cmd: "cd {{ openvpn_certificate_root_path }} && openssl dhparam -out dhparams.pem 4096"
-    creates: "{{ openvpn_certificate_root_path }}/dhparams.pem"
-  environment:
-    OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
-
-- name: OpenVPN Server Generate Server Certificate Key and CSR
-  shell:
-    cmd: "cd {{ openvpn_certificate_root_path }} && openssl req -new -batch -nodes -out openvpn-server.req.pem"
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl genrsa -out private/openvpn-server.key.pem 4096"
     creates: "{{ openvpn_certificate_root_path }}/private/openvpn-server.key.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
 
-- name: OpenVPN Server Sign Server Certificate With Intermediate CA
+- name: OpenVPN Server - Protect Certificate Key
+  file:
+    mode: "400"
+    path: "{{ openvpn_certificate_root_path }}/private/openvpn-server.key.pem"
+
+- name: OpenVPN Server - Generate Server Certificate Key and CSR
   shell:
-    cmd: "cd {{ openvpn_certificate_root_path }} && openssl ca -batch -in ./certreqs/openvpn-server.req.pem -out ./certs/openvpn-server.cert.pem -extensions server_ext"
+    cmd: "cd {{ openvpn_certificate_root_path }} &&  openssl req -new -batch -out certreqs/openvpn-server.req.pem -key private/openvpn-server.key.pem"
+    creates: "{{ openvpn_certificate_root_path }}/certreqs/openvpn-server.req.pem"
+  environment:
+    OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
+
+- name: OpenVPN Server - Sign Server Certificate With Intermediate CA
+  shell:
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl ca -batch -in certreqs/openvpn-server.req.pem -out certs/openvpn-server.cert.pem -extensions server_ext"
     creates: "{{ openvpn_certificate_root_path }}/certs/openvpn-server.cert.pem"
+  environment:
+    OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
+
+- name: OpenVPN Server - Generate DH Params
+  shell:
+    cmd: "cd {{ openvpn_certificate_root_path }} && openssl dhparam -out private/openvpn-server-dhparams.pem 4096"
+    creates: "{{ openvpn_certificate_root_path }}/private/openvpn-server-dhparams.pem"
   environment:
     OPENSSL_CONF: "{{ openvpn_certificate_root_path }}/intermed-ca.cnf"
 
