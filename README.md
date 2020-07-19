@@ -80,6 +80,15 @@ Some things take time and can be skipped if you already know the state of the sy
 - configureNTP
 - configureRouting
 - configureSSHd
+- installAvahi
+- installBIND
+- installChrony
+- installCockpit
+- installDHCPd
+- installFail2ban
+- installFirewalld
+- installNetworkManager
+- installPackages
 - setHostname
 - systemUpdate
 
