@@ -56,7 +56,7 @@
     permanent: yes
     immediate: yes
     state: enabled
-    service: openvpn
+    port: "{{ openvpn_port }}/{{ openvpn_proto }}"
   when: enable_wan_interface|bool and configure_wan_interface|bool and configure_openvpn|bool
 
 - name: Disable OpenVPN on WAN
@@ -65,7 +65,7 @@
     permanent: yes
     immediate: yes
     state: disabled
-    service: openvpn
+    port: "{{ openvpn_port }}/{{ openvpn_proto }}"
   when: enable_wan_interface|bool and configure_wan_interface|bool and not configure_openvpn|bool
 
 - name: Disable SSH on WAN

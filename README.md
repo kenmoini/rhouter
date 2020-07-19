@@ -18,12 +18,13 @@ Using a few variables, you can easily switch on/off different services such as:
 - **System** - SSHd Configuration and Security
 - [WIP] **DHCP** - dhcpd6
 - [Always-a-WIP] **Firewall** - firewalld
-- [WIP] **Firewall** - fail2ban (uses EPEL, not supported)
-- [WIP] **VPN** - OpenVPN (uses EPEL, not supported by Red Hat)
-- [WIP] **VPN** - Wireguard (uses EPEL and EL Repo, not supported by Red Hat)
+- [WIP] **Firewall** - fail2ban (uses EPEL)
+- [WIP] **VPN** - OpenVPN (uses EPEL)
+- [WIP] **VPN** - Wireguard (uses EPEL and EL Repo)
 - [WIP] **UPnP** - upnpd
 - [WIP] **Monitoring** - ntop/ntopng
 - [WIP] **Monitoring** - Snort
+- [WIP] **System** - apcupsd
 - [WIP] **Proxy** - Squid
 
 `WIP? That means Work In Progress`
