@@ -230,6 +230,7 @@ openvpn_server_cert_expiration: "+3years+1day"
 openvpn_dh_param_size: 2048
 
 openvpn_listen_on: "{{ vars['ansible_'~wan_interface].ipv4.address }}"
+openvpn_server_fqdn: lab-vpn.kemo.network
 openvpn_port: 1194
 openvpn_proto: udp
 openvpn_dev: tun
@@ -253,6 +254,7 @@ openvpn_server_max_keepalive: 120
 openvpn_server_max_clients: 20
 openvpn_server_user: openvpn
 openvpn_server_group: openvpn
+openvpn_server_cipher: AES-256-CBC
 openvpn_server_verbosity: 4
 openvpn_enable_username_auth: yes
 

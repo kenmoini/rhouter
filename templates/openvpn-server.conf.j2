@@ -244,7 +244,7 @@ tls-auth {{ openvpn_certificate_root_path }}/private/openvpn-server-tls-auth.key
 # Note that v2.4 client/server will automatically
 # negotiate AES-256-GCM in TLS mode.
 # See also the ncp-cipher option in the manpage
-cipher AES-256-CBC
+cipher {{ openvpn_server_cipher }}
 
 {% if openvpn_server_enable_compression|bool %}
 # Enable compression on the VPN link and push the

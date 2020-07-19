@@ -93,6 +93,18 @@ organizationName        = {{ openvpn_root_ca_organization_name }}
 commonName              = {{ openvpn_root_ca_common_name }}
 
 #
+# OpenVPN Server Certificate Extensions
+[ openvpn_server_ext ]
+basicConstraints        = CA:FALSE
+keyUsage                = critical, digitalSignature, keyEncipherment
+extendedKeyUsage        = critical, serverAuth
+subjectKeyIdentifier    = hash
+authorityKeyIdentifier  = keyid:always
+issuerAltName           = issuer:copy
+authorityInfoAccess     = @auth_info_access
+crlDistributionPoints   = crl_dist
+
+#
 # Server Certificate Extensions
 [ server_ext ]
 basicConstraints        = CA:FALSE
