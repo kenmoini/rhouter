@@ -278,6 +278,12 @@ group {{ openvpn_server_group }}
 persist-key
 persist-tun
 
+{% if openvpn_enable_username_auth|bool %}
+# Username and Password authentication.
+client-cert-not-required
+plugin /usr/lib/openvpn/openvpn-auth-pam.so login
+{% endif %}
+
 # Output a short status file showing
 # current connections, truncated
 # and rewritten every minute.
