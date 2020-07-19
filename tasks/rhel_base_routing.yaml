@@ -66,5 +66,5 @@
 
 - name: Restart networking
   service:
-    name: networking
+    name: network
     state: restarted
