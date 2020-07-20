@@ -36,6 +36,8 @@ nobind
 persist-key
 persist-tun
 mute-replay-warnings
+user openvpn
+group openvpn
 cipher {{ openvpn_server_cipher }}
 {% if openvpn_server_enable_compression|bool %}
 comp-lzo
@@ -48,7 +50,7 @@ mute 20
 </ca>
 
 {% if openvpn_enable_username_auth|bool %}
-auth-user-pass pass.txt
+auth-user-pass
 auth-nocache
 {% endif %}
 {% if not openvpn_enable_username_auth|bool %}
