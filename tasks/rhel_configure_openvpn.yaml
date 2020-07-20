@@ -296,13 +296,13 @@
     state: link
   when: deploy_ca_http_server|bool
 
-- name: Create a symbolic link for OpenVPN Base Client Config
-  file:
+- name: Copy over OpenVPN Base Client Config
+  copy:
     src: "/etc/openvpn/base-client.ovpn"
     dest: "/var/www/{{ pki_certificate_authority_root_ca_slug }}/openvpn-base-client-config.ovpn"
+    remote_src: yes
     owner: nginx
     group: nginx
-    state: link
   when: deploy_ca_http_server|bool
 
 - name: Set SELinux Context in the HTML directory
