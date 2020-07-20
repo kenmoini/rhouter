@@ -156,7 +156,6 @@ network_connections:
     persistent_state: present
     type: bridge
     autoconnect: yes
-    interface_name: "{{ lan_interface }}"
     zone: "{{ lan_zone_name }}"
     ip:
       route_metric4: 101
@@ -166,6 +165,18 @@ network_connections:
         - "{{ lan_ip_address }}/{{ lan_cidr }}"
       dns: "{{ lan_dns_servers }}"
       gateway4: "{{ lan_gateway }}"
+
+  - name: "{{ lan_bridge_name }}-bond0"
+    type: bond
+    interface_name: "{{ lan_bridge_name }}-bond0"
+    master: "{{ lan_bridge_name }}"
+    slave_type: bridge
+
+  - name: "{{ lan_bridge_name }}-bond0-{{ lan_interface }}"
+    type: ethernet
+    interface_name: "{{ lan_interface }}"
+    master: "{{ lan_bridge_name }}-bond0"
+    slave_type: bond
 
   - name: "{{ opt1_bridge_name }}"
     state: up
