@@ -123,13 +123,13 @@ server-bridge {{ openvpn_server_bridge_address }} {{ openvpn_server_bridge_subne
 # address pool (10.8.0.0/255.255.255.0)
 # back to the OpenVPN server.
 {% if enable_lan_interface|bool and configure_lan_interface|bool %}
-push "route {{ lan_network_block }} {{ lan_network_block + '/' + lan_cidr | ipaddr('netmask')  }}"
+push "route {{ lan_network_block }} {{ lan_netmask }}"
 {% endif %}
 {% if enable_opt1_interface|bool and configure_opt1_interface|bool %}
-push "route {{ opt1_network_block }} {{ opt1_network_block + '/' + opt1_cidr | ipaddr('netmask')  }}"
+push "route {{ opt1_network_block }} {{ opt1_netmask  }}"
 {% endif %}
 {% if enable_opt2_interface|bool and configure_opt2_interface|bool %}
-push "route {{ opt2_network_block }} {{ opt2_network_block + '/' + opt2_cidr | ipaddr('netmask')  }}"
+push "route {{ opt2_network_block }} {{ opt2_netmask }}"
 {% endif %}
 
 

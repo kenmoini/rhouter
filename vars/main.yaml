@@ -61,6 +61,7 @@ wan_dns_servers:
 lan_network_type: static #dhcp, disabled, or static
 lan_ip_address: 10.69.42.1
 lan_network_block: 10.69.42.0
+lan_netmask: 255.255.255.0
 lan_cidr: 24
 lan_gateway: 10.69.42.1
 lan_dns: manual #auto or manual
@@ -77,6 +78,7 @@ lan_dns6_servers:
 opt1_network_type: static #dhcp, disabled, or static
 opt1_ip_address: 10.69.44.1
 opt1_network_block: 10.69.44.0
+opt1_netmask: 255.255.255.0
 opt1_cidr: 24
 opt1_gateway: 10.69.42.1
 opt1_dns: manual #auto or manual
@@ -93,6 +95,7 @@ opt1_dns6_servers:
 opt2_network_type: static #dhcp, disabled, or static
 opt2_network_block: 10.69.46.0
 opt2_ip_address: 10.69.46.1
+opt2_netmask: 255.255.255.0
 opt2_cidr: 24
 opt2_gateway: 10.69.42.1
 opt2_dns: manual #auto or manual
