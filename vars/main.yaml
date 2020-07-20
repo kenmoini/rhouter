@@ -442,6 +442,6 @@ cockpit_cron_git_pull_podman_module: true
 ########################################################################################
 ### System - Containers
 
-containers_log_in_to_rh_registry: yes
+containers_log_in_to_rh_registry: false
 containers_log_in_username: changeMe
 containers_log_in_password_or_token: changeMeToo

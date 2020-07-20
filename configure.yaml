@@ -39,6 +39,11 @@
         name: nginx
         state: restarted
 
+    - name: restart network
+      service:
+        name: network
+        state: restarted
+
     - name: update-ca-trust
       shell: /bin/update-ca-trust
 
@@ -71,6 +76,7 @@
       include_role:
         name: rhel-system-roles.network
       when: configure_interfaces|bool and interface_config_method == "role"
+      notify: restart network
       tags:
         - configureInterfaces
 
