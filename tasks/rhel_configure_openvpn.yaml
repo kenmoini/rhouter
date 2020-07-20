@@ -310,7 +310,7 @@
   notify: restart openvpn
 
 - name: Read OpenVPN CA Certificate
-  shell: "tail -n +$(sed -n '\|-----BEGIN CERTIFICATE-----|=' {{ openvpn_certificate_root_path }}/intermed-ca.cert.pem ) {{ openvpn_certificate_root_path }}/intermed-ca.cert.pem"
+  shell: "tail -n +$(sed -n '\\|-----BEGIN CERTIFICATE-----|=' {{ openvpn_certificate_root_path }}/intermed-ca.cert.pem ) {{ openvpn_certificate_root_path }}/intermed-ca.cert.pem"
   register: openvpn_ca_certificate_stdout
 
 - name: Read OpenVPN TLS Auth Key
