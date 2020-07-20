@@ -41,7 +41,7 @@ user openvpn
 group openvpn
 cipher {{ openvpn_server_cipher }}
 {% if openvpn_server_enable_compression|bool %}
-comp-lzo
+comp-lzo adaptive
 {% endif %}
 verb {{ openvpn_server_verbosity }}
 mute 20

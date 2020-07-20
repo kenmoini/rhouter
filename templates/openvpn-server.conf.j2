@@ -216,47 +216,21 @@ client-to-client
 duplicate-cn
 {% endif %}
 
-# The keepalive directive causes ping-like
-# messages to be sent back and forth over
-# the link so that each side knows when
-# the other side has gone down.
-# Ping every 10 seconds, assume that remote
-# peer is down if no ping received during
-# a 120 second time period.
 keepalive {{ openvpn_server_keepalive }} {{ openvpn_server_max_keepalive }}
-
-# For extra security beyond that provided
-# by SSL/TLS, create an "HMAC firewall"
-# to help block DoS attacks and UDP port flooding.
-#
-# Generate with:
-#   openvpn --genkey --secret ta.key
-#
-# The server and each client must have
-# a copy of this key.
-# The second parameter should be '0'
-# on the server and '1' on the clients.
 tls-auth {{ openvpn_certificate_root_path }}/private/openvpn-server-tls-auth.key.pem 0 # This file is secret
-
-# Select a cryptographic cipher.
-# This config item must be copied to
-# the client config file as well.
-# Note that v2.4 client/server will automatically
-# negotiate AES-256-GCM in TLS mode.
-# See also the ncp-cipher option in the manpage
 cipher {{ openvpn_server_cipher }}
 
 {% if openvpn_server_enable_compression|bool %}
 # Enable compression on the VPN link and push the
 # option to the client (v2.4+ only, for earlier
 # versions see below)
-compress lz4-v2
-push "compress lz4-v2"
+#compress lz4-v2
+#push "compress lz4-v2"
 
 # For compression compatible with older clients use comp-lzo
 # If you enable it here, you must also
 # enable it in the client config file.
-comp-lzo
+comp-lzo adaptive
 {% endif %}
 
 # The maximum number of concurrently connected
