@@ -128,15 +128,19 @@ network_connections:
   - name: "{{ wan_interface }}"
     persistent_state: absent
     state: down
+    type: ethernet
   - name: "{{ lan_interface }}"
     persistent_state: absent
     state: down
+    type: ethernet
   - name: "{{ opt1_interface }}"
     persistent_state: absent
     state: down
+    type: ethernet
   - name: "{{ opt2_interface }}"
     persistent_state: absent
     state: down
+    type: ethernet
 
   - name: "wan-{{ wan_interface }}"
     state: up
