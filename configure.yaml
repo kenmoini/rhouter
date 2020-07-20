@@ -76,7 +76,14 @@
       include_role:
         name: rhel-system-roles.network
       when: configure_interfaces|bool and interface_config_method == "role"
-      notify: restart network
+      tags:
+        - configureInterfaces
+
+    - name: Restart network after configuring interfaces
+      service:
+        name: network
+        state: restarted
+      when: configure_interfaces|bool and interface_config_method == "role"
       tags:
         - configureInterfaces
 
