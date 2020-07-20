@@ -29,3 +29,6 @@
   shell: "timedatectl set-ntp 1"
   tags:
     - setSystemToNTPSync
+
+- name: Force handlers to run
+  meta: flush_handlers

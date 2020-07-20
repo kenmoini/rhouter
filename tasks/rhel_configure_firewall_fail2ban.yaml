@@ -42,3 +42,6 @@
     name: fail2ban
     state: started
     enabled: yes
+
+- name: Force handlers to run
+  meta: flush_handlers

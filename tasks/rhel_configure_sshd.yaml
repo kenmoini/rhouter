@@ -5,3 +5,6 @@
     dest: /etc/ssh/sshd_config
     backup: yes
   notify: restart sshd
+
+- name: Force handlers to run
+  meta: flush_handlers

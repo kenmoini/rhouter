@@ -35,3 +35,6 @@
 #    state: started
 #    enabled: yes
 #  when: routing_enable_ipv6|bool
+
+- name: Force handlers to run
+  meta: flush_handlers
