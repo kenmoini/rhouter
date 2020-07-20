@@ -68,6 +68,42 @@
     port: "{{ openvpn_port }}/{{ openvpn_proto }}"
   when: enable_wan_interface|bool and configure_wan_interface|bool and not configure_openvpn|bool
 
+- name: Enable HTTP on WAN
+  firewalld:
+    zone: extWAN
+    permanent: yes
+    immediate: yes
+    state: enabled
+    service: http
+  when: enable_wan_interface|bool and configure_wan_interface|bool and deploy_ca_http_server|bool
+
+- name: Disable HTTP on WAN
+  firewalld:
+    zone: extWAN
+    permanent: yes
+    immediate: yes
+    state: disabled
+    service: http
+  when: enable_wan_interface|bool and configure_wan_interface|bool and not deploy_ca_http_server|bool
+
+- name: Enable HTTPS on WAN
+  firewalld:
+    zone: extWAN
+    permanent: yes
+    immediate: yes
+    state: enabled
+    service: https
+  when: enable_wan_interface|bool and configure_wan_interface|bool and deploy_ca_http_server_secure|bool
+
+- name: Disable HTTPS on WAN
+  firewalld:
+    zone: extWAN
+    permanent: yes
+    immediate: yes
+    state: disabled
+    service: https
+  when: enable_wan_interface|bool and configure_wan_interface|bool and not deploy_ca_http_server_secure|bool
+
 - name: Disable SSH on WAN
   firewalld:
     zone: extWAN
@@ -85,6 +121,33 @@
     state: enabled
     service: ssh
   when: enable_wan_interface|bool and configure_wan_interface|bool and enable_ssh_on_wan|bool
+
+- name: Disable SSH on LAN
+  firewalld:
+    zone: intLAN
+    permanent: yes
+    immediate: yes
+    state: disabled
+    service: ssh
+  when: enable_lan_interface|bool and configure_lan_interface|bool and not enable_ssh_on_lan|bool
+
+- name: Disable SSH on OPT1
+  firewalld:
+    zone: intOPT1
+    permanent: yes
+    immediate: yes
+    state: disabled
+    service: ssh
+  when: enable_opt1_interface|bool and configure_opt1_interface|bool and not enable_ssh_on_opt1|bool
+
+- name: Disable SSH on OPT2
+  firewalld:
+    zone: intOPT2
+    permanent: yes
+    immediate: yes
+    state: disabled
+    service: ssh
+  when: enable_opt2_interface|bool and configure_opt2_interface|bool and not enable_ssh_on_opt2|bool
 
 - name: Enable SSH on LAN
   firewalld:
