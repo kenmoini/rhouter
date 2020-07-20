@@ -49,7 +49,7 @@ ping 30
 ping-exit 43200
 
 <ca>
-{{ openvpn_ca_certificate_stdout.stdout }}
+{{ openvpn_ca_bundle_file_stdout.stdout }}
 </ca>
 
 {% if openvpn_enable_username_auth|bool %}

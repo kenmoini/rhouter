@@ -74,7 +74,7 @@ key {{ openvpn_certificate_root_path }}/private/openvpn-server.key.pem  # This f
 # Diffie hellman parameters.
 # Generate your own with:
 #   openssl dhparam -out dh2048.pem 2048
-dh {{ openvpn_certificate_root_path }}/private/openvpn-server-dhparams.pem
+dh {{ openvpn_certificate_root_path }}/private/openvpn-server-dhparams-{{ openvpn_dh_param_size }}.pem
 
 # Network topology
 # Should be subnet (addressing via IP)
