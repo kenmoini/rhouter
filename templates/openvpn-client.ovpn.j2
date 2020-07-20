@@ -31,14 +31,15 @@ topology subnet
 ;http-proxy-retry # retry on connection failures
 ;http-proxy [proxy server] [proxy port #]
 
+# user openvpn
+# group openvpn
+
 remote {{ openvpn_server_fqdn }} {{ openvpn_port }}
 resolv-retry infinite
 nobind
 persist-key
 persist-tun
 mute-replay-warnings
-user openvpn
-group openvpn
 cipher {{ openvpn_server_cipher }}
 {% if openvpn_server_enable_compression|bool %}
 comp-lzo adaptive
@@ -47,6 +48,12 @@ verb {{ openvpn_server_verbosity }}
 mute 20
 ping 30
 ping-exit 43200
+
+script-security 2
+{% for server in openvpn_server_dns_servers %}
+dhcp-option DNS {{ server }}
+{% endfor %}
+dhcp-option DOMAIN {{ system_domain }}
 
 <ca>
 {{ openvpn_ca_bundle_file_stdout.stdout }}

@@ -236,7 +236,7 @@ openvpn_listen_on: "{{ vars['ansible_'~wan_interface].ipv4.address }}"
 openvpn_server_fqdn: lab-vpn.kemo.network
 openvpn_port: 1194
 openvpn_proto: udp
-openvpn_dev: tun
+openvpn_dev: tap
 
 # using tun
 openvpn_network: 10.69.48.0
