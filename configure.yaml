@@ -63,7 +63,13 @@
 
     - name: Configure system interfaces
       include_tasks: tasks/rhel_configure_interfaces.yaml
-      when: configure_interfaces|bool
+      when: configure_interfaces|bool and interface_config_method == "legacy"
+      tags:
+        - configureInterfaces
+
+    - name: Configure system interfaces
+      include_role: linux-system-roles.network
+      when: configure_interfaces|bool and interface_config_method == "role"
       tags:
         - configureInterfaces
 

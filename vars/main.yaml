@@ -18,6 +18,7 @@ configure_cockpit: true
 configure_containers: true
 configure_sshd: true
 configure_openvpn: false
+configure_libvirt: false
 
 ########################################################################################
 ### General Settings
@@ -109,13 +110,96 @@ opt2_gateway6: "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_addre
 opt2_dns6_servers:
   - "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_address }}"
 
-create_bridge_for_lan: yes
-create_bridge_for_opt1: yes
-create_bridge_for_opt2: yes
-
 lan_bridge_name: lanvirbr
 opt1_bridge_name: opt1virbr
 opt2_bridge_name: opt2virbr
+
+wan_zone_name: extWAN
+lan_zone_name: intLAN
+opt1_zone_name: intOPT1
+opt2_zone_name: intOPT2
+
+# legacy or role
+interface_config_method: role
+
+network_provider: nm
+network_connections:
+  ## Delete system default interfaces
+  - name: "{{ wan_interface }}"
+    persistent_state: absent
+    state: down
+  - name: "{{ lan_interface }}"
+    persistent_state: absent
+    state: down
+  - name: "{{ opt1_interface }}"
+    persistent_state: absent
+    state: down
+  - name: "{{ opt2_interface }}"
+    persistent_state: absent
+    state: down
+
+  - name: "wan-{{ wan_interface }}"
+    state: up
+    persistent_state: present
+    type: ethernet
+    autoconnect: yes
+    interface_name: "{{ wan_interface }}"
+    zone: "{{ wan_zone_name }}"
+    ip:
+      route_metric4: 100
+      dhcp4: yes
+      auto6: yes
+      dns: "{{ wan_dns_servers }}"
+
+  - name: "{{ lan_bridge_name }}"
+    state: up
+    persistent_state: present
+    type: bridge
+    autoconnect: yes
+    interface_name: "{{ lan_interface }}"
+    zone: "{{ lan_zone_name }}"
+    ip:
+      route_metric4: 101
+      dhcp4: no
+      auto6: no
+      address:
+        - "{{ lan_ip_address }}/{{ lan_cidr }}"
+      dns: "{{ lan_dns_servers }}"
+      gateway4: "{{ lan_gateway }}"
+
+  - name: "{{ opt1_bridge_name }}"
+    state: up
+    persistent_state: present
+    type: bridge
+    autoconnect: yes
+    interface_name: "{{ opt1_interface }}"
+    zone: "{{ opt1_zone_name }}"
+    ip:
+      route_metric4: 102
+      dhcp4: no
+      auto6: no
+      address:
+        - "{{ opt1_ip_address }}/{{ opt1_cidr }}"
+      dns: "{{ opt1_dns_servers }}"
+      gateway4: "{{ opt1_gateway }}"
+
+  - name: "{{ opt2_bridge_name }}"
+    state: up
+    persistent_state: present
+    type: bridge
+    autoconnect: yes
+    interface_name: "{{ opt2_interface }}"
+    zone: "{{ opt2_zone_name }}"
+    ip:
+      route_metric4: 103
+      dhcp4: no
+      auto6: no
+      address:
+        - "{{ opt2_ip_address }}/{{ opt2_cidr }}"
+      dns: "{{ opt2_dns_servers }}"
+      gateway4: "{{ opt2_gateway }}"
+
+network_allow_restart: yes
 
 ########################################################################################
 ### DHCP - dhcpd
