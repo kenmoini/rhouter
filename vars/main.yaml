@@ -15,7 +15,7 @@ configure_firewall_firewalld: true
 configure_firewall_fail2ban: true
 configure_upnp_upnpd: true
 configure_cockpit: true
-configure_containers: true
+configure_containers: false
 configure_sshd: true
 configure_openvpn: false
 

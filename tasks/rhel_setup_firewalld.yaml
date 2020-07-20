@@ -41,6 +41,9 @@
     permanent: yes
   when: enable_opt2_interface|bool and configure_opt2_interface|bool
 
+- name: Reload firewalld
+  shell: firewall-cmd --reload
+
 - name: Enable masquerading on WAN
   firewalld:
     masquerade: "true"
