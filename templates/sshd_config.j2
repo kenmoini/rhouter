@@ -39,14 +39,14 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 # Logging
 SyslogFacility {{ sshd_syslog_facility }}
 LogLevel {{ sshd_log_level }}
-UseDNS {{ sshd_logging_use_dns }}
-FascistLogging {{ sshd_facist_logging }}
+UseDNS {{ 'yes' if sshd_logging_use_dns|bool else 'no' }}
+FascistLogging {{ 'yes' if sshd_facist_logging|bool else 'no' }}
 
 # Authentication:
 
 StrictModes yes
 LoginGraceTime {{ sshd_login_grace_time }}
-PermitRootLogin {{ sshd_permit_root_login }}
+PermitRootLogin {{ 'yes' if sshd_permit_root_login|bool else 'no' }}
 MaxAuthTries {{ sshd_max_auth_tries }}
 MaxSessions {{ sshd_max_sessions }}
 
@@ -56,8 +56,8 @@ PubkeyAuthentication {{ sshd_pubkey_authentication }}
 # but this is overridden so installations will only check .ssh/authorized_keys
 AuthorizedKeysFile      .ssh/authorized_keys
 
-PermitEmptyPasswords {{ sshd_permit_empty_passwords }}
-PasswordAuthentication {{ sshd_password_auth }}
+PermitEmptyPasswords {{ 'yes' if sshd_permit_empty_passwords|bool else 'no' }}
+PasswordAuthentication {{ 'yes' if sshd_password_auth|bool else 'no' }}
 
 # For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
 #HostbasedAuthentication no
@@ -68,14 +68,14 @@ PasswordAuthentication {{ sshd_password_auth }}
 #IgnoreRhosts yes
 
 # Change to no to disable s/key passwords
-ChallengeResponseAuthentication {{ sshd_challenge_response_authentication }}
+ChallengeResponseAuthentication {{ 'yes' if sshd_challenge_response_authentication|bool else 'no' }}
 
 # Kerberos options
-KerberosAuthentication {{ sshd_kerberos_authentication }}
-KerberosOrLocalPasswd {{ sshd_kerberos_or_local_passwd }}
-KerberosTicketCleanup {{ sshd_kerberos_ticket_cleanup }}
-KerberosGetAFSToken {{ sshd_kerberos_get_afs_token }}
-KerberosUseKuserok {{ sshd_kerberos_use_kuser_ok }}
+KerberosAuthentication {{ 'yes' if sshd_kerberos_authentication|bool else 'no' }}
+KerberosOrLocalPasswd {{ 'yes' if sshd_kerberos_or_local_passwd|bool else 'no' }}
+KerberosTicketCleanup {{ 'yes' if sshd_kerberos_ticket_cleanup|bool else 'no' }}
+KerberosGetAFSToken {{ 'yes' if sshd_kerberos_get_afs_token|bool else 'no' }}
+KerberosUseKuserok {{ 'yes' if sshd_kerberos_use_kuser_ok|bool else 'no' }}
 
 # GSSAPI options
 GSSAPIAuthentication yes
@@ -97,9 +97,9 @@ GSSAPICleanupCredentials no
 # problems.
 UsePAM yes
 
-AllowAgentForwarding {{ sshd_allow_agent_forwarding }}
-AllowTcpForwarding {{ sshd_allow_tcp_forwarding }}
-X11Forwarding {{ sshd_x11_forwarding }}
+AllowAgentForwarding {{ 'yes' if sshd_allow_agent_forwarding|bool else 'no' }}
+AllowTcpForwarding {{ 'yes' if sshd_allow_tcp_forwarding|bool else 'no' }}
+X11Forwarding {{ 'yes' if sshd_x11_forwarding|bool else 'no' }}
 #GatewayPorts no
 #X11DisplayOffset 10
 #X11UseLocalhost yes

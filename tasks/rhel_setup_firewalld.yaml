@@ -331,15 +331,28 @@
     permanent: yes
     immediate: yes
     state: enabled
-  when: enable_lan_interface|bool and configure_lan_interface|bool
+  when: enable_lan_interface|bool and configure_lan_interface|bool and not create_bridge_for_lan|bool
 
 - name: Set LAN zone (ansible issue 41738 workaround)
   command: "firewall-cmd --zone=intLAN --permanent --change-interface={{ lan_interface }}"
-  when: enable_lan_interface|bool and configure_lan_interface|bool
+  when: enable_lan_interface|bool and configure_lan_interface|bool and not create_bridge_for_lan|bool
+
+- name: Set LAN zone
+  firewalld:
+    zone: intLAN
+    interface: "{{ lan_bridge_name }}"
+    permanent: yes
+    immediate: yes
+    state: enabled
+  when: enable_lan_interface|bool and configure_lan_interface|bool and create_bridge_for_lan|bool
+
+- name: Set LAN zone (ansible issue 41738 workaround)
+  command: "firewall-cmd --zone=intLAN --permanent --change-interface={{ lan_bridge_name }}"
+  when: enable_lan_interface|bool and configure_lan_interface|bool and create_bridge_for_lan|bool
 
 - name: Set LAN zone to target ACCEPT
   command: "firewall-cmd --zone=intLAN --permanent --set-target=ACCEPT"
-  when: enable_lan_interface|bool and configure_lan_interface|bool
+  when: enable_lan_interface|bool and configure_lan_interface|bool and not create_bridge_for_lan|bool
 
 - name: Set OPT1 zone
   firewalld:

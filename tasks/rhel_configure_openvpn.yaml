@@ -461,14 +461,18 @@
     state: started
     enabled: yes
   when: deploy_ca_http_server|bool
+#- name: Add tap0 to LAN Bridge
+#  shell:
+#    cmd: "nmcli conn add type ethernet slave-type bridge con-name lan-bridge-openvpn-tap0 ifname tap0 master {{ lan_bridge_name }}"
+#  when: openvpn_dev == "tap"
 
-- name: Set tun0 zone
-  firewalld:
-    zone: intLAN
-    interface: "tun0"
-    permanent: yes
-    immediate: yes
-    state: enabled
-
-- name: Set tun0 zone (ansible issue 41738 workaround)
-  command: "firewall-cmd --zone=intLAN --permanent --change-interface=tun0"
+#- name: Set tun0 zone
+#  firewalld:
+#    zone: intLAN
+#    interface: "tun0"
+#    permanent: yes
+#    immediate: yes
+#    state: enabled
+#
+#- name: Set tun0 zone (ansible issue 41738 workaround)
+#  command: "firewall-cmd --zone=intLAN --permanent --change-interface=tun0"

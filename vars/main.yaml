@@ -109,6 +109,14 @@ opt2_gateway6: "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_addre
 opt2_dns6_servers:
   - "{{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_address }}"
 
+create_bridge_for_lan: yes
+create_bridge_for_opt1: yes
+create_bridge_for_opt2: yes
+
+lan_bridge_name: lanvirbr
+opt1_bridge_name: opt1virbr
+opt2_bridge_name: opt2virbr
+
 ########################################################################################
 ### DHCP - dhcpd
 

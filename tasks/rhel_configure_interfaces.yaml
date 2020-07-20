@@ -86,19 +86,33 @@
   register: create_lan_connection
   until: create_lan_connection is not failed
   retries: 5
-  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static" and lan_dns == "manual"
+  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static" and lan_dns == "manual" and not create_bridge_for_lan|bool
 
 - name: Set LAN Connection Method (Ansible nmcli module bug workaround)
   shell: "nmcli con mod lan-{{ lan_interface }} ipv4.method manual"
-  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static"
+  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static" and not create_bridge_for_lan|bool
 
 - name: Set LAN Connection Method (Ansible nmcli module bug workaround)
   shell: "nmcli con mod lan-{{ lan_interface }} ipv4.method auto"
-  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "dhcp"
+  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "dhcp" and not create_bridge_for_lan|bool
 
 - name: Set DNS Manual Method (Ansible nmcli module bug workaround)
   shell: "nmcli con mod lan-{{ lan_interface }} ipv4.ignore-auto-dns yes"
-  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_dns == "manual"
+  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_dns == "manual" and not create_bridge_for_lan|bool
+
+- name: Create LAN Bridge
+  shell: "nmcli con add type bridge con-name {{ lan_bridge_name }} ifname {{ lan_bridge_name }}"
+
+- name: Add LAN Interface to Bridge
+  shell: "nmcli con add type ethernet con-name lan-{{ lan_interface }} ifname {{ lan_interface }} master {{ lan_bridge_name }}"
+
+- name: Configure LAN Bridge, static
+  shell: "nmcli con mod {{ lan_bridge_name }} ipv4.method manual ipv4.address \"{{ lan_ip_address }}/{{ lan_cidr }}\" ipv4.gateway \"{{ lan_gateway }}\" ipv4.dns \"{{ ' '.join(lan_dns_servers) }}\" ipv4.dns-search {{ system_domain }}"
+  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static" and create_bridge_for_lan|bool
+
+- name: Configure LAN Bridge, auto
+  shell: "nmcli con mod {{ lan_bridge_name }} ipv4.method auto"
+  when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "dhcp" and create_bridge_for_lan|bool
 
 #### OPT1
 
