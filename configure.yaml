@@ -69,7 +69,7 @@
 
     - name: Configure system interfaces
       include_role:
-        name: linux-system-roles.network
+        name: rhel-system-roles.network
       when: configure_interfaces|bool and interface_config_method == "role"
       tags:
         - configureInterfaces
