@@ -40,7 +40,6 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 SyslogFacility {{ sshd_syslog_facility }}
 LogLevel {{ sshd_log_level }}
 UseDNS {{ 'yes' if sshd_logging_use_dns|bool else 'no' }}
-FascistLogging {{ 'yes' if sshd_facist_logging|bool else 'no' }}
 
 # Authentication:
 
@@ -50,7 +49,7 @@ PermitRootLogin {{ 'yes' if sshd_permit_root_login|bool else 'no' }}
 MaxAuthTries {{ sshd_max_auth_tries }}
 MaxSessions {{ sshd_max_sessions }}
 
-PubkeyAuthentication {{ sshd_pubkey_authentication }}
+PubkeyAuthentication {{ 'yes' if sshd_pubkey_authentication|bool else 'no' }}
 
 # The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
 # but this is overridden so installations will only check .ssh/authorized_keys
