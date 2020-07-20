@@ -17,7 +17,7 @@ configure_upnp_upnpd: true
 configure_cockpit: true
 configure_containers: true
 configure_sshd: true
-configure_openvpn: true
+configure_openvpn: false
 
 ########################################################################################
 ### General Settings
