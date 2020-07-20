@@ -306,7 +306,7 @@
   when: deploy_ca_http_server|bool
 
 - name: Set SELinux Context in the HTML directory
-  shell: "semanage fcontext -a -t httpd_sys_content_t /var/www/{{ pki_certificate_authority_root_ca_slug }}(/.*)? && restorecon -Rv /var/www/{{ pki_certificate_authority_root_ca_slug }}"
+  shell: `semanage fcontext -a -t httpd_sys_content_t /var/www/{{ pki_certificate_authority_root_ca_slug }}(/.*)? && restorecon -Rv /var/www/{{ pki_certificate_authority_root_ca_slug }}`
 
 - name: Template over basic CA HTML Page
   template:
