@@ -79,6 +79,13 @@
       tags:
         - configureInterfaces
 
+    - name: Set LAN to never-default route
+      shell: "nmcli con mod {{ lan_bridge_name }} ipv4.never-default yes"
+    - name: Set OPT1 to never-default route
+      shell: "nmcli con mod {{ opt1_bridge_name }} ipv4.never-default yes"
+    - name: Set OPT2 to never-default route
+      shell: "nmcli con mod {{ opt2_bridge_name }} ipv4.never-default yes"
+
     - name: Restart network after configuring interfaces
       service:
         name: network
