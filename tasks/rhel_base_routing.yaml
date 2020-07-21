@@ -8,7 +8,7 @@
     reload: yes
   when: routing_enable_ipv4|bool
 
-- name: Disable Reverse Path Filtering
+- name: Disable Reverse Path Filtering in all
   sysctl:
     name: net.ipv4.conf.all.rp_filter
     value: "0"
@@ -17,7 +17,7 @@
     reload: yes
   when: routing_enable_ipv4|bool
 
-- name: Disable Reverse Path Filtering
+- name: Disable Reverse Path Filtering in default
   sysctl:
     name: net.ipv4.conf.default.rp_filter
     value: "0"
