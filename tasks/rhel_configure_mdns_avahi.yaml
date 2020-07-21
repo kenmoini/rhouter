@@ -1,4 +1,11 @@
 ---
+- name: Check for Avahi package
+  shell:
+    cmd: "rpm -qa | grep avahi"
+    warn: false
+  register: avahi_check
+  ignore_errors: yes
+
 - name: Install the Avahi package
   yum:
     name: avahi
@@ -6,6 +13,7 @@
   tags:
     - installPackages
     - installAvahi
+  when: avahi_check|bool
 
 - name: Start and enable Avahi
   service:

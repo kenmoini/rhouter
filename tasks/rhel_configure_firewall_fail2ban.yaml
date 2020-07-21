@@ -1,6 +1,7 @@
 ---
 - name: Check if EPEL repo is already configured
-  stat: path={{ epel_repofile_path }}
+  stat:
+    path: "{{ epel_repofile_path }}"
   register: epel_repofile_result
   tags:
     - installEPEL
@@ -22,6 +23,13 @@
   tags:
     - installEPEL
 
+- name: Check for fail2ban package
+  shell:
+    cmd: "rpm -qa | grep fail2ban"
+    warn: false
+  register: fail2ban_utils_check
+  ignore_errors: yes
+
 - name: Install fail2ban
   yum:
     name: fail2ban
@@ -29,6 +37,7 @@
   tags:
     - installPackages
     - installFail2ban
+  when: fail2ban_utils_check|bool
 
 - name: Template out fail2ban local jail config file
   template:

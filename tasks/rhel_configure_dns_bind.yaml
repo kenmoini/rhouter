@@ -1,4 +1,18 @@
 ---
+- name: Check for BIND package
+  shell:
+    cmd: "rpm -qa | grep bind"
+    warn: false
+  register: bind_check
+  ignore_errors: yes
+
+- name: Check for bind-utils package
+  shell:
+    cmd: "rpm -qa | grep bind-utils"
+    warn: false
+  register: bind_utils_check
+  ignore_errors: yes
+
 - name: Install BIND packages
   yum:
     name: ["bind", "bind-utils"]
@@ -6,6 +20,17 @@
   tags:
     - installPackages
     - installBIND
+  when: bind_check|bool or bind_utils_check|bool
+
+- name: Touch key directory for dhcp
+  file:
+    state: directory
+    path: /etc/dhcp/rndc-keys/
+
+- name: Generate random key config
+  shell:
+    cmd: rndc-confgen -a -b 512 && cp /etc/rndc.key /etc/dhcp/rndc-keys/rndc.key
+    creates: /etc/rndc.key
 
 - name: Template BIND config
   template:
@@ -13,6 +38,35 @@
     dest: /etc/named.conf
     backup: yes
   notify: restart BIND
+
+- name: Touch directory for BIND zones
+  file:
+    state: directory
+    path: /var/named/zones.d/
+    group: named
+    owner: named
+
+- name: Template BIND Zone files
+  template:
+    src: bind-named.zone.j2
+    dest: "/var/named/zones.d/{{ item.name }}.zone"
+    group: named
+    owner: named
+    mode: "664"
+  vars:
+    zone: "{{ item }}"
+  with_items: "{{ dns_zones }}"
+
+- name: Template BIND Reverse Zone files
+  template:
+    src: bind-named.rev-zone.j2
+    dest: "/var/named/zones.d/{{  '.'.join((item.network | ipaddr('revdns')).split('.')[1:-1]) }}.zone"
+    group: named
+    owner: named
+    mode: "664"
+  vars:
+    zone: "{{ item }}"
+  with_items: "{{ dns_zones }}"
 
 - name: Touch log dir
   file:

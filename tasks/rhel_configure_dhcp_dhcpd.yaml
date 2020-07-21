@@ -1,4 +1,18 @@
 ---
+- name: Check for dhcpd package
+  shell:
+    cmd: "rpm -qa | grep dhcp"
+    warn: false
+  register: dhcp_check
+  ignore_errors: yes
+
+- name: Check for python-netaddr package
+  shell:
+    cmd: "rpm -qa | grep python-netaddr"
+    warn: false
+  register: python_netaddr_check
+  ignore_errors: yes
+
 - name: Install dhcpd
   yum:
     name: ["dhcp", "python-netaddr"]
@@ -6,6 +20,7 @@
   tags:
     - installPackages
     - installDHCPd
+  when: dhcp_check|bool or python_netaddr_check|bool
 
 - name: Template out dhpcd config file
   template:
@@ -28,13 +43,14 @@
     dest: /etc/dhcp/dhcpd6.conf
     backup: yes
   when: routing_enable_ipv6|bool
-#  notify: restart dhcpd6
-#- name: Start and enable dhcpd6
-#  service:
-#    name: dhcpd
-#    state: started
-#    enabled: yes
-#  when: routing_enable_ipv6|bool
+  notify: restart dhcpd6
+
+- name: Start and enable dhcpd6
+  service:
+    name: dhcpd
+    state: started
+    enabled: yes
+  when: routing_enable_ipv6|bool
 
 - name: Force handlers to run
   meta: flush_handlers

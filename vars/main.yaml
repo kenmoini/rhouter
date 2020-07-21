@@ -18,7 +18,7 @@ configure_cockpit: true
 configure_containers: false
 configure_openvpn: false
 configure_libvirt: false
-configure_upnp_upnpd: true
+configure_upnp_upnpd: false
 
 ########################################################################################
 ### General Settings
@@ -30,7 +30,7 @@ system_timezone: America/New_York
 ########################################################################################
 ### Routing
 routing_enable_ipv4: true
-routing_enable_ipv6: false
+routing_enable_ipv6: true
 
 ########################################################################################
 ### Interfaces
@@ -60,14 +60,14 @@ wan_dns_servers:
   - 8.8.8.8
 
 lan_network_type: static #dhcp, disabled, or static
-lan_ip_address: 10.69.42.1
-lan_network_block: 10.69.42.0
-lan_netmask: 255.255.255.0
-lan_cidr: 24
-lan_gateway: 10.69.42.1
+lan_ip_address: 172.22.0.1
+lan_network_block: 172.22.0.0
+lan_netmask: 255.255.0.0
+lan_cidr: 16
+lan_gateway: 172.22.0.1
 lan_dns: manual #auto or manual
 lan_dns_servers:
-  - 10.69.42.4
+  - 172.22.0.1
 lan_ipv6_prefix: "fdf4:e2e0:df12"
 lan_ipv6_subnet: "b455"
 lan_ipv6_cidr: 64
@@ -77,14 +77,14 @@ lan_dns6_servers:
   - "{{ lan_ipv6_prefix }}:{{ lan_ipv6_subnet }}:{{ lan_ipv6_address }}"
 
 opt1_network_type: static #dhcp, disabled, or static
-opt1_ip_address: 10.69.44.1
-opt1_network_block: 10.69.44.0
-opt1_netmask: 255.255.255.0
-opt1_cidr: 24
-opt1_gateway: 10.69.42.1
+opt1_ip_address: 172.22.10.1
+opt1_network_block: 172.22.0.0
+opt1_netmask: 255.255.0.0
+opt1_cidr: 16
+opt1_gateway: 172.22.0.1
 opt1_dns: manual #auto or manual
 opt1_dns_servers:
-  - 10.69.42.1
+  - 172.22.0.1
 opt1_ipv6_prefix: "fdf4:e2e0:df12"
 opt1_ipv6_subnet: "a100"
 opt1_ipv6_cidr: 64
@@ -94,14 +94,14 @@ opt1_dns6_servers:
   - "{{ opt1_ipv6_prefix }}:{{ opt1_ipv6_subnet }}:{{ opt1_ipv6_address }}"
 
 opt2_network_type: static #dhcp, disabled, or static
-opt2_network_block: 10.69.46.0
-opt2_ip_address: 10.69.46.1
-opt2_netmask: 255.255.255.0
-opt2_cidr: 24
-opt2_gateway: 10.69.42.1
+opt2_ip_address: 172.22.20.1
+opt2_network_block: 172.22.20.0
+opt2_netmask: 255.255.0.0
+opt2_cidr: 16
+opt2_gateway: 172.22.0.1
 opt2_dns: manual #auto or manual
 opt2_dns_servers:
-  - 10.69.42.1
+  - 172.22.0.1
 opt2_ipv6_prefix: "fdf4:e2e0:df12"
 opt2_ipv6_subnet: "f690"
 opt2_ipv6_cidr: 64
@@ -124,7 +124,7 @@ opt1_zone_name: intOPT1
 opt2_zone_name: intOPT2
 
 # legacy or role
-interface_config_method: legacy
+interface_config_method: role
 
 network_provider: nm
 network_connections:
@@ -139,6 +139,18 @@ network_connections:
     persistent_state: absent
     type: ethernet
   - name: "{{ opt2_interface }}"
+    persistent_state: absent
+    type: ethernet
+  - name: "System {{ wan_interface }}"
+    persistent_state: absent
+    type: ethernet
+  - name: "System {{ lan_interface }}"
+    persistent_state: absent
+    type: ethernet
+  - name: "System {{ opt1_interface }}"
+    persistent_state: absent
+    type: ethernet
+  - name: "System {{ opt2_interface }}"
     persistent_state: absent
     type: ethernet
 
@@ -170,17 +182,17 @@ network_connections:
       dns: "{{ lan_dns_servers }}"
       gateway4: "{{ lan_gateway }}"
 
-  - name: "{{ lan_bridge_name }}-bond0"
-    type: bond
-    interface_name: "{{ lan_bridge_name }}-bond0"
-    master: "{{ lan_bridge_name }}"
-    slave_type: bridge
+  #  - name: "{{ lan_bridge_name }}-bond0"
+  #    type: bond
+  #    interface_name: "{{ lan_bridge_name }}-bond0"
+  #    master: "{{ lan_bridge_name }}"
+  #    slave_type: bridge
 
-  - name: "{{ lan_bridge_name }}-bond0-{{ lan_interface }}"
+  - name: "{{ lan_bridge_name }}-{{ lan_interface }}"
     type: ethernet
     interface_name: "{{ lan_interface }}"
-    master: "{{ lan_bridge_name }}-bond0"
-    slave_type: bond
+    master: "{{ lan_bridge_name }}"
+    slave_type: bridge
 
   - name: "{{ opt1_bridge_name }}"
     state: up
@@ -197,17 +209,11 @@ network_connections:
       dns: "{{ opt1_dns_servers }}"
       gateway4: "{{ opt1_gateway }}"
 
-  - name: "{{ opt1_bridge_name }}-bond0"
-    type: bond
-    interface_name: "{{ opt1_bridge_name }}-bond0"
-    master: "{{ opt1_bridge_name }}"
-    slave_type: bridge
-
-  - name: "{{ opt1_bridge_name }}-bond0-{{ opt1_interface }}"
+  - name: "{{ opt1_bridge_name }}-{{ opt1_interface }}"
     type: ethernet
     interface_name: "{{ opt1_interface }}"
-    master: "{{ opt1_bridge_name }}-bond0"
-    slave_type: bond
+    master: "{{ opt1_bridge_name }}"
+    slave_type: bridge
 
   - name: "{{ opt2_bridge_name }}"
     state: up
@@ -224,49 +230,11 @@ network_connections:
       dns: "{{ opt2_dns_servers }}"
       gateway4: "{{ opt2_gateway }}"
 
-  - name: "{{ opt2_bridge_name }}-bond0"
-    type: bond
-    interface_name: "{{ opt2_bridge_name }}-bond0"
-    master: "{{ opt2_bridge_name }}"
-    slave_type: bridge
-
-  - name: "{{ opt2_bridge_name }}-bond0-{{ opt2_interface }}"
+  - name: "{{ opt2_bridge_name }}-{{ opt2_interface }}"
     type: ethernet
     interface_name: "{{ opt2_interface }}"
-    master: "{{ opt2_bridge_name }}-bond0"
-    slave_type: bond
-
-#  - name: "{{ opt1_bridge_name }}"
-#    state: up
-#    persistent_state: present
-#    type: bridge
-#    autoconnect: yes
-#    interface_name: "{{ opt1_interface }}"
-#    zone: "{{ opt1_zone_name }}"
-#    ip:
-#      route_metric4: 102
-#      dhcp4: no
-#      auto6: no
-#      address:
-#        - "{{ opt1_ip_address }}/{{ opt1_cidr }}"
-#      dns: "{{ opt1_dns_servers }}"
-#      gateway4: "{{ opt1_gateway }}"
-#
-#  - name: "{{ opt2_bridge_name }}"
-#    state: up
-#    persistent_state: present
-#    type: bridge
-#    autoconnect: yes
-#    interface_name: "{{ opt2_interface }}"
-#    zone: "{{ opt2_zone_name }}"
-#    ip:
-#      route_metric4: 103
-#      dhcp4: no
-#      auto6: no
-#      address:
-#        - "{{ opt2_ip_address }}/{{ opt2_cidr }}"
-#      dns: "{{ opt2_dns_servers }}"
-#      gateway4: "{{ opt2_gateway }}"
+    master: "{{ opt2_bridge_name }}"
+    slave_type: bridge
 
 network_allow_restart: yes
 
@@ -281,7 +249,44 @@ dhcp_networks:
     range_start: 100
     range_end: 200
     dns_servers: "{{ lan_dns_servers }}"
-    domain_name: "lan.kemo.labs"
+    domain_name: "kemo.labs"
+    dhcp_static_reservations:
+      - name: hp-switch
+        ip: "172.22.0.2"
+        mac: "d0:7e:28:04:c2:70"
+      - name: pi-hole
+        ip: "172.22.0.4"
+        mac: "b8:27:eb:5d:74:e9"
+      - name: orbi-base
+        ip: "172.22.0.5"
+        mac: "3c:37:86:cc:47:a3"
+      - name: orbi-satellite
+        ip: "172.22.0.6"
+        mac: "3c:37:86:cb:c0:9f"
+      - name: philips-hue
+        ip: "172.22.0.10"
+        mac: "ec:b5:fa:0e:5d:13"
+      - name: office-echo
+        ip: "172.22.0.11"
+        mac: "fc:a1:83:21:fb:02"
+      - name: bedroom-echo
+        ip: "172.22.0.12"
+        mac: "a4:08:01:64:87:ae"
+      - name: kitchen-echo
+        ip: "172.22.0.13"
+        mac: "f0:f0:a4:cd:9c:6b"
+      - name: bathroom-echo
+        ip: "172.22.0.14"
+        mac: "74:a7:ea:af:39:c9"
+      - name: kemo-desktop-eth
+        ip: "172.22.0.36"
+        mac: "30:9c:23:b1:2f:11"
+      - name: kemo-desktop-wifi
+        ip: "172.22.0.37"
+        mac: "7C:76:35:4D:BF:84"
+      - name: rhv-1-nic1
+        ip: "172.22.0.40"
+        mac: "90:b1:1c:2a:eb:38"
 
   - name: "{{ opt1_interface }}-rhvmw"
     serviced: no
@@ -296,32 +301,6 @@ dhcp_networks:
     dns_servers: "{{ opt2_dns_servers }}"
     domain_name: "mgmt.kemo.labs"
 
-dhcp_static_reservations:
-  - name: hp-switch
-    ip: "10.69.42.2"
-    mac: "d0:7e:28:04:c2:70"
-  - name: pi-hole
-    ip: "10.69.42.4"
-    mac: "b8:27:eb:5d:74:e9"
-  - name: orbi-base
-    ip: "10.69.42.5"
-    mac: "3c:37:86:cc:47:a3"
-  - name: orbi-satellite
-    ip: "10.69.42.6"
-    mac: "3c:37:86:cb:c0:9f"
-  - name: philips-hue-hub
-    ip: "10.69.42.10"
-    mac: "ec:b5:fa:0e:5d:13"
-  - name: office-echo
-    ip: "10.69.42.11"
-    mac: "fc:a1:83:21:fb:02"
-  - name: bedroom-echo
-    ip: "10.69.42.12"
-    mac: "a4:08:01:64:87:ae"
-  - name: kitchen-echo
-    ip: "10.69.42.13"
-    mac: "f0:f0:a4:cd:9c:6b"
-
 ########################################################################################
 ### DHCP - dhcpd6 - IPv6!!!!!!
 
@@ -335,7 +314,7 @@ dhcp6_networks:
     range_start: "0:0:0:0"
     range_end: "ffff:ffff:ffff:ffff"
     dns_servers: "{{ lan_dns6_servers }}"
-    domain_name: "lan.kemo.labs"
+    domain_name: "kemo.labs"
 
   - name: "{{ opt1_interface }}-rhvmw"
     serviced: no
@@ -356,6 +335,24 @@ dhcp6_networks:
 
 ########################################################################################
 ### DNS - BIND
+
+zone_default_serial: "{{ ansible_date_time.epoch }}"
+zone_default_refresh: 600
+zone_default_retry: 600
+zone_default_expire: 28800
+zone_default_minimum: 3600
+zone_default_ttl: 600
+zone_default_record_ttl: 600
+
+dns_zones:
+  - name: kemo.labs
+    network: "{{ lan_network_block }}"
+    dns_server: "{{ lan_ip_address }}"
+    name_server_host: rhouter
+    records:
+      - name: rhouter
+        type: A
+        value: "{{ lan_ip_address }}"
 
 ########################################################################################
 ### mDNS - Avahi
@@ -430,7 +427,7 @@ ca_https_server_port: 443
 ## For the FQDNs, the first will be used in OpenSSL config, ideally externally accessible
 ca_http_server_fqdns:
   - "ca.kemo.network"
-  - "ca.kemo.lab"
+  - "ca.kemo.labs"
 
 ########################################################################################
 ### System - Cockpit

@@ -1,5 +1,19 @@
+acl internals {
+  127.0.0.0/8;
+  {{ lan_network_block }}/{{ lan_cidr }};
+  {{ opt1_network_block }}/{{ opt1_cidr }};
+  {{ opt2_network_block }}/{{ opt2_cidr }};
+};
+include "/etc/rndc.key";
+
+controls {
+  inet 127.0.0.1 port 953 allow { 127.0.0.1; };
+};
+
+
 options {
   listen-on port 53 { 127.0.0.1; {{ lan_ip_address }}; {{ opt1_ip_address }}; {{ opt2_ip_address }}; };
+  listen-on-v6 port 53 { ::1; {{ lan_ipv6_prefix }}:{{ lan_ipv6_subnet }}:{{ lan_ipv6_address }}; {{ opt1_ipv6_prefix }}:{{ opt1_ipv6_subnet }}:{{ opt1_ipv6_address }}; {{ opt2_ipv6_prefix }}:{{ opt2_ipv6_subnet }}:{{ opt2_ipv6_address }}; };
   directory       "/var/named";
   dump-file       "/var/named/data/cache_dump.db";
   statistics-file "/var/named/data/named_stats.txt";
@@ -11,8 +25,16 @@ options {
 
   recursion yes;
 
+  forwarders {
+    1.1.1.1;
+    8.8.8.8;
+  }
+
   dnssec-enable no;
   dnssec-validation no;
+  auth-nxdomain no;
+  version none;
+  allow-recursion { internals; }; # Specifies the LAN can recursively ask
 
   /* Path to ISC DLV key */
   bindkeys-file "/etc/named.root.key";
@@ -22,6 +44,22 @@ options {
   pid-file "/run/named/named.pid";
   session-keyfile "/run/named/session.key";
 };
+
+{% if dns_zones is defined %}
+{% for zone in dns_zones %}
+zone "{{ zone.name }}" {
+  type master;
+  file "/var/named/zones.d/{{ zone.name }}.zone";
+  allow-update { key rndc-key; };
+};
+zone "{{  '.'.join((zone.network | ipaddr('revdns')).split('.')[1:-1]) }}" {
+  type master;
+  file "/var/named/zones.d/{{  '.'.join((zone.network | ipaddr('revdns')).split('.')[1:-1]) }}.zone";
+  allow-update { key rndc-key; };
+};
+
+{% endfor %}
+{% endif %}
 
 logging {
   channel default_log {

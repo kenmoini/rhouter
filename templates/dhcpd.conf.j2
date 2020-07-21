@@ -5,23 +5,49 @@ max-lease-time {{ dhcp_dhcpd_max_lease_time }};
 authoritative;
 {% endif %}
 
+allow unknown-clients;
+ddns-updates on;
+ddns-domainname "{{ system_domain }}.";
+ddns-rev-domainname "in-addr.arpa.";
+ddns-update-style interim;
+ignore client-updates;
+update-static-leases on;
+use-host-decl-names on;
+update-optimization off;
+update-conflict-detection off;
+include "/etc/dhcp/rndc-keys/rndc.key";
+
 {% for network in dhcp_networks %}
 subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ipaddr('netmask') }} {
 {% if network.serviced|bool %}
   option domain-name "{{ network.domain_name }}";
   option domain-name-servers {{ ', '.join(network.dns_servers) }};
+  option subnet-mask {{ network.network | ipaddr('netmask') }};
   option routers {{ network.gateway }};
   range {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_end }};
 {% endif %}
+  {% if network.dhcp_static_reservations is defined %}
+  {% for reservation in network.dhcp_static_reservations %}
+  host {{ reservation.name }} {
+    hardware ethernet    {{ reservation.mac }};
+    fixed-address        {{ reservation.ip }};
+    max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
+  }
+  {% endfor %}
+  {% endif %}
 }
 {% endfor %}
 
-{% if dhcp_static_reservations is defined %}
-{% for reservation in dhcp_static_reservations %}
-host {{ reservation.name }} {
-	hardware ethernet    {{ reservation.mac }};
-	fixed-address        {{ reservation.ip }};
-	max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
+{% if dns_zones is defined %}
+{% for zone in dns_zones %}
+zone {{ zone.name }}. {
+  primary {{ zone.dns_server }};
+  key rndc-key; 
 }
+zone {{  '.'.join((zone.network | ipaddr('revdns')).split('.')[1:-1]) }}. {
+  primary {{ zone.dns_server }};
+  key rndc-key;
+}
+
 {% endfor %}
 {% endif %}

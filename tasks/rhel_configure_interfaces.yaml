@@ -13,6 +13,11 @@
 
 #### WAN
 
+- name: Check for existing WAN Connection
+  stat:
+    path: "/etc/sysconfig/network-scripts/ifcfg-wan-{{ wan_interface }}"
+  register: wan_interface_check
+
 - name: Create WAN Connection - Static, auto DNS
   nmcli:
     conn_name: "wan-{{ wan_interface }}"
@@ -73,6 +78,11 @@
 
 #### LAN
 
+- name: Check for existing LAN Connection
+  stat:
+    path: "/etc/sysconfig/network-scripts/ifcfg-lan-{{ lan_interface }}"
+  register: lan_interface_check
+
 - name: Create LAN Connection, manual DNS
   nmcli:
     conn_name: "lan-{{ lan_interface }}"
@@ -100,11 +110,23 @@
   shell: "nmcli con mod lan-{{ lan_interface }} ipv4.ignore-auto-dns yes"
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_dns == "manual" and not create_bridge_for_lan|bool
 
+- name: Check for existing LAN Bridge
+  stat:
+    path: "/etc/sysconfig/network-scripts/ifcfg-{{ lan_bridge_name }}"
+  register: lan_bridge_interface_check
+
 - name: Create LAN Bridge
   shell: "nmcli con add type bridge con-name {{ lan_bridge_name }} ifname {{ lan_bridge_name }}"
+  when: not lan_bridge_interface_check.stat.exists
+
+- name: Check for existing LAN Bridge Secondary
+  stat:
+    path: "/etc/sysconfig/network-scripts/ifcfg-lan-{{ lan_interface }}"
+  register: lan_br_interface_check
 
 - name: Add LAN Interface to Bridge
   shell: "nmcli con add type ethernet con-name lan-{{ lan_interface }} ifname {{ lan_interface }} master {{ lan_bridge_name }}"
+  when: not lan_br_interface_check.stat.exists
 
 - name: Configure LAN Bridge, static
   shell: "nmcli con mod {{ lan_bridge_name }} ipv4.method manual ipv4.address \"{{ lan_ip_address }}/{{ lan_cidr }}\" ipv4.gateway \"{{ lan_gateway }}\" ipv4.dns \"{{ ' '.join(lan_dns_servers) }}\" ipv4.dns-search {{ system_domain }}"
