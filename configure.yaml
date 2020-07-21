@@ -60,12 +60,6 @@
       tags:
         - setHostname
 
-    - name: Perform System Update
-      include_tasks: tasks/rhel_yum_update.yaml
-      when: update_system|bool
-      tags:
-        - systemUpdate
-
     - name: Configure system interfaces
       include_tasks: tasks/rhel_configure_interfaces.yaml
       when: configure_interfaces|bool and interface_config_method == "legacy"
@@ -83,8 +77,10 @@
       shell: "nmcli con mod {{ lan_bridge_name }} ipv4.never-default yes"
     - name: Set OPT1 to never-default route
       shell: "nmcli con mod {{ opt1_bridge_name }} ipv4.never-default yes"
+      when: enable_opt1_interface|bool and configure_opt1_interface|bool
     - name: Set OPT2 to never-default route
       shell: "nmcli con mod {{ opt2_bridge_name }} ipv4.never-default yes"
+      when: enable_opt2_interface|bool and configure_opt2_interface|bool
 
     - name: Restart network after configuring interfaces
       service:
@@ -93,6 +89,12 @@
       when: configure_interfaces|bool and interface_config_method == "role"
       tags:
         - configureInterfaces
+
+    - name: Perform System Update
+      include_tasks: tasks/rhel_yum_update.yaml
+      when: update_system|bool
+      tags:
+        - systemUpdate
 
     - name: Setup Firewalld basics
       include_tasks: tasks/rhel_setup_firewalld.yaml

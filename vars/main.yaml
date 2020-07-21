@@ -3,7 +3,7 @@
 # Function Switches
 
 set_hostname: true
-update_system: true
+update_system: false
 
 configure_routing: true
 configure_interfaces: true
@@ -13,12 +13,12 @@ configure_mdns_avahi: true
 configure_ntp_chrony: true
 configure_firewall_firewalld: true
 configure_firewall_fail2ban: true
-configure_upnp_upnpd: true
-configure_cockpit: true
-configure_containers: true
 configure_sshd: true
+configure_cockpit: true
+configure_containers: false
 configure_openvpn: false
 configure_libvirt: false
+configure_upnp_upnpd: true
 
 ########################################################################################
 ### General Settings
@@ -30,19 +30,19 @@ system_timezone: America/New_York
 ########################################################################################
 ### Routing
 routing_enable_ipv4: true
-routing_enable_ipv6: true
+routing_enable_ipv6: false
 
 ########################################################################################
 ### Interfaces
 enable_wan_interface: true
 enable_lan_interface: true
-enable_opt1_interface: true
-enable_opt2_interface: true
+enable_opt1_interface: false
+enable_opt2_interface: false
 
 configure_wan_interface: true
 configure_lan_interface: true
-configure_opt1_interface: true
-configure_opt2_interface: true
+configure_opt1_interface: false
+configure_opt2_interface: false
 
 wan_interface: em1
 lan_interface: em2
@@ -124,7 +124,7 @@ opt1_zone_name: intOPT1
 opt2_zone_name: intOPT2
 
 # legacy or role
-interface_config_method: role
+interface_config_method: legacy
 
 network_provider: nm
 network_connections:
