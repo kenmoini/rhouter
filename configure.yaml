@@ -86,7 +86,7 @@
       service:
         name: network
         state: restarted
-      when: configure_interfaces|bool and interface_config_method == "role"
+      when: configure_interfaces|bool
       tags:
         - configureInterfaces
 
