@@ -1,18 +1,4 @@
 ---
-- name: Check for dhcpd package
-  shell:
-    cmd: "rpm -qa | grep -w dhcp"
-    warn: false
-  register: dhcp_check
-  ignore_errors: yes
-
-- name: Check for python-netaddr package
-  shell:
-    cmd: "rpm -qa | grep python-netaddr"
-    warn: false
-  register: python_netaddr_check
-  ignore_errors: yes
-
 - name: Install dhcpd
   yum:
     name: ["dhcp", "python-netaddr"]
@@ -20,7 +6,6 @@
   tags:
     - installPackages
     - installDHCPd
-  when: dhcp_check.rc|bool and python_netaddr_check.rc|bool
 
 - name: Template out dhpcd config file
   template:
