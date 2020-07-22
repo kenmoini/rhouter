@@ -28,8 +28,6 @@ subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ip
   range {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_end }};
 {% endif %}
 }
-{% endfor %}
-
 
 {% if network.dhcp_static_reservations is defined %}
 {% for reservation in network.dhcp_static_reservations %}
@@ -43,6 +41,8 @@ host {{ reservation.name }} {
 }
 {% endfor %}
 {% endif %}
+
+{% endfor %}
 
 {% if dns_zones is defined %}
 {% for zone in dns_zones %}

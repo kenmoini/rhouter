@@ -1,7 +1,10 @@
 ---
 - name: Install the Avahi package
   yum:
-    name: avahi
+    name:
+      - avahi
+      - avahi-tools
+      - nss-mdns
     state: latest
   tags:
     - installPackages
