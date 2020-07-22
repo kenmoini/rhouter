@@ -1,0 +1,20 @@
+---
+- name: Install needed libvirt packages
+  yum:
+    name: "{{ libvirt_packages }}"
+    state: latest
+  tags:
+    - installPackages
+      installLibvirt
+
+- name: Install Cockpit machines
+  yum:
+    name: "{{ libvirt_cockpit_packages }}"
+    state: latest
+  tags:
+    - installPackages
+      installCockpitMachines
+  when: configure_cockpit|bool
+#- name: Create network for LAN bridge
+#- name: Create network for OPT1 bridge
+#- name: Create network for OPT2 bridge

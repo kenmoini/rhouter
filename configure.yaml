@@ -182,6 +182,13 @@
       tags:
         - configureContainers
 
+    - name: Setup Virtualization - libvirt
+      include_tasks: tasks/rhel_configure_libvirt.yaml
+      when: configure_virt_libvirt|bool
+      tags:
+        - configureVirtualization
+        - configureLibvirt
+
     - name: Set up VPN - OpenVPN
       include_tasks: tasks/rhel_configure_openvpn.yaml
       when: configure_openvpn|bool

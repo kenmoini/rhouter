@@ -42,6 +42,21 @@ cockpit_packages:
   - git
 
 ########################################################################################
+### Virtualization - libvirt
+libvirt_packages:
+  - libvirt-bash-completion
+  - qemu-kvm
+  - libvirt
+  - virt-install
+  - libvirt-python
+  - python-lxml
+  - libvirt-client
+  - libguestfs-tools
+
+libvirt_cockpit_packages:
+  - cockpit-machines
+
+########################################################################################
 ### System - Configure and Secure SSHd
 
 sshd_port: 22

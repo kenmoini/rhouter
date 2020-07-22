@@ -19,6 +19,7 @@ configure_containers: false
 configure_openvpn: false
 configure_libvirt: false
 configure_upnp_upnpd: false
+configure_virt_libvirt: true
 
 ########################################################################################
 ### General Settings
@@ -292,6 +293,7 @@ dhcp_networks:
   - name: "{{ lan_interface }}-main"
     serviced: yes
     network: "{{ lan_network_block }}/{{ lan_cidr }}"
+    ntp_server: "{{ lan_gateway }}"
     gateway: "{{ lan_gateway }}"
     range_start: 100
     range_end: 200
@@ -344,6 +346,7 @@ dhcp_networks:
     serviced: yes
     network: "{{ opt2_network_block }}/{{ opt2_cidr }}"
     gateway: "{{ opt2_gateway }}"
+    ntp_server: "{{ opt2_gateway }}"
     range_start: 100
     range_end: 200
     dns_servers: "{{ opt2_dns_servers }}"
@@ -396,9 +399,9 @@ dns_zones:
   - name: kemo.labs
     network: "{{ lan_network_block }}"
     dns_server: "{{ lan_ip_address }}"
-    name_server_host: rhouter
+    name_server_host: "{{ system_hostname }}"
     records:
-      - name: rhouter
+      - name: "{{ system_hostname }}"
         type: A
         value: "{{ lan_ip_address }}"
 
@@ -419,7 +422,7 @@ enable_firewalld: true
 ########################################################################################
 ### VPN - OpenVPN
 
-pki_certificate_authority_root_path: "/etc/ssl/certs/rhouter"
+pki_certificate_authority_root_path: "/etc/ssl/certs/"{{ system_hostname }}""
 pki_certificate_authority_root_ca_expiration: "+10years+1day"
 pki_certificate_authority_root_ca_slug: "ca.{{ system_domain }}"
 
