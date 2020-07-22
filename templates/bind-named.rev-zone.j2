@@ -1,13 +1,13 @@
 $ORIGIN {{ zone.name }}. 
 $TTL {{ zone_default_ttl }}
-@ IN SOA {{ name_server_host }}.{{ zone.name }}. root.{{ zone.name }}. (  
+@ IN SOA {{ zone.name_server_host }}.{{ zone.name }}. root.{{ zone.name }}. (  
   {{ zone_default_serial }};
   {{ zone_default_refresh }};
   {{ zone_default_retry }};
   {{ zone_default_expire }};
   {{ zone_default_minimum }};
   )
-  NS {{ name_server_host }}.{{ zone.name }}.
+  NS {{ zone.name_server_host }}.{{ zone.name }}.
 {% if zone.records is defined %}
 {% for record in zone.records %}
 {% if record.type == "A" %}}
