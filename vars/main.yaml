@@ -141,18 +141,6 @@ network_connections:
   - name: "{{ opt2_interface }}"
     persistent_state: absent
     type: ethernet
-  - name: "System {{ wan_interface }}"
-    persistent_state: absent
-    type: ethernet
-  - name: "System {{ lan_interface }}"
-    persistent_state: absent
-    type: ethernet
-  - name: "System {{ opt1_interface }}"
-    persistent_state: absent
-    type: ethernet
-  - name: "System {{ opt2_interface }}"
-    persistent_state: absent
-    type: ethernet
 
   - name: "wan-{{ wan_interface }}"
     state: up
@@ -179,8 +167,10 @@ network_connections:
       auto6: no
       address:
         - "{{ lan_ip_address }}/{{ lan_cidr }}"
+        - "{{ lan_ipv6_prefix }}:{{ lan_ipv6_subnet }}:{{ lan_ipv6_address }}/{{ lan_ipv6_cidr }}"
       dns: "{{ lan_dns_servers }}"
       gateway4: "{{ lan_gateway }}"
+      gateway6: "{{ lan_ipv6_prefix }}:{{ lan_ipv6_subnet }}:{{ lan_ipv6_address }}"
 
   #  - name: "{{ lan_bridge_name }}-bond0"
   #    type: bond
