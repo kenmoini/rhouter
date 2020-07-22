@@ -23,12 +23,12 @@ dhcpv6-lease-file-name "/var/lib/dhcpd/dhcpd6.leases";
 
 
 {% for network in dhcp6_networks %}
-subnet {{ network.network_prefix }}:{{ network.subnet }}::{{ network.cidr }} {
+subnet6 {{ network.network_prefix }}:{{ network.subnet }}::/{{ network.cidr }} {
 {% if network.serviced|bool %}
   option dhcp6.domain-search "{{ network.domain_name }}";
   option dhcp6.name-servers {{ ', '.join(network.dns_servers) }};
 
-  range {{ network.network_prefix }}:{{ network.subnet }}:{{ network.range_start }} {{ network.network_prefix }}:{{ network.subnet }}:{{ network.range_end }};
+  range6 {{ network.network_prefix }}:{{ network.subnet }}:{{ network.range_start }} {{ network.network_prefix }}:{{ network.subnet }}:{{ network.range_end }};
 {% endif %}
 }
 {% endfor %}
