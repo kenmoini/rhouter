@@ -301,6 +301,7 @@ dhcp_networks:
       - name: hp-switch
         ip: "192.168.42.2"
         mac: "d0:7e:28:04:c2:70"
+        hostname: hp-switch
       - name: pi-hole
         ip: "192.168.42.4"
         mac: "b8:27:eb:5d:74:e9"
