@@ -1,4 +1,32 @@
 ---
+- name: Check for NetworkManager-glib package
+  shell:
+    cmd: "rpm -qa | grep NetworkManager-glib"
+    warn: false
+  register: nmglib_check
+  ignore_errors: yes
+
+- name: Check for nm-connection-editor package
+  shell:
+    cmd: "rpm -qa | grep nm-connection-editor"
+    warn: false
+  register: nmconedit_check
+  ignore_errors: yes
+
+- name: Check for libsemanage-python package
+  shell:
+    cmd: "rpm -qa | grep libsemanage-python"
+    warn: false
+  register: libsemanage_check
+  ignore_errors: yes
+
+- name: Check for policycoreutils-python package
+  shell:
+    cmd: "rpm -qa | grep policycoreutils-python"
+    warn: false
+  register: policycoreutils_check
+  ignore_errors: yes
+
 - name: install needed network manager libs
   yum:
     name:
@@ -10,6 +38,7 @@
   tags:
     - installPackages
     - installNetworkManager
+  when: nmglib_check|bool or nmconedit_check|bool libsemanage_check|bool or policycoreutils_check|bool
 
 #### WAN
 
@@ -129,7 +158,7 @@
   when: not lan_br_interface_check.stat.exists
 
 - name: Configure LAN Bridge, static
-  shell: "nmcli con mod {{ lan_bridge_name }} ipv4.method manual ipv4.address \"{{ lan_ip_address }}/{{ lan_cidr }}\" ipv4.gateway \"{{ lan_gateway }}\" ipv4.dns \"{{ ' '.join(lan_dns_servers) }}\" ipv4.dns-search {{ system_domain }}"
+  shell: 'nmcli con mod {{ lan_bridge_name }} ipv4.method manual ipv4.address "{{ lan_ip_address }}/{{ lan_cidr }}" ipv4.gateway "{{ lan_gateway }}" ipv4.dns "{{ '' ''.join(lan_dns_servers) }}" ipv4.dns-search {{ system_domain }}'
   when: enable_lan_interface|bool and configure_lan_interface|bool and lan_network_type == "static" and create_bridge_for_lan|bool
 
 - name: Configure LAN Bridge, auto
