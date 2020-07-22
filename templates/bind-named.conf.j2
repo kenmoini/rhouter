@@ -28,15 +28,14 @@ options {
   forwarders {
     1.1.1.1;
     8.8.8.8;
-  }
+  };
 
   dnssec-enable no;
   dnssec-validation no;
   auth-nxdomain no;
   version none;
-  allow-recursion { internals; }; # Specifies the LAN can recursively ask
-
-  /* Path to ISC DLV key */
+  allow-recursion { internals; };
+  
   bindkeys-file "/etc/named.root.key";
 
   managed-keys-directory "/var/named/dynamic";
