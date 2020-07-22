@@ -11,6 +11,6 @@ yum install -y git nano wget curl ansible bridge-utils rhel-system-roles python-
 
 ## Reset network prior to set up
 
-nmcli con del $(nmcli con | tail -n +2 | awk '{print $1;}')
+nmcli con del $(nmcli -t -f NAME con show | while read p; do echo "\"$p\""; done;)
 nmcli con add type ethernet con-name em1 ifname em1
 nmcli con up em1
