@@ -9,9 +9,8 @@ $TTL {{ zone_default_ttl }}
   NS {{ zone.name_server_host }}.{{ zone.name }}.
 {% if zone.records is defined %}
 {% for record in zone.records %}
-{% if record.type == "A" %}}
+{% if record.type == "A" %}
 {{ (record.value).split('.')[-1] }} PTR {{ record.name }}.{{ zone.name }}.
 {% endif %}
 {% endfor %}
 {% endif %}
-;

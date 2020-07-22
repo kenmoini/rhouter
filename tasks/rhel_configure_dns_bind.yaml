@@ -32,6 +32,18 @@
     cmd: rndc-confgen -a -b 512 && cp /etc/rndc.key /etc/dhcp/rndc-keys/rndc.key
     creates: /etc/rndc.key
 
+- name: Set permissions for BIND key
+  file:
+    path: /etc/rndc.key
+    owner: named
+    group: named
+
+- name: Set permissions for DHCP key
+  file:
+    path: /etc/dhcp/rndc-keys/rndc.key
+    owner: dhcp
+    group: dhcp
+
 - name: Template BIND config
   template:
     src: bind-named.conf.j2
@@ -56,6 +68,7 @@
   vars:
     zone: "{{ item }}"
   with_items: "{{ dns_zones }}"
+  notify: restart BIND
 
 - name: Template BIND Reverse Zone files
   template:
@@ -67,6 +80,7 @@
   vars:
     zone: "{{ item }}"
   with_items: "{{ dns_zones }}"
+  notify: restart BIND
 
 - name: Touch log dir
   file:
