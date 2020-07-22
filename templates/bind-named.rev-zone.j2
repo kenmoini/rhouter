@@ -11,7 +11,7 @@ $TTL {{ zone_default_ttl }}
 {% if zone.records is defined %}
 {% for record in zone.records %}
 {% if record.type == "A" %}}
-{{ (record.network).split('.')[-1] }} PTR {{ record.name }}.{{ zone.name }}.
+{{ (record.value).split('.')[-1] }} PTR {{ record.name }}.{{ zone.name }}.
 {% endif %}
 {% endfor %}
 {% endif %}
