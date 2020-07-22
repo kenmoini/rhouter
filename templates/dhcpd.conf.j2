@@ -26,17 +26,19 @@ subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ip
   option routers {{ network.gateway }};
   range {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_end }};
 {% endif %}
-  {% if network.dhcp_static_reservations is defined %}
-  {% for reservation in network.dhcp_static_reservations %}
-  host {{ reservation.name }} {
-    hardware ethernet    {{ reservation.mac }};
-    fixed-address        {{ reservation.ip }};
-    max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
-  }
-  {% endfor %}
-  {% endif %}
 }
 {% endfor %}
+
+
+{% if network.dhcp_static_reservations is defined %}
+{% for reservation in network.dhcp_static_reservations %}
+host {{ reservation.name }} {
+  hardware ethernet    {{ reservation.mac }};
+  fixed-address        {{ reservation.ip }};
+  max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
+}
+{% endfor %}
+{% endif %}
 
 {% if dns_zones is defined %}
 {% for zone in dns_zones %}
