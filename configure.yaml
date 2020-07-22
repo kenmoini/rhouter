@@ -102,12 +102,7 @@
       when: enable_opt2_interface|bool and configure_opt2_interface|bool
 
     - name: Restart network after configuring interfaces
-      service:
-        name: network
-        state: restarted
-      when: configure_interfaces|bool
-      tags:
-        - configureInterfaces
+      include_tasks: tasks/rhel_restart_network.yaml
 
     - name: Perform System Update
       include_tasks: tasks/rhel_yum_update.yaml
@@ -161,6 +156,12 @@
       tags:
         - configureDHCP
         - configureDHCPd
+
+    - name: Set WAN to localhost DNS
+      shell: "nmcli con mod wan-{{ wan_interface }} ipv4.dns 127.0.0.1"
+
+    - name: Restart network after configuring wan local DNS
+      include_tasks: tasks/rhel_restart_network.yaml
 
     - name: Set up NTP - chronyd
       include_tasks: tasks/rhel_configure_ntp_chrony.yaml

@@ -35,9 +35,9 @@ host {{ reservation.name }} {
   hardware ethernet    {{ reservation.mac }};
   fixed-address        {{ reservation.ip }};
   max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
-  {% if reservation.hostname is defined %}
-  option host-name {{ reservation.hostname }}
-  {% endif %}
+{% if reservation.hostname is defined %}
+  option host-name {{ reservation.hostname }};
+{% endif %}
 }
 {% endfor %}
 {% endif %}

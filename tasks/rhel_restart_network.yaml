@@ -1,0 +1,8 @@
+---
+- name: Restart network after configuring wan local DNS
+  service:
+    name: network
+    state: restarted
+  when: network_allow_restart|bool
+  tags:
+    - restartNetwork
