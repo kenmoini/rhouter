@@ -1,18 +1,4 @@
 ---
-- name: Check for BIND package
-  shell:
-    cmd: "rpm -qa | grep -w bind"
-    warn: false
-  register: bind_check
-  ignore_errors: yes
-
-- name: Check for bind-utils package
-  shell:
-    cmd: "rpm -qa | grep bind-utils"
-    warn: false
-  register: bind_utils_check
-  ignore_errors: yes
-
 - name: Install BIND packages
   yum:
     name: ["bind", "bind-utils"]
@@ -20,7 +6,6 @@
   tags:
     - installPackages
     - installBIND
-  when: bind_check.rc|bool and bind_utils_check.rc|bool
 
 - name: Touch key directory for dhcp
   file:

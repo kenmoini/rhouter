@@ -23,13 +23,6 @@
   tags:
     - installEPEL
 
-- name: Check for fail2ban package
-  shell:
-    cmd: "rpm -qa | grep -w fail2ban"
-    warn: false
-  register: fail2ban_utils_check
-  ignore_errors: yes
-
 - name: Install fail2ban
   yum:
     name: fail2ban
@@ -37,7 +30,6 @@
   tags:
     - installPackages
     - installFail2ban
-  when: fail2ban_utils_check.rc|bool
 
 - name: Template out fail2ban local jail config file
   template:

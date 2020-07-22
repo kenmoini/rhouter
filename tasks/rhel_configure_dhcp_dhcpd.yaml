@@ -18,8 +18,8 @@
 - name: Set permissions for DHCP key
   file:
     path: /etc/dhcp/rndc-keys/rndc.key
-    owner: dhcp
-    group: dhcp
+    owner: dhcpd
+    group: dhcpd
 
 - name: Start and enable dhcpd
   service:

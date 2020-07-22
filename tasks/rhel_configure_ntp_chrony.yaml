@@ -1,11 +1,4 @@
 ---
-- name: Check for Chronyd package
-  shell:
-    cmd: "rpm -qa | grep -w chrony"
-    warn: false
-  register: chrony_check
-  ignore_errors: yes
-
 - name: Install Chronyd
   yum:
     name: chrony
@@ -13,7 +6,6 @@
   tags:
     - installPackages
     - installChrony
-  when: chrony_check.rc|bool
 
 - name: Configure chronyd
   template:

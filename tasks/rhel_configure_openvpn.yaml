@@ -23,20 +23,6 @@
   tags:
     - installEPEL
 
-- name: Check for OpenVPN package
-  shell:
-    cmd: "rpm -qa | grep -w openvpn"
-    warn: false
-  register: openvpn_check
-  ignore_errors: yes
-
-- name: Check for NMOpenVPN package
-  shell:
-    cmd: "rpm -qa | grep NetworkManager-openvpn"
-    warn: false
-  register: nmopenvpn_check
-  ignore_errors: yes
-
 - name: Install OpenVPN
   yum:
     name: ["openvpn", "NetworkManager-openvpn"]
@@ -44,7 +30,6 @@
   tags:
     - installPackages
     - installOpenVPN
-  when: nmopenvpn_check.rc|bool and openvpn_check.rc|bool
 
 ## Root CA & General PKI
 

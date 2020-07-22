@@ -1,11 +1,4 @@
 ---
-- name: Check for Firewalld package
-  shell:
-    cmd: "rpm -qa | grep -w firewalld"
-    warn: false
-  register: firewalld_check
-  ignore_errors: yes
-
 - name: Install Firewalld
   yum:
     name: firewalld
@@ -13,7 +6,6 @@
   tags:
     - installPackages
     - installFirewalld
-  when: firewalld_check.rc|bool
 
 - name: Enable and start Firewalld
   service:

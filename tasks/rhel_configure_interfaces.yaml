@@ -1,32 +1,4 @@
 ---
-- name: Check for NetworkManager-glib package
-  shell:
-    cmd: "rpm -qa | grep NetworkManager-glib"
-    warn: false
-  register: nmglib_check
-  ignore_errors: yes
-
-- name: Check for nm-connection-editor package
-  shell:
-    cmd: "rpm -qa | grep nm-connection-editor"
-    warn: false
-  register: nmconedit_check
-  ignore_errors: yes
-
-- name: Check for libsemanage-python package
-  shell:
-    cmd: "rpm -qa | grep libsemanage-python"
-    warn: false
-  register: libsemanage_check
-  ignore_errors: yes
-
-- name: Check for policycoreutils-python package
-  shell:
-    cmd: "rpm -qa | grep policycoreutils-python"
-    warn: false
-  register: policycoreutils_check
-  ignore_errors: yes
-
 - name: install needed network manager libs
   yum:
     name:
@@ -38,7 +10,6 @@
   tags:
     - installPackages
     - installNetworkManager
-  when: nmglib_check.rc|bool and nmconedit_check.rc|bool and libsemanage_check.rc|bool and policycoreutils_check.rc|bool
 
 #### WAN
 
