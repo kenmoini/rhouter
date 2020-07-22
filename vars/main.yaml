@@ -150,7 +150,8 @@ network_connections:
     interface_name: "{{ wan_interface }}"
     zone: "{{ wan_zone_name }}"
     ip:
-      route_metric4: 100
+      route_metric4: 101
+      route_metric6: 101
       dhcp4: yes
       auto6: yes
       dns: "{{ wan_dns_servers }}"
@@ -162,8 +163,8 @@ network_connections:
     autoconnect: yes
     zone: "{{ lan_zone_name }}"
     ip:
-      route_metric4: 101
-      route_metric6: 101
+      route_metric4: 102
+      route_metric6: 102
       dhcp4: no
       auto6: no
       address:
@@ -179,14 +180,14 @@ network_connections:
           prefix: "{{ lan_cidr }}"
           gateway: "{{ lan_gateway }}"
           metric: 200
-        - network: "{{ opt1_network_block }}"
-          prefix: "{{ opt1_cidr }}"
-          gateway: "{{ opt1_gateway }}"
-          metric: 201
-        - network: "{{ opt2_network_block }}"
-          prefix: "{{ opt2_cidr }}"
-          gateway: "{{ opt2_gateway }}"
-          metric: 202
+        #- network: "{{ opt1_network_block }}"
+        #  prefix: "{{ opt1_cidr }}"
+        #  gateway: "{{ opt1_gateway }}"
+        #  metric: 201
+        #- network: "{{ opt2_network_block }}"
+        #  prefix: "{{ opt2_cidr }}"
+        #  gateway: "{{ opt2_gateway }}"
+        #  metric: 202
       route_append_only: no
       rule_append_only: yes
 
@@ -209,8 +210,8 @@ network_connections:
     autoconnect: yes
     zone: "{{ opt1_zone_name }}"
     ip:
-      route_metric4: 102
-      route_metric6: 102
+      route_metric4: 103
+      route_metric6: 103
       dhcp4: no
       auto6: no
       address:
@@ -221,18 +222,18 @@ network_connections:
       gateway6: "{{ opt1_gateway6 }}"
 
       route:
-        - network: "{{ lan_network_block }}"
-          prefix: "{{ lan_cidr }}"
-          gateway: "{{ opt1_gateway }}"
-          metric: 300
+        #- network: "{{ lan_network_block }}"
+        #  prefix: "{{ lan_cidr }}"
+        #  gateway: "{{ opt1_gateway }}"
+        #  metric: 300
         - network: "{{ opt1_network_block }}"
           prefix: "{{ opt1_cidr }}"
           gateway: "{{ opt1_gateway }}"
           metric: 301
-        - network: "{{ opt2_network_block }}"
-          prefix: "{{ opt2_cidr }}"
-          gateway: "{{ opt1_gateway }}"
-          metric: 302
+        #- network: "{{ opt2_network_block }}"
+        #  prefix: "{{ opt2_cidr }}"
+        #  gateway: "{{ opt1_gateway }}"
+        #  metric: 302
       route_append_only: no
       rule_append_only: yes
 
@@ -249,8 +250,8 @@ network_connections:
     autoconnect: yes
     zone: "{{ opt2_zone_name }}"
     ip:
-      route_metric4: 103
-      route_metric6: 103
+      route_metric4: 104
+      route_metric6: 104
       dhcp4: no
       auto6: no
       address:
@@ -261,14 +262,14 @@ network_connections:
       gateway6: "{{ opt2_gateway6 }}"
 
       route:
-        - network: "{{ lan_network_block }}"
-          prefix: "{{ lan_cidr }}"
-          gateway: "{{ opt2_gateway }}"
-          metric: 400
-        - network: "{{ opt1_network_block }}"
-          prefix: "{{ opt1_cidr }}"
-          gateway: "{{ opt2_gateway }}"
-          metric: 401
+        #- network: "{{ lan_network_block }}"
+        #  prefix: "{{ lan_cidr }}"
+        #  gateway: "{{ opt2_gateway }}"
+        #  metric: 400
+        #- network: "{{ opt1_network_block }}"
+        #  prefix: "{{ opt1_cidr }}"
+        #  gateway: "{{ opt2_gateway }}"
+        #  metric: 401
         - network: "{{ opt2_network_block }}"
           prefix: "{{ opt2_cidr }}"
           gateway: "{{ opt2_gateway }}"
