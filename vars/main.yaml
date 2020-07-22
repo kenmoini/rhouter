@@ -170,6 +170,7 @@ network_connections:
         - "{{ lan_ip_address }}/{{ lan_cidr }}"
         - "{{ lan_ipv6_prefix }}:{{ lan_ipv6_subnet }}:{{ lan_ipv6_address }}/{{ lan_ipv6_cidr }}"
       dns: "{{ lan_dns_servers }}"
+      dns_search: "{{ system_domain }}"
       gateway4: "{{ lan_gateway }}"
       gateway6: "{{ lan_gateway6 }}"
 
