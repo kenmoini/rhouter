@@ -73,9 +73,11 @@
 
     - name: Disable auto dns on WAN
       shell: "nmcli con mod wan-{{ wan_interface }} ipv4.ignore-auto-dns yes"
+      ignore_errors: yes
 
     - name: Disable auto dns on WAN v6
       shell: "nmcli con mod wan-{{ wan_interface }} ipv6.ignore-auto-dns yes"
+      ignore_errors: yes
 
     - name: Configure system interfaces
       include_role:
