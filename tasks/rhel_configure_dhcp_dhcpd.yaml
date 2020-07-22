@@ -30,6 +30,12 @@
   notify: restart dhcpd
   when: routing_enable_ipv4|bool
 
+- name: Set permissions for DHCP key
+  file:
+    path: /etc/dhcp/rndc-keys/rndc.key
+    owner: dhcp
+    group: dhcp
+
 - name: Start and enable dhcpd
   service:
     name: dhcpd

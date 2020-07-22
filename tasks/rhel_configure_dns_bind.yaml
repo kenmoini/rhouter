@@ -38,12 +38,6 @@
     owner: named
     group: named
 
-- name: Set permissions for DHCP key
-  file:
-    path: /etc/dhcp/rndc-keys/rndc.key
-    owner: dhcp
-    group: dhcp
-
 - name: Template BIND config
   template:
     src: bind-named.conf.j2
