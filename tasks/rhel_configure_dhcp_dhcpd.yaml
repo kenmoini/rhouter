@@ -20,7 +20,7 @@
   tags:
     - installPackages
     - installDHCPd
-  when: dhcp_check|bool or python_netaddr_check|bool
+  when: dhcp_check.rc|bool or python_netaddr_check.rc|bool
 
 - name: Template out dhpcd config file
   template:

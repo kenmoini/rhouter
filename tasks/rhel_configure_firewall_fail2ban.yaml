@@ -37,7 +37,7 @@
   tags:
     - installPackages
     - installFail2ban
-  when: fail2ban_utils_check|bool
+  when: fail2ban_utils_check.rc|bool
 
 - name: Template out fail2ban local jail config file
   template:

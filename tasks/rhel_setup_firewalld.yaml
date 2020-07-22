@@ -13,7 +13,7 @@
   tags:
     - installPackages
     - installFirewalld
-  when: firewalld_check|bool
+  when: firewalld_check.rc|bool
 
 - name: Enable and start Firewalld
   service:

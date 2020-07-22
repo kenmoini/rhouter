@@ -13,7 +13,7 @@
   tags:
     - installPackages
     - installAvahi
-  when: avahi_check|bool
+  when: avahi_check.rc|bool
 
 - name: Start and enable Avahi
   service:

@@ -13,7 +13,7 @@
   tags:
     - installPackages
     - installChrony
-  when: chrony_check|bool
+  when: chrony_check.rc|bool
 
 - name: Configure chronyd
   template:
