@@ -72,10 +72,10 @@
         - configureInterfaces
 
     - name: Disable auto dns on WAN
-      shell: "nmcli con mod {{ wan_interface }} ipv4.ignore-auto-dns yes"
+      shell: "nmcli con mod wan-{{ wan_interface }} ipv4.ignore-auto-dns yes"
 
     - name: Disable auto dns on WAN v6
-      shell: "nmcli con mod {{ wan_interface }} ipv6.ignore-auto-dns yes"
+      shell: "nmcli con mod wan-{{ wan_interface }} ipv6.ignore-auto-dns yes"
 
     - name: Configure system interfaces
       include_role:
@@ -85,10 +85,10 @@
         - configureInterfaces
 
     - name: Disable auto dns on WAN again
-      shell: "nmcli con mod {{ wan_interface }} ipv4.ignore-auto-dns yes"
+      shell: "nmcli con mod wan-{{ wan_interface }} ipv4.ignore-auto-dns yes"
 
     - name: Disable auto dns on WAN again v6
-      shell: "nmcli con mod {{ wan_interface }} ipv6.ignore-auto-dns yes"
+      shell: "nmcli con mod wan-{{ wan_interface }} ipv6.ignore-auto-dns yes"
 
     #- name: Set LAN to never-default route
     #  shell: "nmcli con mod {{ lan_bridge_name }} ipv4.never-default yes"
