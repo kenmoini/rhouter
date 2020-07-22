@@ -22,8 +22,9 @@ subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ip
 {% if network.serviced|bool %}
   option domain-name "{{ network.domain_name }}";
   option domain-name-servers {{ ', '.join(network.dns_servers) }};
-  option subnet-mask {{ network.network | ipaddr('netmask') }};
+  option domain-search "{{ network.domain_name }}";
   option routers {{ network.gateway }};
+  option subnet-mask {{ network.network | ipaddr('netmask') }};
   range {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_end }};
 {% endif %}
 }
