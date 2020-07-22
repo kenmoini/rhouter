@@ -20,7 +20,7 @@
   tags:
     - installPackages
     - installBIND
-  when: bind_check.rc|bool or bind_utils_check.rc|bool
+  when: bind_check.rc|bool and bind_utils_check.rc|bool
 
 - name: Touch key directory for dhcp
   file:

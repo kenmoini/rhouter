@@ -38,7 +38,7 @@
   tags:
     - installPackages
     - installNetworkManager
-  when: nmglib_check.rc|bool or nmconedit_check.rc|bool libsemanage_check.rc|bool or policycoreutils_check.rc|bool
+  when: nmglib_check.rc|bool and nmconedit_check.rc|bool and libsemanage_check.rc|bool and policycoreutils_check.rc|bool
 
 #### WAN
 

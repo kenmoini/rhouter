@@ -44,7 +44,7 @@
   tags:
     - installPackages
     - installOpenVPN
-  when: nmopenvpn_check.rc|bool or openvpn_check.rc|bool
+  when: nmopenvpn_check.rc|bool and openvpn_check.rc|bool
 
 ## Root CA & General PKI
 
