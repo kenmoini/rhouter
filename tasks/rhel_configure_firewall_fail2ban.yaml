@@ -25,7 +25,7 @@
 
 - name: Check for fail2ban package
   shell:
-    cmd: "rpm -qa | grep fail2ban"
+    cmd: "rpm -qa | grep -w fail2ban"
     warn: false
   register: fail2ban_utils_check
   ignore_errors: yes

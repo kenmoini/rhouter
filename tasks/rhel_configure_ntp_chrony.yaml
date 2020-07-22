@@ -1,7 +1,7 @@
 ---
 - name: Check for Chronyd package
   shell:
-    cmd: "rpm -qa | grep chrony"
+    cmd: "rpm -qa | grep -w chrony"
     warn: false
   register: chrony_check
   ignore_errors: yes

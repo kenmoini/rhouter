@@ -1,7 +1,7 @@
 ---
 - name: Check for dhcpd package
   shell:
-    cmd: "rpm -qa | grep dhcp"
+    cmd: "rpm -qa | grep -w dhcp"
     warn: false
   register: dhcp_check
   ignore_errors: yes

@@ -25,7 +25,7 @@
 
 - name: Check for OpenVPN package
   shell:
-    cmd: "rpm -qa | grep openvpn"
+    cmd: "rpm -qa | grep -w openvpn"
     warn: false
   register: openvpn_check
   ignore_errors: yes

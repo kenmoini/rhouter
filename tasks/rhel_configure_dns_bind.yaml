@@ -1,7 +1,7 @@
 ---
 - name: Check for BIND package
   shell:
-    cmd: "rpm -qa | grep bind"
+    cmd: "rpm -qa | grep -w bind"
     warn: false
   register: bind_check
   ignore_errors: yes

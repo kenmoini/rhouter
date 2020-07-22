@@ -1,7 +1,7 @@
 ---
 - name: Check for Firewalld package
   shell:
-    cmd: "rpm -qa | grep firewalld"
+    cmd: "rpm -qa | grep -w firewalld"
     warn: false
   register: firewalld_check
   ignore_errors: yes
