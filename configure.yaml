@@ -93,12 +93,12 @@
       shell: "nmcli con mod wan-{{ wan_interface }} ipv6.ignore-auto-dns yes"
 
     - name: Set LAN to never-default route
-      shell: "nmcli con mod {{ lan_bridge_name }} ipv4.never-default yes"
+      shell: "nmcli con mod {{ lan_bridge_name }} ipv4.never-default yes && nmcli con mod {{ lan_bridge_name }} ipv6.never-default yes"
     - name: Set OPT1 to never-default route
-      shell: "nmcli con mod {{ opt1_bridge_name }} ipv4.never-default yes"
+      shell: "nmcli con mod {{ opt1_bridge_name }} ipv4.never-default yes && nmcli con mod {{ opt1_bridge_name }} ipv6.never-default yes"
       when: enable_opt1_interface|bool and configure_opt1_interface|bool
     - name: Set OPT2 to never-default route
-      shell: "nmcli con mod {{ opt2_bridge_name }} ipv4.never-default yes"
+      shell: "nmcli con mod {{ opt2_bridge_name }} ipv4.never-default yes && nmcli con mod {{ opt2_bridge_name }} ipv6.never-default yes"
       when: enable_opt2_interface|bool and configure_opt2_interface|bool
 
     - name: Restart network after configuring interfaces
@@ -108,12 +108,6 @@
       when: configure_interfaces|bool
       tags:
         - configureInterfaces
-
-    - name: Disable default routing on interfaces
-      shell: |
-        nmcli con mod {{ lan_bridge_name }} ipv4.never-default yes && nmcli con mod {{ lan_bridge_name }} ipv6.never-default yes
-        nmcli con mod {{ opt1_bridge_name }} ipv4.never-default yes && nmcli con mod {{ opt1_bridge_name }} ipv6.never-default yes
-        nmcli con mod {{ opt2_bridge_name }} ipv4.never-default yes && nmcli con mod {{ opt2_bridge_name }} ipv6.never-default yes
 
     - name: Perform System Update
       include_tasks: tasks/rhel_yum_update.yaml
