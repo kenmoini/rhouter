@@ -422,7 +422,7 @@ enable_firewalld: true
 ########################################################################################
 ### VPN - OpenVPN
 
-pki_certificate_authority_root_path: "/etc/ssl/certs/"{{ system_hostname }}""
+pki_certificate_authority_root_path: "/etc/ssl/certs/{{ system_hostname }}"
 pki_certificate_authority_root_ca_expiration: "+10years+1day"
 pki_certificate_authority_root_ca_slug: "ca.{{ system_domain }}"
 
