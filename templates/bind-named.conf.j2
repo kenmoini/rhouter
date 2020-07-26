@@ -44,17 +44,17 @@ options {
   session-keyfile "/run/named/session.key";
 };
 
-{%+ if dns_zones is defined -%}
-{%+ for zone in dns_zones -%}
-{%+ if zone.forward is defined -%}
-{%+ if zone.forward|bool -%}
+{% if dns_zones is defined %}
+{% for zone in dns_zones %}
+{% if zone.forward is defined %}
+{% if zone.forward|bool %}
 zone "{{ zone.name }}" {
     type forward;
     forward only;
     forwarders { {% for fwdr in zone.forwarders %}{{ fwdr }}; {% endfor %} };
 };
 {% endif %}
-{%+ else -%}
+{% else %}
 zone "{{ zone.name }}" {
   type master;
   file "/var/named/zones.d/{{ zone.name }}.zone";
