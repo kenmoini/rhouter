@@ -47,6 +47,7 @@
   vars:
     zone: "{{ item }}"
   with_items: "{{ dns_zones }}"
+  when: item.forward is not defined
   notify: restart BIND
 
 - name: Template BIND Reverse Zone files
@@ -59,6 +60,7 @@
   vars:
     zone: "{{ item }}"
   with_items: "{{ dns_zones }}"
+  when: item.forward is not defined
   notify: restart BIND
 
 - name: Touch log dir
