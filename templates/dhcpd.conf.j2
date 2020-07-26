@@ -17,37 +17,42 @@ update-optimization off;
 update-conflict-detection off;
 include "/etc/dhcp/rndc-keys/rndc.key";
 
-{% for network in dhcp_networks %}
-subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ipaddr('netmask') }} {
-{% if network.serviced|bool %}
-  option broadcast-address {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.255;
-  option domain-name "{{ network.domain_name }}";
-  option domain-name-servers {{ ', '.join(network.dns_servers) }};
-  option domain-search "{{ network.domain_name }}";
-  {% if configure_ntp_chrony|bool %}option ntp-servers {{ network.ntp_server }};{% endif %}
-  option routers {{ network.gateway }};
-  option subnet-mask {{ network.network | ipaddr('netmask') }};
-  range {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_end }};
-{% endif %}
-}
+shared-network "RHouter" {
+  {% for network in dhcp_networks %}
+  subnet {{ network.network | ipaddr('network') }} netmask {{ network.network | ipaddr('netmask') }} {
+  {% if network.serviced|bool %}
+    option broadcast-address {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.255;
+    option domain-name "{{ network.domain_name }}";
+    option domain-name-servers {{ ', '.join(network.dns_servers) }};
+    option domain-search "{{ network.domain_name }}";
+    {% if configure_ntp_chrony|bool %}option ntp-servers {{ network.ntp_server }};{% endif %}
+    option routers {{ network.gateway }};
+    option subnet-mask {{ network.network | ipaddr('netmask') }};
+    range {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_start }} {{ '.'.join((network.network | ipaddr('network')).split('.')[0:-1]) }}.{{ network.range_end }};
+  {% endif %}
+  }
 
-{% if network.dhcp_static_reservations is defined %}
-{% for reservation in network.dhcp_static_reservations %}
-host {{ reservation.name }} {
-  hardware ethernet    {{ reservation.mac }};
-  fixed-address        {{ reservation.ip }};
-  max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
-{% if reservation.hostname is defined %}
-  option host-name {{ reservation.hostname }};
-{% endif %}
-}
-{% endfor %}
-{% endif %}
+  {% if network.dhcp_static_reservations is defined %}
+  {% for reservation in network.dhcp_static_reservations %}
+  host {{ reservation.name }} {
+    hardware ethernet    {{ reservation.mac }};
+    fixed-address        {{ reservation.ip }};
+    max-lease-time       {{ dhcp_dhcpd_static_lease_time }};
+  {% if reservation.hostname is defined %}
+    option host-name {{ reservation.hostname }};
+  {% endif %}
+  }
+  {% endfor %}
+  {% endif %}
 
-{% endfor %}
+  {% endfor %}
+}
 
 {% if dns_zones is defined %}
 {% for zone in dns_zones %}
+{% if zone.forward is defined and zone.forward|bool %}
+
+{% else %}
 zone {{ zone.name }}. {
   primary {{ zone.dns_server }};
   key rndc-key; 
@@ -56,6 +61,6 @@ zone {{  '.'.join((zone.network | ipaddr('revdns')).split('.')[1:-1]) }}. {
   primary {{ zone.dns_server }};
   key rndc-key;
 }
-
+{% endif %}
 {% endfor %}
 {% endif %}

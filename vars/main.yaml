@@ -3,7 +3,7 @@
 # Function Switches
 
 set_hostname: true
-update_system: false
+update_system: true
 
 configure_routing: true
 configure_interfaces: true
@@ -17,9 +17,8 @@ configure_sshd: true
 configure_cockpit: true
 configure_containers: false
 configure_openvpn: false
-configure_libvirt: false
 configure_upnp_upnpd: false
-configure_virt_libvirt: true
+configure_virt_libvirt: false
 
 ########################################################################################
 ### General Settings
@@ -299,6 +298,11 @@ dhcp_networks:
     range_end: 200
     dns_servers: "{{ lan_dns_servers }}"
     domain_name: "kemo.labs"
+    #routes:
+    #  - name: toSatelliteLab
+    #    network: "{{ opt1_network_block }}"
+    #    cidr: "{{ opt1_cidr }}"
+    #    gateway: "{{ lan_gateway }}"
     dhcp_static_reservations:
       - name: hp-switch
         ip: "192.168.42.2"
@@ -334,6 +338,9 @@ dhcp_networks:
       - name: kemo-desktop-wifi
         ip: "192.168.42.37"
         mac: "7C:76:35:4D:BF:84"
+      - name: rhvm
+        ip: "192.168.42.39"
+        mac: "00:16:3e:68:61:5c"
       - name: rhv-1-nic1
         ip: "192.168.42.40"
         mac: "90:b1:1c:2a:eb:38"
@@ -351,6 +358,11 @@ dhcp_networks:
     range_end: 200
     dns_servers: "{{ opt2_dns_servers }}"
     domain_name: "mgmt.kemo.labs"
+    #routes:
+    #  - name: toSatelliteLab
+    #    network: "{{ opt1_network_block }}"
+    #    cidr: "{{ opt1_cidr }}"
+    #    gateway: "{{ opt2_gateway }}"
 
 ########################################################################################
 ### DHCP - dhcpd6 - IPv6!!!!!!
@@ -404,6 +416,24 @@ dns_zones:
       - name: "{{ system_hostname }}"
         type: A
         value: "{{ lan_ip_address }}"
+
+      - name: "{{ system_hostname }}.mgmt"
+        type: A
+        value: "{{ opt2_ip_address }}"
+
+  - name: mgmt.kemo.labs
+    network: "{{ opt2_network_block }}"
+    dns_server: "{{ opt2_ip_address }}"
+    name_server_host: "{{ system_hostname }}"
+    records:
+      - name: "{{ system_hostname }}"
+        type: A
+        value: "{{ opt2_ip_address }}"
+
+  - name: satellite.labs
+    forward: yes
+    forwarders:
+      - 192.168.44.10
 
 ########################################################################################
 ### mDNS - Avahi
