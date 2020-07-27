@@ -143,19 +143,22 @@
         - configureDNS
         - configureBIND
 
-    - name: Set up mDNS - Avahi
-      include_tasks: tasks/rhel_configure_mdns_avahi.yaml
-      when: configure_mdns_avahi|bool
-      tags:
-        - configuremDNS
-        - configureAvahi
-
     - name: Set up DHCP - dhcpd
       include_tasks: tasks/rhel_configure_dhcp_dhcpd.yaml
       when: configure_dhcp_dhcpd|bool
       tags:
         - configureDHCP
         - configureDHCPd
+
+    - name: Reset BIND/DHCPd connection
+      shell: rm -f /var/named/zones/*.jnl && systemctl restart dhcpd && systemctl restart named
+
+    - name: Set up mDNS - Avahi
+      include_tasks: tasks/rhel_configure_mdns_avahi.yaml
+      when: configure_mdns_avahi|bool
+      tags:
+        - configuremDNS
+        - configureAvahi
 
     - name: Set WAN to localhost DNS
       shell: "nmcli con mod wan-{{ wan_interface }} ipv4.dns 127.0.0.1"
